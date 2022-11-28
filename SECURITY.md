@@ -8,4 +8,4 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability within ERP, please send an email to bumicode@yahoo.com. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within ERP, please send an email to **bumicode@yahoo.com** or use **[GitHub Advisories](https://github.com/bumicode/erp/security/advisories)**. All security vulnerabilities will be promptly addressed.
