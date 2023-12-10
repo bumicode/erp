@@ -2,7 +2,7 @@
 <img src="https://socialify.git.ci/bumicode/erp/image?description=1&descriptionEditable=Enterprise%20Resource%20Planning%20(ERP)&font=Raleway&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fbumicode%2Ferp-docs%2Fmain%2F.gitbook%2Fassets%2FArtboard%25201%2520copy.png&name=1&owner=1&pattern=Solid&pulls=1&stargazers=1&theme=Dark" alt="erp" width="640" height="320" />
     <h2>BUMICODE ERP</h2>
     <p align="center">
-        <p>is work-in-progress erp</p>
+        <p>WORK-IN-PROGRESS</p>
     </p>
 </div>
 
