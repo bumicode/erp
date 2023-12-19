@@ -12,12 +12,12 @@ services:
         environment:
             - MYSQL_DATABASE=epr
             - MYSQL_USER=epr
-            - MYSQL_PASSWORD=erp
-            - MYSQL_ROOT_PASSWORD=erp
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD:-erp}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-erp}
         command: --default-storage-engine innodb
         restart: unless-stopped
         healthcheck:
-            test: mysqladmin -p$$MYSQL_ROOT_PASSWORD ping -h localhost
+            test: mysqladmin -p$MYSQL_ROOT_PASSWORD ping -h localhost
             interval: 20s
             start_period: 10s
             timeout: 10s
@@ -42,6 +42,6 @@ services:
             - sqldb
         restart: "no"
         ports:
-            - 8000:8000
+            - "8000:8000"
         volumes:
             - /etc/localtime:/etc/localtime
