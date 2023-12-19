@@ -15,11 +15,10 @@ RUN apt-get update -y && \
     wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - && \
     apt-get update -y && \
     apt-get install -y --no-install-recommends php8.1 php8.1-curl php8.1-xml php8.1-zip php8.1-gd php8.1-mbstring php8.1-mysql && \
-    apt-get update -y && \
-    apt-get --no-install-recommends install -y composer && \
+    apt-get install -y --no-install-recommends composer && \
+    npm install --ignore-scripts && \
     composer update && \
     composer install && \
-    npm install --ignore-scripts && \
     php artisan key:generate && \
     rm -rf /var/lib/apt/lists/* && \
     useradd -ms /bin/bash appuser
