@@ -28,6 +28,15 @@ jobs:
       - name: Build Docker image
         run: |
           docker build --network=host -t ${{secrets.DOCKER_USER}}/erp:latest -t ${{secrets.DOCKER_USER}}/erp:${{ steps.timeseries.outputs.release }} .
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'docker.io/${{secrets.DOCKER_USER}}/erp:${{ steps.timeseries.outputs.release }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
       - name: Docker push image
         run: |
           docker push ${{secrets.DOCKER_USER}}/erp
