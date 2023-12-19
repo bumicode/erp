@@ -1,39 +1,46 @@
-# Use an official Node runtime as a parent image
-FROM node:16.17.0-bullseye-slim
+# Use an official PHP image with 8.1 version as the base image
+FROM php:8.1
 
-# Set the working directory to /app
-WORKDIR /app
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    unzip \
+    curl \
+    libonig-dev \
+    libxml2-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev
 
-# Copy the current directory contents into the container at /app
-COPY .env.example .env
+# Install Composer globally
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Set the working directory in the container
+WORKDIR /var/www/html
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql zip mbstring exif pcntl bcmath gd
+
+# Enable PHP extension (optional, based on your project requirements)
+# RUN docker-php-ext-enable <extension-name>
+
+# Copy composer.json and composer.lock to the working directory
+COPY composer.json composer.lock ./
+
+# Install project dependencies
+RUN composer install --no-scripts --no-autoloader
+
+# Copy the rest of the application code
 COPY . .
 
-# Install dependencies
-RUN apt-get update -y && \
-    apt-get install -y --no-install-recommends software-properties-common gnupg2 wget && \
-    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list && \
-    wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - && \
-    apt-get update -y && \
-    apt-get install -y --no-install-recommends php8.1 php8.1-curl php8.1-xml php8.1-zip php8.1-gd php8.1-mbstring php8.1-mysql && \
-    apt-get update -y && \
-    apt-get --no-install-recommends install -y composer && \
-    rm -rf /var/lib/apt/lists/*
+# Generate optimized Composer autoloader
+RUN composer dump-autoload --optimize
 
-# Install Node.js dependencies
-RUN npm install --ignore-scripts
+# Set the appropriate permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Install PHP dependencies
-RUN composer update && \
-    composer install
-
-# Generate application key
-RUN php artisan key:generate
-
-# Create a non-root user
-RUN useradd -ms /bin/bash appuser
-
-# Change to the non-root user
-USER appuser
+# Expose port 80 for the web server
+EXPOSE 80
 
 # CMD specifies the command to run on container start
 CMD ["bash", "./run.sh"]
