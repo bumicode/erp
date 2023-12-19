@@ -15,13 +15,22 @@ RUN apt-get update -y && \
     wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - && \
     apt-get update -y && \
     apt-get install -y --no-install-recommends php8.1 php8.1-curl php8.1-xml php8.1-zip php8.1-gd php8.1-mbstring php8.1-mysql && \
-    apt-get install -y --no-install-recommends composer && \
-    npm install --ignore-scripts && \
-    composer update && \
-    composer install && \
-    php artisan key:generate && \
-    rm -rf /var/lib/apt/lists/* && \
-    useradd -ms /bin/bash appuser
+    apt-get update -y && \
+    apt-get --no-install-recommends install -y composer && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Node.js dependencies
+RUN npm install --ignore-scripts
+
+# Install PHP dependencies
+RUN composer update && \
+    composer install
+
+# Generate application key
+RUN php artisan key:generate
+
+# Create a non-root user
+RUN useradd -ms /bin/bash appuser
 
 # Change to the non-root user
 USER appuser
