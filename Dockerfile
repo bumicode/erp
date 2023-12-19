@@ -1,16 +1,14 @@
-# syntax=docker/dockerfile:1
-
-#Deriving the latest base image
+# Use an official Node runtime as a parent image
 FROM node:16.17.0-bullseye-slim
-LABEL authors="Bumicode"
 
-# Any working directory can be chosen as per choice like '/' or '/home' etc
+# Set the working directory to /app
 WORKDIR /app
 
+# Copy the current directory contents into the container at /app
 COPY .env.example .env
-
 COPY . .
 
+# Install dependencies
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends software-properties-common gnupg2 wget && \
     echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list && \
@@ -23,6 +21,11 @@ RUN apt-get update -y && \
     composer install && \
     npm install --ignore-scripts && \
     php artisan key:generate && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -ms /bin/bash appuser
 
-CMD [ "bash", "./run.sh"]
+# Change to the non-root user
+USER appuser
+
+# CMD specifies the command to run on container start
+CMD ["bash", "./run.sh"]
