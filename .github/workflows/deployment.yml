@@ -63,5 +63,5 @@ jobs:
           if ! git diff --exit-code; then
               git add values.yml
               git commit -am "Update values.yml"
-              git push -f origin develop
+              git push -f origin HEAD:refs/heads/develop
           fi
