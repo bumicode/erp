@@ -6,11 +6,8 @@ on:
       - 'v*.*.*'
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
       - name: Docker login
@@ -28,6 +25,10 @@ jobs:
       - name: Build Docker image
         run: |
           docker build --network=host -t ${{secrets.DOCKER_USER}}/erp:latest -t ${{secrets.DOCKER_USER}}/erp:${{ steps.timeseries.outputs.release }} .
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:  
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -37,6 +38,10 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+  release:  
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    steps:
       - name: Docker push image
         run: |
           docker push ${{secrets.DOCKER_USER}}/erp
