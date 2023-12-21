@@ -62,6 +62,9 @@ jobs:
           git config --global user.email 'actions@github.com'
           if ! git diff --exit-code; then
               git add values.yml
-              git commit -am "Update values.yml"
-              git push -f origin HEAD:refs/heads/develop
           fi
+      - name: Commit and push changes
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: "[AUTO] Update Values.yml"
