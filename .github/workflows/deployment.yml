@@ -56,9 +56,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Deployment to Staging
         run: |
-          cd kubectl
+          cd kubectl/staging
           sed -i 's|APP_VERSION:.*|APP_VERSION: '${{ steps.timeseries.outputs.release }}'|' values.yml 
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
-          git add values.yml
-          git diff --quiet || (git commit -m "Update values.yml" && git push)
+          if ! git diff --exit-code; then
+              git add values.yml
+              git commit -am "Update values.yml"
+              git push -f origin main
+          fi
