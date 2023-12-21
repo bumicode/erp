@@ -52,7 +52,8 @@ jobs:
   #         docker push ${{secrets.DOCKER_USER}}/erp:${{ steps.timeseries.outputs.release }}
   staging:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
+      - uses: actions/checkout@v4
       - name: Deployment to Staging
         run: |
           cd kubectl
