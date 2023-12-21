@@ -28,7 +28,13 @@ jobs:
   # scan:
   #   runs-on: ubuntu-latest
   #   needs: build
-  #   steps:  
+  #   steps:
+  #    - name: Get repository release tag
+  #        id: timeseries
+  #        uses: pozetroninc/github-action-get-latest-release@master
+  #        with:
+  #          excludes: prerelease, draft
+  #          repository: ${{ github.repository }}  
   #     - name: Run Trivy vulnerability scanner
   #       uses: aquasecurity/trivy-action@master
   #       with:
@@ -46,6 +52,12 @@ jobs:
   #   runs-on: ubuntu-latest
   #   needs: [build]
   #   steps:
+  #      - name: Get repository release tag
+  #              id: timeseries
+  #              uses: pozetroninc/github-action-get-latest-release@master
+  #              with:
+  #                excludes: prerelease, draft
+  #                repository: ${{ github.repository }}
   #     - name: Docker push image
   #       run: |
   #         docker push ${{secrets.DOCKER_USER}}/erp
@@ -53,6 +65,12 @@ jobs:
   staging:
     runs-on: ubuntu-latest
     steps:
+      - name: Get repository release tag
+        id: timeseries
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          excludes: prerelease, draft
+          repository: ${{ github.repository }}
       - uses: actions/checkout@v4
       - name: Deployment to Staging
         run: |
