@@ -1309,16 +1309,16 @@
         },
         {
             "name": "laravel/sanctum",
-            "version": "v3.2.1",
+            "version": "v3.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sanctum.git",
-                "reference": "d09d69bac55708fcd4a3b305d760e673d888baf9"
+                "reference": "e1a272893bec13cf135627f7e156030b3afe1e60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sanctum/zipball/d09d69bac55708fcd4a3b305d760e673d888baf9",
-                "reference": "d09d69bac55708fcd4a3b305d760e673d888baf9",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/e1a272893bec13cf135627f7e156030b3afe1e60",
+                "reference": "e1a272893bec13cf135627f7e156030b3afe1e60",
                 "shasum": ""
             },
             "require": {
@@ -1331,8 +1331,9 @@
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^7.0|^8.0",
-                "phpunit/phpunit": "^9.3"
+                "orchestra/testbench": "^7.28.2|^8.8.3",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.6"
             },
             "type": "library",
             "extra": {
@@ -1370,7 +1371,7 @@
                 "issues": "https://github.com/laravel/sanctum/issues",
                 "source": "https://github.com/laravel/sanctum"
             },
-            "time": "2023-01-13T15:41:49+00:00"
+            "time": "2023-11-03T13:42:14+00:00"
         },
         {
             "name": "laravel/serializable-closure",
