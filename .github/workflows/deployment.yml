@@ -25,7 +25,6 @@ jobs:
       - name: Build Docker image
         run: |
           docker build --network=host -t ${{secrets.DOCKER_USER}}/erp:latest -t ${{secrets.DOCKER_USER}}/erp:${{ steps.timeseries.outputs.release }} .
-          steps:
       - name: Docker push image
         run: |
           docker push ${{secrets.DOCKER_USER}}/erp
