@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\Selling;
 
-use App\Filament\Resources\Selling\CustomerTerritoryResource\Pages;
-use App\Filament\Resources\Selling\CustomerTerritoryResource\RelationManagers;
-use App\Models\Selling\CustomerTerritory;
+use App\Filament\Resources\Selling\CreditLimitResource\Pages;
+use App\Filament\Resources\Selling\CreditLimitResource\RelationManagers;
+use App\Models\Selling\CreditLimit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,10 +13,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CustomerTerritoryResource extends Resource
+class CreditLimitResource extends Resource
 {
-    protected static ?string $model = CustomerTerritory::class;
-    protected static ?string $navigationGroup = 'Selling';
+    protected static ?string $model = CreditLimit::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -57,10 +57,10 @@ class CustomerTerritoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomerTerritories::route('/'),
-            'create' => Pages\CreateCustomerTerritory::route('/create'),
-            'view' => Pages\ViewCustomerTerritory::route('/{record}'),
-            'edit' => Pages\EditCustomerTerritory::route('/{record}/edit'),
+            'index' => Pages\ListCreditLimits::route('/'),
+            'create' => Pages\CreateCreditLimit::route('/create'),
+            'view' => Pages\ViewCreditLimit::route('/{record}'),
+            'edit' => Pages\EditCreditLimit::route('/{record}/edit'),
         ];
     }
 }
