@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('customer_groups', function (Blueprint $table) {
+            $table->id();
+            $table->boolean('is_group')->default(false);
+            $table->string('name');
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('customer_groups');
+            $table->unsignedBigInteger('default_price_list_id')->nullable();
+            $table->foreign('default_price_list_id')->references('id')->on('price_lists');
+            $table->unsignedBigInteger('default_payment_terms_template')->nullable();
+            $table->foreign('default_payment_terms_template')->references('id')->on('payment_terms_templates');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('customer_groups');
+    }
+};
