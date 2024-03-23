@@ -17,6 +17,7 @@ class TerritoryResource extends Resource
 {
     protected static ?string $model = Territory::class;
 
+    protected static ?string $navigationGroup = 'Selling';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -25,6 +26,10 @@ class TerritoryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('parent_id')
                     ->numeric(),
+                Forms\Components\TextInput::make('name')
+                    ->string(),
+                Forms\Components\Select::make('territory_manager_id')
+                    ->relationship('manager', 'name'),
             ]);
     }
 
@@ -33,6 +38,11 @@ class TerritoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('parent_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('manager.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

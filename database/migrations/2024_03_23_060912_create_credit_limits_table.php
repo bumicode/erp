@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('credit_limits', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_group_id');
+            $table->foreign('customer_group_id')->references('id')->on('customer_groups')->onDelete('cascade');
+            $table->bigInteger('credit_limit');
             $table->timestamps();
         });
     }

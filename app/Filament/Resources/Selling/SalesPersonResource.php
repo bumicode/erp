@@ -17,6 +17,7 @@ class SalesPersonResource extends Resource
 {
     protected static ?string $model = SalesPerson::class;
 
+    protected static ?string $navigationGroup = 'Selling';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

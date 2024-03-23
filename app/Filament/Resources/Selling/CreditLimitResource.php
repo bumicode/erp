@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CreditLimitResource extends Resource
 {
     protected static ?string $model = CreditLimit::class;
+    protected static ?string $navigationGroup = 'Selling';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

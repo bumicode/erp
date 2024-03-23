@@ -5,6 +5,7 @@ namespace App\Models\Selling;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
@@ -29,17 +30,17 @@ class Customer extends Model
         'primary_address_id',
     ];
 
-    public function group()
+    public function group(): BelongsTo
     {
         return $this->belongsTo(CustomerGroup::class, 'customer_group_id');
     }
 
-    public function territory()
+    public function territory(): BelongsTo
     {
         return $this->belongsTo(Territory::class);
     }
 //
-    public function manager()
+    public function manager(): BelongsTo
     {
         return $this->belongsTo(User::class, 'account_manager_id');
     }

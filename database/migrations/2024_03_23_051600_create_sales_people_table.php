@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('sales_people', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_group')->default(false);
-            $table->boolean('is_enable')->default(true);
+            $table->boolean('status')->default(true);
             $table->string('name');
             $table->unsignedBigInteger('employee')->nullable(); // Check your reference here, it's not specified
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->foreign('parent_id')->references('id')->on('sales_persons');
+            $table->foreign('parent_id')->references('id')->on('sales_people');
             $table->integer('commission_rate')->nullable();
             $table->timestamps();
         });
