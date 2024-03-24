@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('employee')->nullable(); // Check your reference here, it's not specified
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('sales_people');
-            $table->integer('commission_rate')->nullable();
+            $table->double('commission_rate')->nullable();
             $table->timestamps();
         });
     }

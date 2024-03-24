@@ -24,12 +24,19 @@ class TerritoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('parent_id')
-                    ->numeric(),
+                Forms\Components\Select::make('parent_id')
+                    ->default(1)
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10)
+                    ->relationship('parent', 'name'),
                 Forms\Components\TextInput::make('name')
                     ->string(),
                 Forms\Components\Select::make('territory_manager_id')
-                    ->relationship('manager', 'name'),
+                    ->relationship('manager', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10),
             ]);
     }
 
@@ -37,14 +44,13 @@ class TerritoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('parent_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('parent.name')
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('manager.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

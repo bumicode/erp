@@ -15,6 +15,53 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sales_order_id')->constrained('sales_orders');
             $table->string('series')->unique();
+            $table->enum('status', [
+                'Draft',
+                'On Hold',
+                'To Deliver and Bill',
+                'To Bill',
+                'To Deliver',
+                'Completed',
+                'Cancelled',
+                'Closed',
+            ])->default('Draft');
+            $table->enum('delivery_status', [
+                'Not Delivered',
+                'Partially Delivered',
+                'Fully Delivered',
+                'Closed',
+                'Not Applicable',
+            ])->default('Not Delivered');
+            $table->enum('billed_status', [
+                'Not Billed',
+                'Partially Billed',
+                'Fully Billed',
+                'Closed',
+            ])->default('Not Billed');
+            $table->timestamp('posting_date');
+            $table->timestamp('delivery_date')->nullable();
+            $table->enum('order_type', ['Sales', 'Maintenance', 'Shopping Chart']);
+            $table->bigInteger('customer_id')->unsigned();
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->bigInteger('customer_address_id')->unsigned();
+            $table->foreign('customer_address_id')->references('id')->on('addresses');
+            $table->bigInteger('customer_contact_id')->unsigned();
+            $table->foreign('customer_contact_id')->references('id')->on('contacts');
+            $table->bigInteger('customer_shipping_address_id')->unsigned()->nullable();
+            $table->foreign('customer_shipping_address_id')->references('id')->on('addresses');
+            $table->double('total_qty');
+            $table->integer('total_net_weight');
+            $table->double('total_amount');
+            $table->bigInteger('tax_category')->unsigned();
+            $table->foreign('tax_category')->references('id')->on('tax_categories');
+            $table->bigInteger('sales_tax_charge_template')->nullable();
+            $table->foreign('sales_tax_charge_template')->references('id')->on('tax_charge_templates');
+            $table->double('total_tax_charge');
+            $table->double('grand_total');
+            $table->double('rounding_adjustment')->nullable();
+            $table->double('rounded_total')->nullable();
+            $table->bigInteger('payment_terms_template_id')->unsigned();
+            $table->foreign('payment_terms_template_id')->references('id')->on('payment_terms_templates');
             $table->timestamps();
         });
 

@@ -6,12 +6,18 @@ use App\Filament\Resources\Selling\CustomerResource\Pages;
 use App\Filament\Resources\Selling\CustomerResource\RelationManagers\AddressRelationManager;
 use App\Filament\Resources\Selling\CustomerResource\RelationManagers\ContactRelationManager;
 use App\Models\Selling\Customer;
+use App\Models\Selling\CustomerGroup;
 use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomerResource extends Resource
@@ -27,52 +33,49 @@ class CustomerResource extends Resource
         return $form
             ->schema([
 
-                Forms\Components\Section::make()
-                    ->schema([
-
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-
-                        Forms\Components\Select::make('gender')
-                            ->required()
-                            ->options([
-                                'Male' => 'Male',
-                                'Female' => 'Female',
-                            ]),
-
-                        Forms\Components\Section::make('Sales Settings')
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tabs\Tab::make('Details')
+                            ->icon('heroicon-m-information-circle')
                             ->schema([
 
-                                Forms\Components\Toggle::make('allow_sales_invoice_creation_without_sales_order')
-                                    ->label('Allow sales invoice creation without Sales Order')
-                                    ->required(),
+                                Forms\Components\TextInput::make('salutation')
+                                    ->required()
+                                    ->maxLength(255),
 
-                                Forms\Components\Toggle::make('allow_sales_invoice_creation_without_delivery_note')
-                                    ->label('Allow sales invoice creation without Delivery Note')
-                                    ->required(),
-                            ]),
+                                Forms\Components\Select::make('territory_id')
+                                    ->relationship('territory', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->createOptionForm([
+                                        Forms\Components\Select::make('parent_id')
+                                            ->default(1)
+                                            ->searchable()
+                                            ->preload()
+                                            ->optionsLimit(10)
+                                            ->relationship('parent', 'name'),
+                                        Forms\Components\TextInput::make('name')
+                                            ->string(),
+                                        Forms\Components\Select::make('territory_manager_id')
+                                            ->relationship('manager', 'name')
+                                            ->searchable()
+                                            ->preload()
+                                            ->optionsLimit(10),
+                                    ])
+                                    ->optionsLimit(10),
 
-                        Forms\Components\Section::make('Accounting Settings')
-                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Customer Name')
+                                    ->required()
+                                    ->maxLength(255),
 
-                                Forms\Components\TextInput::make('default_company_bank_account')
-                                    ->numeric(),
-                            ]),
-
-                    ])
-                    ->columns(2)
-                    ->columnSpan(['lg' => 2]),
-                //                    ->columnSpan(['lg' => fn (?Customer $record) => $record === null ? 3 : 2]),
-
-                Forms\Components\Group::make()
-                    ->schema([
-                        Forms\Components\Section::make('Customer Info')
-                            ->schema([
-
-                                Forms\Components\Toggle::make('status')
-                                    ->label('Status')
-                                    ->default(true),
+                                Forms\Components\Select::make('gender')
+                                    ->required()
+                                    ->options([
+                                        'Male' => 'Male',
+                                        'Female' => 'Female',
+                                    ]),
 
                                 Forms\Components\Select::make('customer_type')
                                     ->required()
@@ -81,27 +84,187 @@ class CustomerResource extends Resource
                                         'Corporate' => 'Corporate',
                                     ]),
 
-                                Forms\Components\Toggle::make('is_internal_customer')
-                                    ->label('Internal Customer')
-                                    ->helperText('Marks that the consumer is an internal customer')
-                                    ->required(),
-                            ]),
+                                Forms\Components\Select::make('from_lead')
+                                    ->options([
+                                        'Individual' => 'Individual',
+                                        'Corporate' => 'Corporate',
+                                    ]),
 
-                        Forms\Components\Section::make('Associations')
-                            ->schema([
                                 Forms\Components\Select::make('customer_group_id')
+                                    ->label('Customer Group')
                                     ->relationship('group', 'name')
-                                    ->required(),
+                                    ->searchable()
+                                    ->required()
+                                    ->preload()
+                                    ->optionsLimit(10)
+                                    ->createOptionForm([
+                                        Forms\Components\Select::make('parent_id')
+                                            ->relationship('parent', 'name')
+                                            ->searchable()
+                                            ->default(1)
+                                            ->preload(),
+                                        Forms\Components\Select::make('default_price_list_id')
+                                            ->relationship('defaultPriceList', 'name'),
+                                        Forms\Components\TextInput::make('default_payment_terms_template')
+                                            ->numeric(),
+                                        Forms\Components\Toggle::make('is_group')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('name')
+                                            ->required()
+                                            ->maxLength(255),
+                                    ]),
 
-                                Forms\Components\Select::make('territory_id')
-                                    ->relationship('territory', 'name')
-                                    ->required(),
+                                Forms\Components\Select::make('from_opportunity')
+                                    ->options([
+                                        'Individual' => 'Individual',
+                                        'Corporate' => 'Corporate',
+                                    ]),
 
                                 Forms\Components\Select::make('account_manager_id')
-                                    ->relationship('manager', 'name')
+                                    ->label('Account Manager')
+                                    ->searchable()
+                                    ->optionsLimit(10)
+                                    ->relationship('manager', 'name'),
+
+                                Forms\Components\Section::make('Default')
+                                    ->schema([
+
+                                        Forms\Components\TextInput::make('default_price_list')
+                                            ->label('Default Price List')
+                                            ->numeric(),
+
+                                        Forms\Components\TextInput::make('currency_id')
+                                            ->label('Billing Currency')
+                                            ->numeric(),
+
+                                        Forms\Components\TextInput::make('default_company_bank_account')
+                                            ->label('Default Company Bank Account')
+                                            ->numeric(),
+
+                                    ])->columns(2),
+
+                                Section::make('Internal Customer')
+                                    ->description('Marks that the consumer is an internal customer')
+                                    ->schema([
+
+                                        Forms\Components\Toggle::make('is_internal_customer')
+                                            ->label('Mark as Internal Customer')
+                                            ->required(),
+
+                                    ])
+                                    ->collapsed(),
+
+                                Section::make('More Information')
+                                    ->schema([
+
+                                        Forms\Components\TextInput::make('market_segment_id')
+                                            ->label('Market Segment')
+                                            ->numeric(),
+
+                                        Forms\Components\TextInput::make('industry_id')
+                                            ->label('Industry')
+                                            ->numeric(),
+
+                                        Forms\Components\TextInput::make('website')
+                                            ->label('Website')
+                                            ->numeric(),
+
+                                        RichEditor::make('content'),
+                                    ])
+                                    ->collapsed(),
+                            ]),
+
+                        Tabs\Tab::make('Contact & Address')
+                            ->icon('heroicon-m-identification')
+                            ->schema([
+
+                                Section::make('Primary Address and Contact')
+                                    ->description('Select, to make the customer searchable with these fields')
+                                    ->schema([
+
+                                        Select::make('primary_address_id')
+                                            ->helperText('Reselect, if the chosen address is edited after save')
+                                            ->relationship(name: 'addresses', titleAttribute: 'address_title')
+                                            ->searchable(),
+
+                                        Select::make('primary_contact_id')
+                                            ->helperText('Reselect, if the chosen contact is edited after save')
+                                            ->relationship(
+                                                name: 'contacts', titleAttribute: 'first_name')
+                                            ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->first_name} {$record->last_name}")
+                                            ->searchable(['first_name', 'last_name']),
+
+                                    ])->columns(2),
+                            ]),
+
+                        Tabs\Tab::make('Tax')
+                            ->icon('heroicon-m-receipt-percent')
+                            ->schema([
+
+                                Forms\Components\TextInput::make('tax_id')
+                                    ->label('Tax ID'),
+
+                                Forms\Components\TextInput::make('tax_category_id')
+                                    ->label('Tax Category')
+                                    ->numeric(),
+
+                                Forms\Components\TextInput::make('tax_withholding_category_id')
+                                    ->label('Tax Withholding Category')
+                                    ->numeric(),
+
+                            ])->columns(2),
+
+                        Tabs\Tab::make('Accounting')
+                            ->icon('heroicon-m-clipboard-document-list')
+                            ->schema([
+
+                                Section::make('Credit Limit and Payment Terms')
+                                    ->schema([
+
+                                        Forms\Components\TextInput::make('default_payment_terms_template')
+                                            ->label('Default Payment Terms Template')
+                                            ->numeric(),
+
+                                    ])->columns(2),
+                            ]),
+
+                        Tabs\Tab::make('Sales Team')
+                            ->icon('heroicon-m-user')
+                            ->schema([
+
+                                Forms\Components\TextInput::make('sales_partner')
+                                    ->label('Sales Partner')
+                                    ->numeric(),
+
+                                Forms\Components\TextInput::make('commission_rate')
+                                    ->label('Commission Rate')
+                                    ->numeric(),
+                            ])->columns(2),
+
+                        Tabs\Tab::make('Settings')
+                            ->icon('heroicon-m-cog-6-tooth')
+                            ->schema([
+
+                                Forms\Components\Toggle::make('allow_sales_invoice_creation_without_sales_order')
+                                    ->label('Allow sales invoice creation without Sales Order')
                                     ->required(),
-                            ])
-                            ->columnSpan(['lg' => 1]),
+
+                                Forms\Components\Toggle::make('status')
+                                    ->label('Status')
+                                    ->default(true),
+
+                                Forms\Components\Toggle::make('allow_sales_invoice_creation_without_delivery_note')
+                                    ->label('Allow sales invoice creation without Delivery Note')
+                                    ->required(),
+
+                            ])->columns(2),
+
+                    ])
+                    ->columns(2)
+                    ->columnSpan(['lg' => 4]),
+
+                Forms\Components\Group::make()
+                    ->schema([
 
                         Forms\Components\Section::make('Meta Data')
                             ->schema([
@@ -114,9 +277,13 @@ class CustomerResource extends Resource
                                     ->label('Last modified at')
                                     ->content(fn (Customer $record): ?string => $record->updated_at?->diffForHumans()),
                             ])
+                            ->columns(2)
+                            ->columnSpan(['lg' => 4])
                             ->hidden(fn (?Customer $record) => $record === null),
                     ])
-                    ->columnSpan(['lg' => 1]),
+                    ->columnSpan(['lg' => 4])
+                    ->columns(2)
+                    ->hidden(fn (?Customer $record) => $record === null),
             ])
             ->columns(3);
     }
@@ -130,10 +297,12 @@ class CustomerResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Customer Name')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_internal_customer')->label('Internal Customer')
-                    ->boolean(),
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('territory.name')

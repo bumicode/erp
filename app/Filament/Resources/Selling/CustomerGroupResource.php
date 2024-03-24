@@ -43,15 +43,14 @@ class CustomerGroupResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_group')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('parent.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('defaultPriceList.name')
                     ->numeric()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('default_payment_terms_template')
                     ->numeric()
