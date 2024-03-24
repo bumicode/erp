@@ -3,7 +3,8 @@
 namespace App\Filament\Resources\Selling;
 
 use App\Filament\Resources\Selling\CustomerResource\Pages;
-use App\Filament\Resources\Selling\CustomerResource\RelationManagers;
+use App\Filament\Resources\Selling\CustomerResource\RelationManagers\AddressRelationManager;
+use App\Filament\Resources\Selling\CustomerResource\RelationManagers\ContactRelationManager;
 use App\Models\Selling\Customer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -18,43 +19,67 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     protected static ?string $navigationGroup = 'Selling';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-//                Forms\Components\TextInput::make('default_company_bank_account')
-//                    ->numeric(),
-//                Forms\Components\TextInput::make('customer_type')
-//                    ->required()
-//                    ->maxLength(255)
-//                    ->default('Individual'),
-//                Forms\Components\TextInput::make('gender')
-//                    ->required()
-//                    ->maxLength(255)
-//                    ->default('male'),
-//                Forms\Components\Toggle::make('is_internal_customer')
-//                    ->required(),
-//                Forms\Components\Toggle::make('status')
-//                    ->required(),
 
                 Forms\Components\Section::make()
                     ->schema([
+
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
+
+                        Forms\Components\Select::make('gender')
+                            ->required()
+                            ->options([
+                                'Male' => 'Male',
+                                'Female' => 'Female',
+                            ]),
+
+                        Forms\Components\Section::make('Sales Settings')
+                            ->schema([
+
+                                Forms\Components\Toggle::make('allow_sales_invoice_creation_without_sales_order')
+                                    ->label('Allow sales invoice creation without Sales Order')
+                                    ->required(),
+
+                                Forms\Components\Toggle::make('allow_sales_invoice_creation_without_delivery_note')
+                                    ->label('Allow sales invoice creation without Delivery Note')
+                                    ->required(),
+                            ]),
+
+                        Forms\Components\Section::make('Accounting Settings')
+                            ->schema([
+
+                                Forms\Components\TextInput::make('default_company_bank_account')
+                                    ->numeric(),
+                            ]),
+
                     ])
                     ->columns(2)
-                    ->columnSpan(['lg' => fn (?Customer $record) => $record === null ? 3 : 2]),
+                    ->columnSpan(['lg' => 2]),
+                //                    ->columnSpan(['lg' => fn (?Customer $record) => $record === null ? 3 : 2]),
 
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make('Customer Info')
                             ->schema([
+
                                 Forms\Components\Toggle::make('status')
                                     ->label('Status')
                                     ->default(true),
+
+                                Forms\Components\Select::make('customer_type')
+                                    ->required()
+                                    ->options([
+                                        'Individual' => 'Individual',
+                                        'Corporate' => 'Corporate',
+                                    ]),
 
                                 Forms\Components\Toggle::make('is_internal_customer')
                                     ->label('Internal Customer')
@@ -72,22 +97,11 @@ class CustomerResource extends Resource
                                     ->relationship('territory', 'name')
                                     ->required(),
 
-                                Forms\Components\TextInput::make('account_manager_id')
-                                    ->required()
-                                    ->numeric(),
+                                Forms\Components\Select::make('account_manager_id')
+                                    ->relationship('manager', 'name')
+                                    ->required(),
                             ])
-                            ->columnSpan(['lg' => 1])
-                            ->hidden(fn (?Customer $record) => $record === null),
-
-                        Forms\Components\Section::make('Sales Settings')
-                            ->schema([
-
-                                Forms\Components\Toggle::make('allow_sales_invoice_creation_without_sales_order')
-                                    ->required(),
-
-                                Forms\Components\Toggle::make('allow_sales_invoice_creation_without_delivery_note')
-                                    ->required(),
-                            ]),
+                            ->columnSpan(['lg' => 1]),
 
                         Forms\Components\Section::make('Meta Data')
                             ->schema([
@@ -99,7 +113,8 @@ class CustomerResource extends Resource
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label('Last modified at')
                                     ->content(fn (Customer $record): ?string => $record->updated_at?->diffForHumans()),
-                            ]),
+                            ])
+                            ->hidden(fn (?Customer $record) => $record === null),
                     ])
                     ->columnSpan(['lg' => 1]),
             ])
@@ -173,10 +188,16 @@ class CustomerResource extends Resource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with('addresses')->withoutGlobalScope(SoftDeletingScope::class);
+    }
+
     public static function getRelations(): array
     {
         return [
-            //
+            AddressRelationManager::class,
+            ContactRelationManager::class,
         ];
     }
 

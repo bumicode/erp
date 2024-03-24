@@ -2,10 +2,14 @@
 
 namespace App\Models\Selling;
 
+use App\Models\CRM\Address;
+use App\Models\CRM\Contact;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
@@ -39,20 +43,25 @@ class Customer extends Model
     {
         return $this->belongsTo(Territory::class);
     }
-//
+
     public function manager(): BelongsTo
     {
         return $this->belongsTo(User::class, 'account_manager_id');
     }
 
-//    public function contact()
-//    {
-//        return $this->belongsTo(Contactable::class, 'primary_contact_id');
-//    }
-//
-//    public function address()
-//    {
-//        return $this->belongsTo(Addressable::class, 'primary_address_id');
-//    }
+    public function addresses(): MorphToMany
+    {
+        return $this->morphToMany(Address::class, 'addressable');
+    }
+
+    public function contacts(): MorphToMany
+    {
+        return $this->morphToMany(Contact::class, 'contactable');
+    }
+
+    public function primaryAddress(): HasOne
+    {
+        return $this->hasOne(Address::class, 'id', 'primary_address_id');
+    }
 
 }
