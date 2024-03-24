@@ -5,6 +5,8 @@ namespace App\Models\CRM;
 use App\Models\Selling\Customer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Address extends Model
@@ -40,5 +42,11 @@ class Address extends Model
     public function customers(): MorphToMany
     {
         return $this->morphedByMany(Customer::class, 'addressable');
+    }
+
+    public function customer(): HasOne
+
+    {
+        return $this->hasOne(Customer::class);
     }
 }

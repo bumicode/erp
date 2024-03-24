@@ -18,7 +18,7 @@ class TerritoryResource extends Resource
     protected static ?string $model = Territory::class;
 
     protected static ?string $navigationGroup = 'Selling';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-map';
 
     public static function form(Form $form): Form
     {

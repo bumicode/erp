@@ -18,7 +18,7 @@ class SalesOrderResource extends Resource
     protected static ?string $model = SalesOrder::class;
     protected static ?string $navigationGroup = 'Selling';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
     public static function form(Form $form): Form
     {

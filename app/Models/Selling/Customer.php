@@ -4,6 +4,7 @@ namespace App\Models\Selling;
 
 use App\Models\CRM\Address;
 use App\Models\CRM\Contact;
+use App\Models\CRM\Salutation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ class Customer extends Model
 
     protected $fillable = [
         'name',
+        'salutation_id',
         'customer_group_id',
         'default_company_bank_account',
         'customer_type',
@@ -71,9 +73,13 @@ class Customer extends Model
         return $this->morphToMany(Contact::class, 'contactable');
     }
 
-    public function primaryAddress(): HasOne
+    public function primaryAddress(): BelongsTo
     {
-        return $this->hasOne(Address::class, 'id', 'primary_address_id');
+        return $this->belongsTo(Address::class, 'primary_address_id');
     }
 
+    public function salutation(): BelongsTo
+    {
+        return $this->belongsTo(Salutation::class);
+    }
 }

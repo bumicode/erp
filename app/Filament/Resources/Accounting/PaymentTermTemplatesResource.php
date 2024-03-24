@@ -18,7 +18,7 @@ class PaymentTermTemplatesResource extends Resource
     protected static ?string $model = PaymentTermTemplates::class;
     protected static ?string $navigationGroup = 'Accounting';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-4';
 
     public static function form(Form $form): Form
     {

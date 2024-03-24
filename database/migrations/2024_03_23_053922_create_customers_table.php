@@ -62,6 +62,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('customer_group_id');
+            $table->foreignId('salutation_id')->nullable()->constrained('salutations')->nullOnDelete();
             $table->foreign('customer_group_id')->references('id')->on('customer_groups');
             $table->unsignedBigInteger('default_company_bank_account')->nullable();
             $table->enum('customer_type', ['Individual', 'Corporate'])->default('Individual');

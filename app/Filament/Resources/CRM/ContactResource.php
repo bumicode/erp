@@ -18,24 +18,12 @@ class ContactResource extends Resource
     protected static ?string $model = Contact::class;
 
     protected static ?string $navigationGroup = 'CRM';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('customer_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('address_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('salutation_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('user_id')
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_primary_contact')
-                    ->required(),
-                Forms\Components\Toggle::make('is_billing_contact')
-                    ->required(),
                 Forms\Components\TextInput::make('first_name')
                     ->required()
                     ->maxLength(255),
@@ -43,16 +31,45 @@ class ContactResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('last_name')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('status')
+                Forms\Components\Select::make('address_id')
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10)
+                    ->default(null)
+                    ->relationship('address', 'address_title'),
+                Forms\Components\Select::make('salutation_id')
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10)
+                    ->default(null)
+                    ->relationship('salutation', 'name'),
+                Forms\Components\Select::make('user_id')
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10)
+                    ->default(null)
+                    ->relationship('user', 'name'),
+                Forms\Components\Toggle::make('is_primary_contact')
+                    ->required(),
+                Forms\Components\Toggle::make('is_billing_contact')
+                    ->required(),
+                Forms\Components\Select::make('status')
                     ->required()
-                    ->maxLength(255)
-                    ->default('Passive'),
+                    ->default('Passive')
+                    ->options([
+                        'Open' => 'Open',
+                        'Replied' => 'Replied',
+                        'Passive' => 'Passive',
+                    ]),
                 Forms\Components\TextInput::make('designation')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('gender')
+                Forms\Components\Select::make('gender')
                     ->required()
-                    ->maxLength(255)
-                    ->default('Male'),
+                    ->default('Male')
+                    ->options([
+                        'Male' => 'Male',
+                        'Female' => 'Female',
+                    ]),
                 Forms\Components\TextInput::make('company_name')
                     ->maxLength(255),
             ]);
@@ -62,36 +79,50 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('address_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('salutation_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_primary_contact')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_billing_contact')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('first_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('middle_name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('last_name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('customer_id')
+                    ->label('Customer')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('address_id')
+                    ->label('Address')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('salutation_id')
+                    ->label('Salutation')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('user_id')
+                    ->label('User')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('is_primary_contact')
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('is_billing_contact')
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('designation')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('gender')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('company_name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

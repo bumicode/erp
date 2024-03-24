@@ -18,7 +18,7 @@ class SalesInvoiceResource extends Resource
     protected static ?string $model = SalesInvoice::class;
 
     protected static ?string $navigationGroup = 'Accounting';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public static function form(Form $form): Form
     {
