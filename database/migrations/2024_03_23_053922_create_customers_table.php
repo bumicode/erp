@@ -27,11 +27,28 @@ return new class extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('code');
-            $table->string('date_format');
-            $table->string('time_format');
-            $table->string('timezone');
+            $table->string('iso_alpha_2', 2);
+            $table->string('iso_alpha_3', 3);
+            $table->string('iso_numeric', 3);
+            $table->string('calling_code');
+            $table->string('date_format')->nullable();
+            $table->string('time_format')->nullable();
+            $table->string('timezone')->nullable();
             $table->timestamps();
+        });
+
+        Schema::create('timezones', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
+            $table->string('name');
+            $table->string('offset');
+            $table->string('offset_hours');
+            $table->string('offset_minutes');
+            $table->timestamps();
+        });
+
+        Schema::table('currencies', function (Blueprint $table) {
+            $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
         });
 
         Schema::create('countryables', function (Blueprint $table) {
@@ -170,6 +187,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('timezones');
+        Schema::table('currencies', function (Blueprint $table) {
+            $table->dropForeign(['country_id']);
+            $table->dropColumn('country_id');
+        });
         Schema::dropIfExists('countries');
         Schema::dropIfExists('countryables');
         Schema::dropIfExists('interactions');
