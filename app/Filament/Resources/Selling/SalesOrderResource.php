@@ -187,4 +187,9 @@ class SalesOrderResource extends Resource
             'edit' => Pages\EditSalesOrder::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 }

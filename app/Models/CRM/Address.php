@@ -31,6 +31,7 @@ class Address extends Model
         'email_address',
         'phone',
         'fax',
+        'tax_category_id',
     ];
 
     protected $casts = [

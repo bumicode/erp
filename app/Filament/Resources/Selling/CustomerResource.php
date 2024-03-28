@@ -30,7 +30,6 @@ class CustomerResource extends Resource
     protected static ?string $navigationGroup = 'Selling';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
     public static function form(Form $form): Form
     {
         return $form
@@ -578,4 +577,10 @@ class CustomerResource extends Resource
             'edit' => Pages\EditCustomer::route('/{record}/edit'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
 }

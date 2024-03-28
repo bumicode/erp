@@ -2,12 +2,34 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\AccountSettingsPage;
-use App\Filament\Pages\MyProfile;
+use App\Filament\Resources\Accounting\PaymentTermTemplatesResource;
+use App\Filament\Resources\Accounting\SalesInvoiceResource;
+use App\Filament\Resources\Common\CountryResource;
+use App\Filament\Resources\Common\CurrencyResource;
+use App\Filament\Resources\Common\TimezoneResource;
+use App\Filament\Resources\CRM\AddressResource;
+use App\Filament\Resources\CRM\ContactResource;
+use App\Filament\Resources\Selling\CustomerGroupResource;
+use App\Filament\Resources\Selling\CustomerResource;
+use App\Filament\Resources\Selling\QuotationResource;
+use App\Filament\Resources\Selling\SalesOrderResource;
+use App\Filament\Resources\Selling\SalesPersonResource;
+use App\Filament\Resources\Selling\TargetResource;
+use App\Filament\Resources\Selling\TerritoryResource;
+use App\Filament\Resources\Shield\RoleResource;
+use App\Filament\Resources\Stock\PriceListResource;
+use App\Filament\Resources\UserResource;
+use App\Models\Accounting\PaymentTermTemplates;
+use App\Models\Stock\PriceList;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
+use Filament\Navigation\NavigationBuilder;
+use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
+use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -33,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -64,7 +86,7 @@ class AdminPanelProvider extends PanelProvider
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 BreezyCore::make()
                     ->myProfile(
-                        shouldRegisterUserMenu: true,
+                        shouldRegisterUserMenu: false,
                         shouldRegisterNavigation: false,
                         navigationGroup: 'Settings',
                         hasAvatars: false,
@@ -78,6 +100,58 @@ class AdminPanelProvider extends PanelProvider
                         force: false, // force the user to enable 2FA before they can use the application (default = false)
                     )
                     ->customMyProfilePage(MyProfilePage::class),
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
+                return $builder->items([
+                    NavigationItem::make('Dashboard')
+                        ->icon('heroicon-o-home')
+                        ->isActiveWhen(fn (): bool => request()->routeIs('filament.admin.pages.dashboard'))
+                        ->url(fn (): string => Dashboard::getUrl()),
+                ])
+                    ->groups([
+                        NavigationGroup::make('Accounting')
+                            ->items([
+                                ...SalesInvoiceResource::getNavigationItems(),
+                                ...PaymentTermTemplatesResource::getNavigationItems(),
+                            ]),
+                        NavigationGroup::make('CRM')
+                            ->items([
+                                ...AddressResource::getNavigationItems(),
+                                ...ContactResource::getNavigationItems(),
+                            ]),
+                        NavigationGroup::make('Selling')
+                            ->items([
+                                ...CustomerResource::getNavigationItems(),
+                                ...CustomerGroupResource::getNavigationItems(),
+                                ...QuotationResource::getNavigationItems(),
+                                ...SalesOrderResource::getNavigationItems(),
+                                ...SalesPersonResource::getNavigationItems(),
+                                ...TargetResource::getNavigationItems(),
+                                ...TerritoryResource::getNavigationItems(),
+                            ]),
+                        NavigationGroup::make('Stock')
+                            ->items([
+                                ...PriceListResource::getNavigationItems(),
+                            ]),
+                        NavigationGroup::make('Master Data')
+                            ->items([
+                                ...CountryResource::getNavigationItems(),
+                                ...CurrencyResource::getNavigationItems(),
+                                ...TimezoneResource::getNavigationItems(),
+                            ]),
+                        NavigationGroup::make('User Management')
+                            ->items([
+                                ...UserResource::getNavigationItems(),
+                                ...RoleResource::getNavigationItems(),
+                            ]),
+                    ]);
+            })
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Settings')
+                    ->url(fn (): string => MyProfilePage::getUrl())
+                    ->icon('heroicon-o-cog-6-tooth'),
             ]);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\Common;
+namespace App\Filament\Resources;
 
-use App\Filament\Resources\Common\TimezoneResource\Pages;
-use App\Filament\Resources\Common\TimezoneResource\RelationManagers;
-use App\Models\Common\Timezone;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TimezoneResource extends Resource
+class UserResource extends Resource
 {
-    protected static ?string $model = Timezone::class;
+    protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
@@ -26,13 +26,13 @@ class TimezoneResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('offset')
+                Forms\Components\TextInput::make('email')
+                    ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('offset_hours')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('offset_minutes')
+                Forms\Components\DateTimePicker::make('email_verified_at'),
+                Forms\Components\TextInput::make('password')
+                    ->password()
                     ->required()
                     ->maxLength(255),
             ]);
@@ -44,9 +44,11 @@ class TimezoneResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('offset'),
-                Tables\Columns\TextColumn::make('offset_hours'),
-                Tables\Columns\TextColumn::make('offset_minutes'),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -60,6 +62,7 @@ class TimezoneResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -79,9 +82,10 @@ class TimezoneResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTimezones::route('/'),
-            'create' => Pages\CreateTimezone::route('/create'),
-            'edit' => Pages\EditTimezone::route('/{record}/edit'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'view' => Pages\ViewUser::route('/{record}'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 

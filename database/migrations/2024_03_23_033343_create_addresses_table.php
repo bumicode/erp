@@ -47,7 +47,7 @@ return new class extends Migration
             $table->string('email_address')->nullable();
             $table->string('phone')->nullable();
             $table->string('fax')->nullable();
-            $table->foreignId('tax_category_id')->constrained('tax_categories')->nullOnDelete();
+            $table->foreignId('tax_category_id')->nullable()->constrained('tax_categories')->nullOnDelete();
             $table->timestamps();
         });
 

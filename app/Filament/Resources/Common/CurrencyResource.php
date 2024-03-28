@@ -14,7 +14,7 @@ class CurrencyResource extends Resource
 {
     protected static ?string $model = Currency::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
 
     public static function form(Form $form): Form
     {
@@ -127,5 +127,10 @@ class CurrencyResource extends Resource
             'create' => Pages\CreateCurrency::route('/create'),
             'edit' => Pages\EditCurrency::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', true)->count();
     }
 }
