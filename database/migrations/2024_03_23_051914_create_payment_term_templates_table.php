@@ -11,16 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('payment_terms_templates', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
         Schema::create('customer_groups', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_group')->default(false);
             $table->string('name');
-            $table->unsignedBigInteger('parent_id')->nullable();
-            $table->foreign('parent_id')->references('id')->on('customer_groups');
-            $table->unsignedBigInteger('default_price_list_id')->nullable();
-            $table->foreign('default_price_list_id')->references('id')->on('price_lists');
-            $table->unsignedBigInteger('default_payment_terms_template')->nullable();
-            $table->foreign('default_payment_terms_template')->references('id')->on('payment_terms_templates');
+            $table->foreignId('parent_id')->nullable()->constrained('customer_groups')->nullOnDelete();
+            $table->foreignId('default_price_list_id')->nullable()->constrained('price_lists')->nullOnDelete();
+            $table->foreignId('default_payment_terms_template_id')
+                ->nullable()->constrained('payment_terms_templates')
+                ->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,5 +37,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('customer_groups');
+        Schema::dropIfExists('payment_terms_templates');
     }
 };

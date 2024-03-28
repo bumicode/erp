@@ -3,7 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Database\Seeders\Common\CountrySeeder;
+use Database\Seeders\Common\CurrencySeeder;
+use Database\Seeders\Common\TimezoneSeeder;
 use Database\Seeders\CRM\SalutationSeed;
+use Database\Seeders\Selling\CustomerGroupSeeder;
+use Database\Seeders\Selling\TerritorySeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +31,9 @@ class DatabaseSeeder extends Seeder
             CustomerGroupSeeder::class,
             TerritorySeeder::class,
             SalutationSeed::class,
+            TimezoneSeeder::class,
+            CountrySeeder::class,
+            CurrencySeeder::class,
         ]);
     }
 }

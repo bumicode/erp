@@ -47,8 +47,7 @@ return new class extends Migration
             $table->string('email_address')->nullable();
             $table->string('phone')->nullable();
             $table->string('fax')->nullable();
-            $table->unsignedBigInteger('tax_category')->nullable();
-            $table->foreign('tax_category')->references('id')->on('tax_categories');
+            $table->foreignId('tax_category_id')->constrained('tax_categories')->nullOnDelete();
             $table->timestamps();
         });
 
@@ -65,5 +64,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('addresses');
         Schema::dropIfExists('addressables');
+        Schema::dropIfExists('tax_categories');
     }
 };

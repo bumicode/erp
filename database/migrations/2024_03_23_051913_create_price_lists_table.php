@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('currencies', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 3)->unique();
             $table->string('name');
-            $table->string('symbol');
+            $table->string('symbol')->nullable();
             $table->boolean('status')->default(true);
-            $table->string('fraction');
-            $table->string('fraction_units');
+            $table->string('fraction')->nullable();
+            $table->string('fraction_units')->nullable();
             $table->double('smallest_currency_fraction_value')->default(0.00);
             $table->boolean('show_currency_symbol_on_right_side')->default(false);
             $table->enum('number_format', [

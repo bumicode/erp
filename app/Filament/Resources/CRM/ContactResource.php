@@ -19,6 +19,7 @@ class ContactResource extends Resource
     protected static ?string $model = Contact::class;
 
     protected static ?string $navigationGroup = 'CRM';
+    protected static ?string $slug = 'crm/contact';
     protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     public static function form(Form $form): Form
@@ -27,6 +28,10 @@ class ContactResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
+                        Forms\Components\Toggle::make('is_primary_contact')
+                            ->required(),
+                        Forms\Components\Toggle::make('is_billing_contact')
+                            ->required(),
                         Forms\Components\TextInput::make('first_name')
                             ->required()
                             ->maxLength(255),
@@ -72,10 +77,6 @@ class ContactResource extends Resource
                             ->relationship('address', 'address_title'),
                         Forms\Components\TextInput::make('company_name')
                             ->maxLength(255),
-                        Forms\Components\Toggle::make('is_primary_contact')
-                            ->required(),
-                        Forms\Components\Toggle::make('is_billing_contact')
-                            ->required(),
                     ])
                     ->columns(2),
             ]);
@@ -85,12 +86,7 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('first_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('middle_name')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('last_name')
+                Tables\Columns\TextColumn::make('full_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('customer_id')
                     ->label('Customer')
@@ -119,7 +115,12 @@ class ContactResource extends Resource
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Replied' => 'warning',
+                        'Open' => 'success',
+                        'Passive' => 'danger',
+                    }),
                 Tables\Columns\TextColumn::make('designation')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -128,14 +129,6 @@ class ContactResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('company_name')
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

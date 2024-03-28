@@ -101,8 +101,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sales_invoices');
         Schema::dropIfExists('sales_invoice_items');
         Schema::dropIfExists('sales_invoice_tax_charges');
+        Schema::dropIfExists('sales_invoices');
     }
 };

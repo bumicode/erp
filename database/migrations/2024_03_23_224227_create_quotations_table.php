@@ -97,15 +97,14 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tax_categories');
-        Schema::dropIfExists('tax_charge_templates');
-        Schema::dropIfExists('quotations');
-        Schema::dropIfExists('items');
-        Schema::dropIfExists('warehouses');
         Schema::dropIfExists('quotation_items');
-        Schema::dropIfExists('accounts');
         Schema::dropIfExists('quotation_tax_charges');
         Schema::dropIfExists('account_id');
         Schema::dropIfExists('quotationables');
+        Schema::dropIfExists('quotations');
+        Schema::dropIfExists('tax_charge_templates');
+        Schema::dropIfExists('items');
+        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('accounts');
     }
 };

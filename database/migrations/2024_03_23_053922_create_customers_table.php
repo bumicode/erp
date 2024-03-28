@@ -27,11 +27,28 @@ return new class extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('code');
-            $table->string('date_format');
-            $table->string('time_format');
-            $table->string('timezone');
+            $table->string('iso_alpha_2', 2);
+            $table->string('iso_alpha_3', 3);
+            $table->string('iso_numeric', 3);
+            $table->string('calling_code');
+            $table->string('date_format')->nullable();
+            $table->string('time_format')->nullable();
+            $table->string('timezone')->nullable();
             $table->timestamps();
+        });
+
+        Schema::create('timezones', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
+            $table->string('name');
+            $table->string('offset');
+            $table->string('offset_hours');
+            $table->string('offset_minutes');
+            $table->timestamps();
+        });
+
+        Schema::table('currencies', function (Blueprint $table) {
+            $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
         });
 
         Schema::create('countryables', function (Blueprint $table) {
@@ -61,8 +78,8 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('customer_group_id');
             $table->foreignId('salutation_id')->nullable()->constrained('salutations')->nullOnDelete();
+            $table->unsignedBigInteger('customer_group_id');
             $table->foreign('customer_group_id')->references('id')->on('customer_groups');
             $table->unsignedBigInteger('default_company_bank_account')->nullable();
             $table->enum('customer_type', ['Individual', 'Corporate'])->default('Individual');
@@ -170,21 +187,26 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leads');
-        Schema::dropIfExists('opportunities');
+        Schema::dropIfExists('timezones');
+        Schema::table('currencies', function (Blueprint $table) {
+            $table->dropForeign(['country_id']);
+            $table->dropColumn('country_id');
+        });
         Schema::dropIfExists('countries');
         Schema::dropIfExists('countryables');
+        Schema::dropIfExists('interactions');
+        Schema::dropIfExists('preferences');
+        Schema::dropIfExists('feedbacks');
+        Schema::dropIfExists('demographics');
+        Schema::dropIfExists('social_medias');
+        Schema::dropIfExists('education_levels');
+        Schema::dropIfExists('preference_types');
+        Schema::dropIfExists('customers');
+        Schema::dropIfExists('social_media_platforms');
+        Schema::dropIfExists('leads');
+        Schema::dropIfExists('opportunities');
         Schema::dropIfExists('market_segments');
         Schema::dropIfExists('industries');
         Schema::dropIfExists('tax_withholding_categories');
-        Schema::dropIfExists('customers');
-        Schema::dropIfExists('interactions');
-        Schema::dropIfExists('preference_types');
-        Schema::dropIfExists('preferences');
-        Schema::dropIfExists('feedbacks');
-        Schema::dropIfExists('education_levels');
-        Schema::dropIfExists('demographics');
-        Schema::dropIfExists('social_media_platforms');
-        Schema::dropIfExists('social_medias');
     }
 };
