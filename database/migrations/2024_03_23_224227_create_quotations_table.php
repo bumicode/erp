@@ -40,7 +40,6 @@ return new class extends Migration
 
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->timestamps();
         });
 
@@ -53,7 +52,7 @@ return new class extends Migration
         Schema::create('quotation_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('quotation_id')->constrained('quotations')->cascadeOnDelete();
-            $table->foreignId('item_id')->constrained('items')->nullOnDelete();
+            $table->foreignId('item_id')->nullable()->constrained('items')->nullOnDelete();
             $table->foreignId('warehouse_accepted_id')->constrained('warehouses')->nullOnDelete();
             $table->foreignId('warehouse_rejected_id')->nullable()->constrained('warehouses')->nullOnDelete();
             $table->integer('accepted_qty');
