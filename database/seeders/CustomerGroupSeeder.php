@@ -18,7 +18,7 @@ class CustomerGroupSeeder extends Seeder
             'name' => 'All Customer Groups',
             'parent_id' => null,
             'default_price_list_id' => null,
-            'default_payment_terms_template' => null,
+            'default_payment_terms_template_id' => null,
         ]);
 
         CustomerGroup::create([
@@ -26,7 +26,7 @@ class CustomerGroupSeeder extends Seeder
             'name' => 'Commercial',
             'parent_id' => $allCustomerGroups->id,
             'default_price_list_id' => null,
-            'default_payment_terms_template' => null,
+            'default_payment_terms_template_id' => null,
         ]);
 
         CustomerGroup::create([
@@ -34,7 +34,7 @@ class CustomerGroupSeeder extends Seeder
             'name' => 'Government',
             'parent_id' => $allCustomerGroups->id,
             'default_price_list_id' => null,
-            'default_payment_terms_template' => null,
+            'default_payment_terms_template_id' => null,
         ]);
 
         CustomerGroup::create([
@@ -42,7 +42,7 @@ class CustomerGroupSeeder extends Seeder
             'name' => 'Individual',
             'parent_id' => $allCustomerGroups->id,
             'default_price_list_id' => null,
-            'default_payment_terms_template' => null,
+            'default_payment_terms_template_id' => null,
         ]);
 
         CustomerGroup::create([
@@ -50,7 +50,7 @@ class CustomerGroupSeeder extends Seeder
             'name' => 'Non Profit',
             'parent_id' => $allCustomerGroups->id,
             'default_price_list_id' => null,
-            'default_payment_terms_template' => null,
+            'default_payment_terms_template_id' => null,
         ]);
     }
 }

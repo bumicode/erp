@@ -61,8 +61,8 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('customer_group_id');
             $table->foreignId('salutation_id')->nullable()->constrained('salutations')->nullOnDelete();
+            $table->unsignedBigInteger('customer_group_id');
             $table->foreign('customer_group_id')->references('id')->on('customer_groups');
             $table->unsignedBigInteger('default_company_bank_account')->nullable();
             $table->enum('customer_type', ['Individual', 'Corporate'])->default('Individual');
@@ -170,21 +170,21 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('leads');
-        Schema::dropIfExists('opportunities');
         Schema::dropIfExists('countries');
         Schema::dropIfExists('countryables');
+        Schema::dropIfExists('interactions');
+        Schema::dropIfExists('preferences');
+        Schema::dropIfExists('feedbacks');
+        Schema::dropIfExists('demographics');
+        Schema::dropIfExists('social_medias');
+        Schema::dropIfExists('education_levels');
+        Schema::dropIfExists('preference_types');
+        Schema::dropIfExists('customers');
+        Schema::dropIfExists('social_media_platforms');
+        Schema::dropIfExists('leads');
+        Schema::dropIfExists('opportunities');
         Schema::dropIfExists('market_segments');
         Schema::dropIfExists('industries');
         Schema::dropIfExists('tax_withholding_categories');
-        Schema::dropIfExists('customers');
-        Schema::dropIfExists('interactions');
-        Schema::dropIfExists('preference_types');
-        Schema::dropIfExists('preferences');
-        Schema::dropIfExists('feedbacks');
-        Schema::dropIfExists('education_levels');
-        Schema::dropIfExists('demographics');
-        Schema::dropIfExists('social_media_platforms');
-        Schema::dropIfExists('social_medias');
     }
 };

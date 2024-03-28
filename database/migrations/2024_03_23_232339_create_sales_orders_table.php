@@ -100,9 +100,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_terms_templates');
-        Schema::dropIfExists('sales_orders');
         Schema::dropIfExists('sales_items');
         Schema::dropIfExists('sales_tax_charges');
+        Schema::dropIfExists('sales_orders');
     }
 };

@@ -37,21 +37,29 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('contact_emails', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contact_id')->constrained('contacts')->cascadeOnDelete();
             $table->string('email');
             $table->boolean('is_primary')->default(false);
             $table->timestamps();
         });
 
-        Schema::create('contact_numbers', function (Blueprint $table) {
+        Schema::create('phone_numbers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contact_id')->constrained('contacts')->cascadeOnDelete();
             $table->string('number');
             $table->boolean('is_primary_phone')->default(false);
             $table->boolean('is_primary_mobile')->default(false);
             $table->timestamps();
+        });
+
+        Schema::create('emailables', function (Blueprint $table) {
+            $table->foreignId('email_id');
+            $table->morphs('emailable');
+        });
+
+        Schema::create('phonenumberables', function (Blueprint $table) {
+            $table->foreignId('phone_number_id');
+            $table->morphs('phonenumberable');
         });
 
         Schema::create('contactables', function (Blueprint $table) {
@@ -66,5 +74,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('contacts');
+        Schema::dropIfExists('emails');
+        Schema::dropIfExists('phone_numbers');
+        Schema::dropIfExists('emailables');
+        Schema::dropIfExists('phonenumberables');
+        Schema::dropIfExists('contactables');
+        Schema::dropIfExists('salutations');
     }
 };

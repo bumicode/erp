@@ -2,6 +2,8 @@
 
 namespace App\Models\CRM;
 
+use App\Models\Common\Email;
+use App\Models\Common\PhoneNumber;
 use App\Models\Selling\Customer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,6 +53,16 @@ class Contact extends Model
     public function salutation(): BelongsTo
     {
         return $this->belongsTo(Salutation::class);
+    }
+
+    public function emails(): MorphToMany
+    {
+        return $this->morphToMany(Email::class, 'emailable');
+    }
+
+    public function phoneNumbers(): MorphToMany
+    {
+        return $this->morphToMany(PhoneNumber::class, 'phonenumberable');
     }
 
     public function getFullNameAttribute(): string
