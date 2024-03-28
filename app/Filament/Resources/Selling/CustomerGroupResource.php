@@ -16,18 +16,18 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CustomerGroupResource extends Resource
 {
     protected static ?string $model = CustomerGroup::class;
-    protected static ?string $navigationGroup = 'Selling';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Selling';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('parent_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('default_price_list_id')
-                    ->numeric(),
+                Forms\Components\Select::make('parent_id')
+                    ->relationship('parent', 'name'),
+                Forms\Components\Select::make('default_price_list_id')
+                    ->relationship('defaultPriceList', 'name'),
                 Forms\Components\TextInput::make('default_payment_terms_template')
                     ->numeric(),
                 Forms\Components\Toggle::make('is_group')
@@ -42,19 +42,20 @@ class CustomerGroupResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('parent_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('default_price_list_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('default_payment_terms_template')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('is_group')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('parent.name')
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('defaultPriceList.name')
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('default_payment_terms_template')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

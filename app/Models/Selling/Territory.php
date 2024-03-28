@@ -11,6 +11,7 @@ class Territory extends Model
 
     protected $fillable = [
         'parent_id',
+        'name',
         'territory_manager_id',
     ];
 

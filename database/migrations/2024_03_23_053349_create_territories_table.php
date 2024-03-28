@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('territories');
-//            $table->unsignedBigInteger('territory_manager_id');
-//            $table->foreign('territory_manager_id')->references('id')->on('sales_persons');
+            $table->unsignedBigInteger('territory_manager_id')->nullable();
+            $table->foreign('territory_manager_id')->references('id')->on('sales_people');
+            $table->string('name');
             $table->timestamps();
         });
     }

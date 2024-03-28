@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\CRM\Address;
+use App\Models\CRM\Contact;
+use App\Models\Selling\Customer;
+use App\Observers\CRM\AddressObserver;
+use App\Observers\CRM\ContactObserver;
+use App\Observers\Selling\CustomerObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -28,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Address::observe(AddressObserver::class);
+        Customer::observe(CustomerObserver::class);
+        Contact::observe(ContactObserver::class);
     }
 
     /**
