@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('full_name');
             $table->unsignedBigInteger('address_id')->nullable();
             $table->foreign('address_id')->references('id')->on('addresses');
             $table->enum('status', ['Open', 'Replied', 'Passive'])->default('Passive');

@@ -24,12 +24,12 @@ class SalesPersonResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('parent_id')
-                    ->numeric(),
                 Forms\Components\Toggle::make('is_group')
                     ->required(),
                 Forms\Components\Toggle::make('status')
                     ->required(),
+                Forms\Components\Select::make('parent_id')
+                    ->relationship('parent', 'name'),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -44,15 +44,15 @@ class SalesPersonResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('parent_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\IconColumn::make('is_group')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('parent.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('employee')
                     ->numeric()
                     ->sortable(),

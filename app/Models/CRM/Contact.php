@@ -21,6 +21,7 @@ class Contact extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'full_name',
         'address_id',
         'status',
         'salutation_id',
@@ -29,6 +30,8 @@ class Contact extends Model
         'user_id',
         'company_name',
     ];
+
+    protected $appends = ['full_name'];
 
     public function customers(): MorphToMany
     {
@@ -48,5 +51,12 @@ class Contact extends Model
     public function salutation(): BelongsTo
     {
         return $this->belongsTo(Salutation::class);
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        $parts = [$this->first_name, $this->middle_name, $this->last_name];
+
+        return implode(' ', array_filter($parts));
     }
 }

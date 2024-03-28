@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\AccountSettingsPage;
+use App\Filament\Pages\MyProfile;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -16,7 +18,10 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
+use Jeffgreco13\FilamentBreezy\Pages\MyProfilePage;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -53,6 +58,26 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+//            ->authGuard('customers')
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                BreezyCore::make()
+                    ->myProfile(
+                        shouldRegisterUserMenu: true,
+                        shouldRegisterNavigation: false,
+                        navigationGroup: 'Settings',
+                        hasAvatars: false,
+                        slug: 'my-profile'
+                    )
+                    ->passwordUpdateRules(
+                        rules: [Password::default()->mixedCase()->uncompromised(3)],
+                        requiresCurrentPassword: true,
+                    )
+                    ->enableTwoFactorAuthentication(
+                        force: false, // force the user to enable 2FA before they can use the application (default = false)
+                    )
+                    ->customMyProfilePage(MyProfilePage::class),
             ]);
     }
 }

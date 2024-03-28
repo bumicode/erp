@@ -78,6 +78,11 @@ class Customer extends Model
         return $this->belongsTo(Address::class, 'primary_address_id');
     }
 
+    public function primaryContact(): BelongsTo
+    {
+        return $this->belongsTo(Contact::class, 'primary_contact_id');
+    }
+
     public function salutation(): BelongsTo
     {
         return $this->belongsTo(Salutation::class);

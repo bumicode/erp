@@ -6,6 +6,7 @@ use App\Filament\Resources\CRM\ContactResource\Pages;
 use App\Filament\Resources\CRM\ContactResource\RelationManagers;
 use App\Models\CRM\Contact;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,54 +25,59 @@ class ContactResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('first_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('middle_name')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('last_name')
-                    ->maxLength(255),
-                Forms\Components\Select::make('address_id')
-                    ->searchable()
-                    ->preload()
-                    ->optionsLimit(10)
-                    ->default(null)
-                    ->relationship('address', 'address_title'),
-                Forms\Components\Select::make('salutation_id')
-                    ->searchable()
-                    ->preload()
-                    ->optionsLimit(10)
-                    ->default(null)
-                    ->relationship('salutation', 'name'),
-                Forms\Components\Select::make('user_id')
-                    ->searchable()
-                    ->preload()
-                    ->optionsLimit(10)
-                    ->default(null)
-                    ->relationship('user', 'name'),
-                Forms\Components\Toggle::make('is_primary_contact')
-                    ->required(),
-                Forms\Components\Toggle::make('is_billing_contact')
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->required()
-                    ->default('Passive')
-                    ->options([
-                        'Open' => 'Open',
-                        'Replied' => 'Replied',
-                        'Passive' => 'Passive',
-                    ]),
-                Forms\Components\TextInput::make('designation')
-                    ->maxLength(255),
-                Forms\Components\Select::make('gender')
-                    ->required()
-                    ->default('Male')
-                    ->options([
-                        'Male' => 'Male',
-                        'Female' => 'Female',
-                    ]),
-                Forms\Components\TextInput::make('company_name')
-                    ->maxLength(255),
+                Section::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('first_name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Select::make('status')
+                            ->required()
+                            ->default('Passive')
+                            ->options([
+                                'Open' => 'Open',
+                                'Replied' => 'Replied',
+                                'Passive' => 'Passive',
+                            ])
+                            ->default('Open'),
+                        Forms\Components\TextInput::make('middle_name')
+                            ->maxLength(255),
+                        Forms\Components\Select::make('salutation_id')
+                            ->searchable()
+                            ->preload()
+                            ->optionsLimit(10)
+                            ->default(null)
+                            ->relationship('salutation', 'name'),
+                        Forms\Components\TextInput::make('last_name')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('designation')
+                            ->maxLength(255),
+                        Forms\Components\Select::make('user_id')
+                            ->searchable()
+                            ->preload()
+                            ->optionsLimit(10)
+                            ->default(null)
+                            ->relationship('user', 'name'),
+                        Forms\Components\Select::make('gender')
+                            ->required()
+                            ->default('Male')
+                            ->options([
+                                'Male' => 'Male',
+                                'Female' => 'Female',
+                            ]),
+                        Forms\Components\Select::make('address_id')
+                            ->searchable()
+                            ->preload()
+                            ->optionsLimit(10)
+                            ->default(null)
+                            ->relationship('address', 'address_title'),
+                        Forms\Components\TextInput::make('company_name')
+                            ->maxLength(255),
+                        Forms\Components\Toggle::make('is_primary_contact')
+                            ->required(),
+                        Forms\Components\Toggle::make('is_billing_contact')
+                            ->required(),
+                    ])
+                    ->columns(2),
             ]);
     }
 

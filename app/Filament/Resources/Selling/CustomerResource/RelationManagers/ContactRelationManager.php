@@ -74,12 +74,7 @@ class ContactRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('Contact')
             ->columns([
-                Tables\Columns\TextColumn::make('first_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('middle_name')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('last_name')
+                Tables\Columns\TextColumn::make('full_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('customer_id')
                     ->label('Customer')
@@ -101,14 +96,14 @@ class ContactRelationManager extends RelationManager
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\IconColumn::make('is_primary_contact')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\IconColumn::make('is_billing_contact')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_primary_contact')
+                    ->label('Primary Contact')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_billing_contact')
+                    ->label('Billing Contact')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('designation')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -131,6 +126,8 @@ class ContactRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                Tables\Actions\AttachAction::make()
+                    ->recordTitleAttribute('full_name'),
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([

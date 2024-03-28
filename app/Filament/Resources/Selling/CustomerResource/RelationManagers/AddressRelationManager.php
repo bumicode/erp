@@ -114,6 +114,8 @@ class AddressRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                Tables\Actions\AttachAction::make()
+                    ->recordTitleAttribute('address_title'),
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
