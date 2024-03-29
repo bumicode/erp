@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources\Common;
 
+use App\Filament\Exports\Common\CountryExporter;
+use App\Filament\Imports\Common\CountryImporter;
 use App\Filament\Resources\Common\CountryResource\Pages;
-use App\Filament\Resources\Common\CountryResource\RelationManagers;
 use App\Models\Common\Country;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CountryResource extends Resource
 {
@@ -84,6 +84,12 @@ class CountryResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                Tables\Actions\ImportAction::make()
+                    ->importer(CountryImporter::class),
+                ExportBulkAction::make()
+                    ->exporter(CountryExporter::class),
             ]);
     }
 
@@ -101,10 +107,5 @@ class CountryResource extends Resource
             'create' => Pages\CreateCountry::route('/create'),
             'edit' => Pages\EditCountry::route('/{record}/edit'),
         ];
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
     }
 }

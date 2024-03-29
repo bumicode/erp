@@ -22,10 +22,8 @@ return new class extends Migration
             $table->bigInteger('target_distribution_id')->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();
-            // Add foreign key constraints for other reference fields if available
-            // $table->foreign('item_group_target_id')->references('id')->on('item_group_targets');
-            // $table->foreign('fiscal_year_id')->references('id')->on('fiscal_years');
-            // $table->foreign('target_distribution_id')->references('id')->on('target_distributions');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
         });
 
         Schema::create('targetables', function (Blueprint $table) {

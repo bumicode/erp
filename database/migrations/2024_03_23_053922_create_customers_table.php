@@ -15,12 +15,16 @@ return new class extends Migration
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::create('opportunities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -34,6 +38,8 @@ return new class extends Migration
             $table->string('date_format')->nullable();
             $table->string('time_format')->nullable();
             $table->string('timezone')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -44,6 +50,8 @@ return new class extends Migration
             $table->string('offset');
             $table->string('offset_hours');
             $table->string('offset_minutes');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -59,19 +67,24 @@ return new class extends Migration
         Schema::create('market_segments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::create('industries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::create('tax_withholding_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            // More Columns
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -110,6 +123,8 @@ return new class extends Migration
             $table->foreign('from_lead_id')->references('id')->on('leads');
             $table->unsignedBigInteger('from_opportunity')->nullable();
             $table->foreign('from_opportunity')->references('id')->on('opportunities');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -120,12 +135,16 @@ return new class extends Migration
             $table->timestamp('interaction_date');
             $table->enum('interaction_type', ['Call', 'Email', 'Meeting', 'Other'])->default('Other');
             $table->text('interaction_details');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::create('preference_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -134,6 +153,8 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->foreignId('preference_type_id')->constrained('preference_types')->cascadeOnDelete();
             $table->text('preference_value');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -144,12 +165,16 @@ return new class extends Migration
             $table->enum('feedback_type', ['Product', 'Service', 'General'])->default('General');
             $table->text('feedback_details');
             $table->integer('satisfaction_rating');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::create('education_levels', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -163,6 +188,8 @@ return new class extends Migration
             $table->foreignId('education_level_id')->constrained('education_levels')->nullOnDelete();
             $table->text('feedback_details');
             $table->integer('satisfaction_rating');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -170,6 +197,8 @@ return new class extends Migration
             $table->id();
             $table->string('icon');
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -178,6 +207,8 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
             $table->foreignId('social_media_platform_id')->constrained('social_media_platforms')->nullOnDelete();
             $table->string('social_media_handle');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

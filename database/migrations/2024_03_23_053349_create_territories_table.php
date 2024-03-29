@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('territory_manager_id')->nullable();
             $table->foreign('territory_manager_id')->references('id')->on('sales_people');
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

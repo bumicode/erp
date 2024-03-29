@@ -15,6 +15,8 @@ return new class extends Migration
         Schema::create('salutations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -34,6 +36,8 @@ return new class extends Migration
             $table->enum('gender', ['Male', 'Female'])->default('Male');
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('company_name')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -41,6 +45,8 @@ return new class extends Migration
             $table->id();
             $table->string('email');
             $table->boolean('is_primary')->default(false);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -49,6 +55,8 @@ return new class extends Migration
             $table->string('number');
             $table->boolean('is_primary_phone')->default(false);
             $table->boolean('is_primary_mobile')->default(false);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 

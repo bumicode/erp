@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('tax_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -48,6 +50,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('fax')->nullable();
             $table->foreignId('tax_category_id')->nullable()->constrained('tax_categories')->nullOnDelete();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 

@@ -18,12 +18,14 @@ use App\Filament\Resources\Selling\TargetResource;
 use App\Filament\Resources\Selling\TerritoryResource;
 use App\Filament\Resources\Shield\RoleResource;
 use App\Filament\Resources\Stock\PriceListResource;
+use App\Filament\Resources\Stock\UomResource;
 use App\Filament\Resources\UserResource;
 use App\Models\Accounting\PaymentTermTemplates;
 use App\Models\Stock\PriceList;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Livewire\DatabaseNotifications;
 use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
@@ -139,6 +141,7 @@ class AdminPanelProvider extends PanelProvider
                                 ...CountryResource::getNavigationItems(),
                                 ...CurrencyResource::getNavigationItems(),
                                 ...TimezoneResource::getNavigationItems(),
+                                ...UomResource::getNavigationItems(),
                             ]),
                         NavigationGroup::make('User Management')
                             ->items([
@@ -152,6 +155,7 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Settings')
                     ->url(fn (): string => MyProfilePage::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
-            ]);
+            ])
+            ->databaseNotifications();
     }
 }

@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('uoms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('symbol');
             $table->boolean('status')->default(true);
             $table->boolean('must_be_whole_number')->default(false);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -25,6 +28,8 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('item_groups')->nullOnDelete();
             $table->boolean('is_group')->default(true);
             $table->boolean('show_in_website')->default(false);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -32,32 +37,24 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::table('items', function (Blueprint $table) {
-            $table->boolean('status')->default(true);
             $table->foreignId('parent_id')->nullable()->constrained('items')->cascadeOnDelete();
-            $table->boolean('allow_alternative_item')->default(false);
-            $table->boolean('maintain_stock')->default(true);
-            $table->boolean('is_fixed_asset')->default(false);
             $table->foreignId('item_group_id')->nullable()->constrained('item_groups')->nullOnDelete();
-            $table->boolean('has_variant')->default(false);
             $table->foreignId('default_uom_id')->nullable()->constrained('uoms')->nullOnDelete();
-            $table->string('code');
-            $table->string('name')->nullable();
-            $table->text('description')->nullable();
-            $table->enum('variant_base_on', ['item attribute', 'manufacturer'])->default('item attribute');
             $table->foreignId('brand_id')->nullable()->constrained('brands')->nullOnDelete();
-            $table->boolean('allow_purchase')->default(true);
-            $table->integer('over_delivery_allowance')->default(0);
-            $table->integer('over_billing_allowance')->default(0);
         });
 
         Schema::create('item_attributes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -66,6 +63,8 @@ return new class extends Migration
             $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
             $table->foreignId('item_attribute_id')->constrained('item_attributes')->cascadeOnDelete();
             $table->string('value')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -74,6 +73,8 @@ return new class extends Migration
             $table->foreignId('item_attribute_id')->constrained('item_attributes')->cascadeOnDelete();
             $table->string('name');
             $table->string('abbreviation');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -86,6 +87,8 @@ return new class extends Migration
             $table->date('expiry_date')->nullable();
             $table->date('manufacture_date')->nullable();
             $table->text('description');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -104,6 +107,8 @@ return new class extends Migration
             $table->date('valid_upto')->nullable();
             $table->integer('lead_time_in_days')->default(0);
             $table->text('note');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -111,6 +116,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -121,6 +128,8 @@ return new class extends Migration
             $table->date('valid_from')->nullable();
             $table->decimal('minimum_nat_rate')->nullable();
             $table->decimal('maximum_nat_rate')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -141,6 +150,8 @@ return new class extends Migration
             $table->boolean('allow_negative_stock')->default(false);
             $table->enum('valuation_method', ['FIFO', 'Moving Average', 'LIFO'])->default('in_stock');
             $table->foreignId('weight_uom_id')->nullable()->constrained('uoms')->nullOnDelete();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
@@ -156,15 +167,6 @@ return new class extends Migration
         Schema::dropIfExists('item_has_attributes');
 
         Schema::table('items', function (Blueprint $table) {
-            $table->dropColumn('status');
-            $table->dropColumn('allow_alternative_item');
-            $table->dropColumn('maintain_stock');
-            $table->dropColumn('has_variant');
-            $table->dropColumn('code');
-            $table->dropColumn('name');
-            $table->dropColumn('description');
-            $table->dropColumn('is_fixed_asset');
-            $table->dropColumn('variant_base_on');
             $table->dropForeign(['parent_id']);
             $table->dropColumn('parent_id');
             $table->dropForeign(['item_group_id']);
@@ -172,10 +174,6 @@ return new class extends Migration
             $table->dropForeign(['default_uom_id']);
             $table->dropColumn('default_uom_id');
             $table->dropForeign(['brand_id']);
-            $table->dropColumn('brand_id');
-            $table->dropColumn('allow_purchase');
-            $table->dropColumn('over_delivery_allowance');
-            $table->dropColumn('over_billing_allowance');
         });
 
         Schema::dropIfExists('item_attribute_values');

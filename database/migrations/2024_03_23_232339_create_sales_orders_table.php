@@ -61,6 +61,8 @@ return new class extends Migration
             $table->double('rounded_total')->nullable();
             $table->bigInteger('payment_terms_template_id')->unsigned();
             $table->foreign('payment_terms_template_id')->references('id')->on('payment_terms_templates');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -74,6 +76,8 @@ return new class extends Migration
             $table->integer('rejected_qty')->default(0);
             $table->double('item_rate');
             $table->double('total_amount');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -91,6 +95,8 @@ return new class extends Migration
             $table->double('tax_rate');
             $table->double('tax_amount');
             $table->double('tax_total');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

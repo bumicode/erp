@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('tax_charge_templates', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -35,17 +37,35 @@ return new class extends Migration
             $table->bigInteger('grand_total');
             $table->bigInteger('rounding_adjustment')->nullable();
             $table->bigInteger('rounded_total')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->boolean('status')->default(true);
+            $table->boolean('allow_alternative_item')->default(false);
+            $table->boolean('maintain_stock')->default(true);
+            $table->boolean('is_fixed_asset')->default(false);
+            $table->boolean('has_variant')->default(false);
+            $table->string('code');
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->enum('variant_base_on', ['item attribute', 'manufacturer'])->default('item attribute');
+            $table->boolean('allow_purchase')->default(true);
+            $table->integer('over_delivery_allowance')->default(0);
+            $table->integer('over_billing_allowance')->default(0);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -59,12 +79,16 @@ return new class extends Migration
             $table->integer('rejected_qty')->default(0);
             $table->double('item_rate');
             $table->double('total_amount');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -82,6 +106,8 @@ return new class extends Migration
             $table->double('tax_rate');
             $table->double('tax_amount');
             $table->double('tax_total');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 

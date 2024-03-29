@@ -25,46 +25,74 @@ class AddressResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tax_category')
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_preferred_billing_address')
-                    ->required(),
-                Forms\Components\Toggle::make('is_preferred_shipping_address')
-                    ->required(),
                 Forms\Components\Toggle::make('status')
+                    ->label('Status')
+                    ->default(true)
+                    ->hidden(fn (?Address $record) => $record === null),
+
+                Forms\Components\Toggle::make('is_preferred_billing_address')
+                    ->label('Is Preferred Billing Addresses')
                     ->required(),
+
+                Forms\Components\Toggle::make('is_preferred_shipping_address')
+                    ->label('Is Preferred Shipping Addresses')
+                    ->required(),
+
                 Forms\Components\TextInput::make('address_title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('address_type')
+
+                Forms\Components\Select::make('address_type')
                     ->required()
-                    ->maxLength(255)
-                    ->default('Billing'),
+                    ->options([
+                        'Billing' => 'Billing',
+                        'Shipping' => 'Shipping',
+                        'Office' => 'Office',
+                        'Personal' => 'Personal',
+                        'Plant' => 'Plant',
+                        'Postal' => 'Postal',
+                        'Shop' => 'Shop',
+                        'Subsidiary' => 'Subsidiary',
+                        'Warehouse' => 'Warehouse',
+                        'Current' => 'Current',
+                        'Permanent' => 'Permanent',
+                        'Other' => 'Other',
+                    ]),
+
                 Forms\Components\TextInput::make('address_line_one')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('address_line_two')
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('city_town')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('county')
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('state_province')
                     ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('country')
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('postal_code')
+                    ->required()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('email_address')
-                    ->email()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('phone')
-                    ->tel()
                     ->maxLength(255),
+
                 Forms\Components\TextInput::make('fax')
                     ->maxLength(255),
+
             ]);
     }
 
@@ -72,39 +100,12 @@ class AddressResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tax_category')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_preferred_billing_address')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_preferred_shipping_address')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('address_title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('address_type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('address_line_one')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('address_line_two')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('city_town')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('county')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('state_province')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('country')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('postal_code')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email_address')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('fax')
-                    ->searchable(),
+                Tables\Columns\IconColumn::make('status')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
