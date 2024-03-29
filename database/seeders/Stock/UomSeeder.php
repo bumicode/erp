@@ -13,6 +13,7 @@ class UomSeeder extends Seeder
     public function run(): void
     {
         $uoms = [
+            ['name' => 'Nos', 'symbol' => 'nos'],         // Potong
             ['name' => 'Piece', 'symbol' => 'pcs'],         // Potong
             ['name' => 'Kilogram', 'symbol' => 'kg'],      // Kilogram
             ['name' => 'Meter', 'symbol' => 'm'],         // Meter

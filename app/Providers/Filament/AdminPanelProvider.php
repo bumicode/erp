@@ -17,6 +17,7 @@ use App\Filament\Resources\Selling\SalesPersonResource;
 use App\Filament\Resources\Selling\TargetResource;
 use App\Filament\Resources\Selling\TerritoryResource;
 use App\Filament\Resources\Shield\RoleResource;
+use App\Filament\Resources\Stock\ItemResource;
 use App\Filament\Resources\Stock\PriceListResource;
 use App\Filament\Resources\Stock\UomResource;
 use App\Filament\Resources\UserResource;
@@ -134,6 +135,7 @@ class AdminPanelProvider extends PanelProvider
                             ]),
                         NavigationGroup::make('Stock')
                             ->items([
+                                ...ItemResource::getNavigationItems(),
                                 ...PriceListResource::getNavigationItems(),
                             ]),
                         NavigationGroup::make('Master Data')

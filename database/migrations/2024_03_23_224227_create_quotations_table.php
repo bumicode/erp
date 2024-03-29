@@ -44,7 +44,8 @@ return new class extends Migration
 
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->boolean('status')->default(true);
+            $table->boolean('active')->default(true);
+            $table->enum('status', ['enabled', 'disabled', 'template', 'variant'])->default(true);
             $table->boolean('allow_alternative_item')->default(false);
             $table->boolean('maintain_stock')->default(true);
             $table->boolean('is_fixed_asset')->default(false);
