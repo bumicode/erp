@@ -31,6 +31,8 @@ return new class extends Migration
                 '#.###',
                 '#,###',
             ])->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -42,6 +44,8 @@ return new class extends Migration
             $table->boolean('buying')->default(false);
             $table->boolean('selling')->default(false);
             $table->boolean('price_not_uom_dependent')->default(false);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

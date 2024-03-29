@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->integer('order_column')->nullable();
 
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 

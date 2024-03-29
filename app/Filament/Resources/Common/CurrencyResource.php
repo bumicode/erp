@@ -128,9 +128,4 @@ class CurrencyResource extends Resource
             'edit' => Pages\EditCurrency::route('/{record}/edit'),
         ];
     }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::where('status', true)->count();
-    }
 }

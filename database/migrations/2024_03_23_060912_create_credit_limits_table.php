@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_group_id');
             $table->foreign('customer_group_id')->references('id')->on('customer_groups')->onDelete('cascade');
             $table->bigInteger('credit_limit');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

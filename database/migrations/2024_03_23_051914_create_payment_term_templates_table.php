@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('payment_terms_templates', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
 
@@ -26,6 +28,8 @@ return new class extends Migration
             $table->foreignId('default_payment_terms_template_id')
                 ->nullable()->constrained('payment_terms_templates')
                 ->nullOnDelete();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

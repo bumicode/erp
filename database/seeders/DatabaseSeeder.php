@@ -9,6 +9,7 @@ use Database\Seeders\Common\TimezoneSeeder;
 use Database\Seeders\CRM\SalutationSeed;
 use Database\Seeders\Selling\CustomerGroupSeeder;
 use Database\Seeders\Selling\TerritorySeeder;
+use Database\Seeders\Stock\UomSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
             TimezoneSeeder::class,
             CountrySeeder::class,
             CurrencySeeder::class,
+            UomSeeder::class,
         ]);
     }
 }
