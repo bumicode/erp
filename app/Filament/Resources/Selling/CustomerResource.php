@@ -5,9 +5,11 @@ namespace App\Filament\Resources\Selling;
 use App\Filament\Resources\Selling\CustomerResource\Pages;
 use App\Filament\Resources\Selling\CustomerResource\RelationManagers\AddressRelationManager;
 use App\Filament\Resources\Selling\CustomerResource\RelationManagers\ContactRelationManager;
+use App\Filament\Resources\Selling\CustomerResource\RelationManagers\SalesRelationManager;
 use App\Models\CRM\Address;
 use App\Models\Selling\Customer;
 use App\Models\Selling\CustomerGroup;
+use App\Models\Selling\SalesPerson;
 use Filament\Forms;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
@@ -58,7 +60,6 @@ class CustomerResource extends Resource
     private static function makeDetailsTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Details')
-            ->icon('heroicon-m-information-circle')
             ->schema([
                 Forms\Components\Select::make('salutation_id')
                     ->searchable()
@@ -202,7 +203,6 @@ class CustomerResource extends Resource
     private static function makeContactAddressTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Contact & Address')
-            ->icon('heroicon-m-identification')
             ->schema([
                 Section::make('Primary Address and Contact')
                     ->description('Select, to make the customer searchable with these fields')
@@ -370,7 +370,6 @@ class CustomerResource extends Resource
     private static function makeTaxTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Tax')
-            ->icon('heroicon-m-receipt-percent')
             ->schema([
 
                 Forms\Components\TextInput::make('tax_id')
@@ -391,7 +390,6 @@ class CustomerResource extends Resource
     private static function makeAccountingTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Accounting')
-            ->icon('heroicon-m-clipboard-document-list')
             ->schema([
                 Section::make('Credit Limit and Payment Terms')
                     ->schema([
@@ -407,20 +405,36 @@ class CustomerResource extends Resource
     private static function makeSalesTeamTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Sales Team')
-            ->icon('heroicon-m-user')
             ->schema([
 
                 Repeater::make('Sales Team')
+                    ->relationship('salesPeople')
                     ->schema([
-                        TextInput::make('sales_person_id')
+                        Select::make('sales_person_id')
                             ->label('Sales Person')
-                            ->live(onBlur: true)
+                            ->searchable()
+                            ->options(SalesPerson::all()->pluck('name', 'id'))
+                            ->optionsLimit(5)
                             ->required(),
                         TextInput::make('contribution')
                             ->label('Contribution (%)')
+                            ->minValue(0)
+                            ->maxValue(100)
+                            ->numeric()
                             ->required(),
+                        TextInput::make('contribution_to_net_total')
+                            ->label('Contribution to Net Total')
+                            ->prefix('Rp')
+                            ->disabled(),
                         TextInput::make('commission_rate')
+                            ->label('Commission Rate')
+                            ->numeric()
                             ->required(),
+                        TextInput::make('incentives')
+                            ->label('Incentives')
+                            ->numeric()
+                            ->prefix('Rp')
+                            ->disabled(),
                     ])
                     ->columns(3)
                     ->columnSpan(['lg' => 4])
@@ -440,7 +454,6 @@ class CustomerResource extends Resource
     private static function makeSettingsTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Settings')
-            ->icon('heroicon-m-cog-6-tooth')
             ->schema([
                 Forms\Components\Toggle::make('allow_sales_invoice_creation_without_sales_order')
                     ->label('Allow sales invoice creation without Sales Order')
@@ -565,6 +578,7 @@ class CustomerResource extends Resource
         return [
             AddressRelationManager::class,
             ContactRelationManager::class,
+            SalesRelationManager::class,
         ];
     }
 

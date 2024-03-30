@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -86,5 +88,10 @@ class Customer extends Model
     public function salutation(): BelongsTo
     {
         return $this->belongsTo(Salutation::class);
+    }
+
+    public function salesPeople(): HasMany
+    {
+        return $this->hasMany(CustomerSalesPerson::class);
     }
 }

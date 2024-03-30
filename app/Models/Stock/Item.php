@@ -2,6 +2,7 @@
 
 namespace App\Models\Stock;
 
+use App\Enums\ItemStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,6 +41,10 @@ class Item extends Model
         'allow_negative_stock',
         'valuation_method',
         'weight_uom_id',
+    ];
+
+    protected $casts = [
+        'status' => ItemStatus::class,
     ];
 
     public function parent(): BelongsTo

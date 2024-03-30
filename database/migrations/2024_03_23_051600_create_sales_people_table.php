@@ -19,9 +19,19 @@ return new class extends Migration
             $table->unsignedBigInteger('employee')->nullable(); // Check your reference here, it's not specified
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('sales_people');
-            $table->double('commission_rate')->nullable();
+            $table->float('commission_rate')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('customer_sales_person', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('sales_person_id')->nullable()->constrained('sales_people')->cascadeOnDelete();
+            $table->float('contribution')->default(0);
+            $table->float('commission_rate')->nullable();
+            $table->bigInteger('contribution_to_net_total')->nullable();
+            $table->bigInteger('incentives')->nullable();
             $table->timestamps();
         });
     }
@@ -32,5 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('sales_people');
+        Schema::dropIfExists('customer_sales_person');
     }
 };

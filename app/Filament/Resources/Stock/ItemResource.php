@@ -3,11 +3,9 @@
 namespace App\Filament\Resources\Stock;
 
 use App\Filament\Resources\Stock\ItemResource\Pages;
-use App\Filament\Resources\Stock\ItemResource\RelationManagers;
 use App\Models\Stock\Item;
 use App\Models\Stock\UnitOfMeasure;
 use Filament\Forms;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
@@ -16,8 +14,6 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ItemResource extends Resource
 {
@@ -29,6 +25,7 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
+                self::makeNotification(),
                 self::makeTabs(),
                 self::makeMetaDataGroup(),
             ])
@@ -39,48 +36,16 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('parent.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('itemGroup.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('defaultUom.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('brand.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('active')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('allow_alternative_item')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('maintain_stock')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_fixed_asset')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('has_variant')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('code')
+                    ->label('Item Code')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Item Name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('variant_base_on')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('allow_purchase')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('over_delivery_allowance')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('over_billing_allowance')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_by')
+                Tables\Columns\TextColumn::make('status')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('itemGroup.name')
+                    ->label('Item Group')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -149,8 +114,7 @@ class ItemResource extends Resource
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Select::make('parent_id')
-                            ->searchable()
-                            ->optionsLimit(5)
+                            ->label('Item Template')
                             ->relationship('parent', 'name'),
                         Forms\Components\Select::make('brand_id')
                             ->searchable()
@@ -162,20 +126,18 @@ class ItemResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->maxLength(255),
                         Forms\Components\Select::make('item_group_id')
+                            ->relationship('itemGroup', 'name')
                             ->searchable()
                             ->optionsLimit(5)
-                            ->preload()
-                            ->relationship('itemGroup', 'name'),
+                            ->required()
+                            ->preload(),
                         Forms\Components\Select::make('default_uom_id')
-                            ->relationship('defaultUom', 'name'),
+                            ->relationship('defaultUom', 'abbreviation')
+                            ->default(1),
                     ]),
 
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\TextInput::make('status')
-                            ->required()
-                            ->maxLength(255)
-                            ->default('enabled'),
                         Forms\Components\Toggle::make('active')
                             ->required()
                             ->default(true),
@@ -199,10 +161,6 @@ class ItemResource extends Resource
                             ->required()
                             ->numeric()
                             ->default(0),
-                        Forms\Components\TextInput::make('created_by')
-                            ->numeric(),
-                        Forms\Components\TextInput::make('updated_by')
-                            ->numeric(),
                     ]),
 
                 Section::make('Description')
@@ -285,7 +243,6 @@ class ItemResource extends Resource
             ])
             ->columns(2)
             ->hidden(fn (Get $get): bool => ! $get('maintain_stock'));
-
     }
 
     private static function makeVariantsTab(): Tabs\Tab
@@ -362,7 +319,6 @@ class ItemResource extends Resource
             ->hidden(fn (Get $get): bool => ! $get('maintain_stock'));
     }
 
-
     private static function makeMetaDataGroup(): Forms\Components\Group
     {
         return Forms\Components\Group::make()
@@ -377,7 +333,7 @@ class ItemResource extends Resource
 
     private static function makeMetaDataSection(): Section
     {
-        return Forms\Components\Section::make('Meta Data')
+        return Forms\Components\Section::make()
             ->schema([
                 Forms\Components\Placeholder::make('created_at')
                     ->label('Created at')
@@ -392,4 +348,21 @@ class ItemResource extends Resource
             ->hidden(fn (?Item $record) => $record === null);
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    private static function makeNotification(): Section
+    {
+        return Forms\Components\Section::make()
+            ->schema([
+                Forms\Components\Placeholder::make('status')
+                    ->label('Template')
+                    ->content(fn (Item $record): ?string => 'This Item is a Variant of '.$record->parent->name.' (Template)'),
+            ])
+            ->columns(2)
+            ->columnSpan(['lg' => 4])
+            ->hidden(fn (?Item $record) => $record === null);
+    }
 }

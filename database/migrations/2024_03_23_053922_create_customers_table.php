@@ -211,6 +211,10 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
+
+        Schema::table('customer_sales_person', function (Blueprint $table) {
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->cascadeOnDelete();
+        });
     }
 
     /**
@@ -222,6 +226,10 @@ return new class extends Migration
         Schema::table('currencies', function (Blueprint $table) {
             $table->dropForeign(['country_id']);
             $table->dropColumn('country_id');
+        });
+        Schema::table('customer_sales_person', function (Blueprint $table) {
+            $table->dropForeign(['customer_id']);
+            $table->dropColumn('customer_id');
         });
         Schema::dropIfExists('countries');
         Schema::dropIfExists('countryables');
@@ -239,5 +247,6 @@ return new class extends Migration
         Schema::dropIfExists('market_segments');
         Schema::dropIfExists('industries');
         Schema::dropIfExists('tax_withholding_categories');
+        Schema::dropIfExists('customer_sales_person');
     }
 };
