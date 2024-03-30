@@ -414,22 +414,19 @@ class CustomerResource extends Resource
                             ->label('Sales Person')
                             ->searchable()
                             ->options(SalesPerson::all()->pluck('name', 'id'))
-                            ->optionsLimit(5)
-                            ->required(),
+                            ->optionsLimit(5),
                         TextInput::make('contribution')
                             ->label('Contribution (%)')
                             ->minValue(0)
                             ->maxValue(100)
-                            ->numeric()
-                            ->required(),
+                            ->numeric(),
                         TextInput::make('contribution_to_net_total')
                             ->label('Contribution to Net Total')
                             ->prefix('Rp')
                             ->disabled(),
                         TextInput::make('commission_rate')
                             ->label('Commission Rate')
-                            ->numeric()
-                            ->required(),
+                            ->numeric(),
                         TextInput::make('incentives')
                             ->label('Incentives')
                             ->numeric()

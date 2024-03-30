@@ -93,7 +93,6 @@ class ItemResource extends Resource
         return Tabs::make('Tabs')
             ->tabs([
                 self::makeDetailsTab(),
-                self::makeDashboardTab(),
                 self::makeInventoryTab(),
                 self::makeVariantsTab(),
                 self::makeAccountingTab(),
@@ -109,18 +108,22 @@ class ItemResource extends Resource
 
     private static function makeDetailsTab(): Tabs\Tab
     {
+        $code = self::generateCode();
+
         return Tabs\Tab::make('Details')
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Select::make('parent_id')
                             ->label('Item Template')
-                            ->relationship('parent', 'name'),
+                            ->relationship('parent', 'name')
+                            ->hidden(fn (?Item $record) => $record === null),
                         Forms\Components\Select::make('brand_id')
                             ->searchable()
                             ->optionsLimit(5)
                             ->relationship('brand', 'name'),
                         Forms\Components\TextInput::make('code')
+                            ->default($code)
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('name')
@@ -171,17 +174,6 @@ class ItemResource extends Resource
                     ->collapsed(),
             ]);
     }
-
-    private static function makeDashboardTab(): Tabs\Tab
-    {
-        return Tabs\Tab::make('Dashboard')
-            ->schema([
-
-            ])
-            ->columns(2)
-            ->hidden(fn (?Item $record) => $record === null);
-    }
-
     private static function makeInventoryTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Inventory')
@@ -363,6 +355,18 @@ class ItemResource extends Resource
             ])
             ->columns(2)
             ->columnSpan(['lg' => 4])
-            ->hidden(fn (?Item $record) => $record === null);
+            ->hidden(fn (?Item $record) => $record === null || $record->parent_id === null);
+    }
+
+    private static function generateCode()
+    {
+        $latestItem = Item::latest()->first();
+        if ($latestItem) {
+            $seriesNumber = intval(substr($latestItem->code, 3)) + 1;
+        } else {
+            $seriesNumber = 1;
+        }
+
+        return 'ITM'.str_pad($seriesNumber, 4, '0', STR_PAD_LEFT);
     }
 }

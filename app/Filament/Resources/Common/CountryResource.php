@@ -80,14 +80,14 @@ class CountryResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->exporter(CountryExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+
             ])
             ->headerActions([
-                Tables\Actions\ImportAction::make()
-                    ->importer(CountryImporter::class),
-                ExportBulkAction::make()
-                    ->exporter(CountryExporter::class),
+
             ]);
     }
 

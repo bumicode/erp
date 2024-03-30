@@ -87,6 +87,7 @@ return new class extends Migration
         Schema::create('batches', function (Blueprint $table) {
             $table->id();
             $table->string('batch_id');
+            $table->foreignId('uom_id')->constrained('uoms')->nullOnDelete();
             $table->boolean('status')->default(true);
             $table->boolean('use_batch_wise_valuation')->default(false);
             $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();

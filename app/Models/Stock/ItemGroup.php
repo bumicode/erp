@@ -19,4 +19,14 @@ class ItemGroup extends Model
         'created_by',
         'updated_by',
     ];
+
+    public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(ItemGroup::class, 'parent_id');
+    }
+
+    public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ItemGroup::class, 'parent_id');
+    }
 }
