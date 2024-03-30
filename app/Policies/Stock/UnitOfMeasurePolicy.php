@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\Stock\UnitOfMeasure;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UomPolicy
+class UnitOfMeasurePolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class UomPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stock\UnitOfMeasure  $uom
+     * @param  \App\Models\Stock\UnitOfMeasure  $unitOfMeasure
      * @return bool
      */
-    public function view(User $user, UnitOfMeasure $uom): bool
+    public function view(User $user, UnitOfMeasure $unitOfMeasure): bool
     {
         return $user->can('view_stock::uom');
     }
@@ -48,10 +48,10 @@ class UomPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stock\UnitOfMeasure  $uom
+     * @param  \App\Models\Stock\UnitOfMeasure  $unitOfMeasure
      * @return bool
      */
-    public function update(User $user, UnitOfMeasure $uom): bool
+    public function update(User $user, UnitOfMeasure $unitOfMeasure): bool
     {
         return $user->can('update_stock::uom');
     }
@@ -60,10 +60,10 @@ class UomPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stock\UnitOfMeasure  $uom
+     * @param  \App\Models\Stock\UnitOfMeasure  $unitOfMeasure
      * @return bool
      */
-    public function delete(User $user, UnitOfMeasure $uom): bool
+    public function delete(User $user, UnitOfMeasure $unitOfMeasure): bool
     {
         return $user->can('delete_stock::uom');
     }
@@ -83,10 +83,10 @@ class UomPolicy
      * Determine whether the user can permanently delete.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stock\UnitOfMeasure  $uom
+     * @param  \App\Models\Stock\UnitOfMeasure  $unitOfMeasure
      * @return bool
      */
-    public function forceDelete(User $user, UnitOfMeasure $uom): bool
+    public function forceDelete(User $user, UnitOfMeasure $unitOfMeasure): bool
     {
         return $user->can('force_delete_stock::uom');
     }
@@ -106,10 +106,10 @@ class UomPolicy
      * Determine whether the user can restore.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stock\UnitOfMeasure  $uom
+     * @param  \App\Models\Stock\UnitOfMeasure  $unitOfMeasure
      * @return bool
      */
-    public function restore(User $user, UnitOfMeasure $uom): bool
+    public function restore(User $user, UnitOfMeasure $unitOfMeasure): bool
     {
         return $user->can('restore_stock::uom');
     }
@@ -129,10 +129,10 @@ class UomPolicy
      * Determine whether the user can replicate.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Stock\UnitOfMeasure  $uom
+     * @param  \App\Models\Stock\UnitOfMeasure  $unitOfMeasure
      * @return bool
      */
-    public function replicate(User $user, UnitOfMeasure $uom): bool
+    public function replicate(User $user, UnitOfMeasure $unitOfMeasure): bool
     {
         return $user->can('replicate_stock::uom');
     }

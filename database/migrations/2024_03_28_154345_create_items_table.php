@@ -14,12 +14,18 @@ return new class extends Migration
         Schema::create('uoms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('symbol');
+            $table->string('abbreviation');
             $table->boolean('status')->default(true);
             $table->boolean('must_be_whole_number')->default(false);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
+        });
+
+        Schema::create('conversions', function (Blueprint $table) {
+            $table->foreignId('uom_id');
+            $table->morphs('convertible');
+            $table->float('conversion_factor');
         });
 
         Schema::create('item_groups', function (Blueprint $table) {
@@ -133,12 +139,28 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('item_purchasing', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            $table->foreignId('default_uom')->nullable()->constrained('uoms')->nullOnDelete();
+            $table->integer('lead_time_in_days')->nullable();
+            $table->integer('safety_stock')->nullable();
+            $table->integer('minimum_order_quantity')->default(0);
+            $table->foreignId('country_of_origin')->nullable()->constrained('countries')->nullOnDelete();
+            $table->boolean('enable_deffered_expense')->default(false);
+            $table->bigInteger('deffered_expense_account')->nullable();
+            $table->integer('no_of_months')->nullable();
+            $table->boolean('is_delivered_by_supplier')->default(false);
+            $table->timestamps();
+        });
+
         Schema::create('item_inventories', function (Blueprint $table) {
             $table->id();
-            $table->integer('shelf_life')->default(0);
+            $table->foreignId('item_id')->nullable()->constrained('items')->cascadeOnDelete();
+            $table->integer('shelf_life')->nullable();
             $table->integer('warranty_period')->nullable();
-            $table->date('end_of_life')->default('2099-12-31');
-            $table->decimal('weight_per_unit')->default(0, 000);
+            $table->date('end_of_life')->nullable()->default('2099-12-31');
+            $table->decimal('weight_per_unit')->nullable();
             $table->enum('default_material_request_type', [
                 'purchase',
                 'material_transfer',
@@ -146,9 +168,11 @@ return new class extends Migration
                 'manufacture',
                 'customer_provided',
                 'other',
-            ])->default('purchase');
-            $table->boolean('allow_negative_stock')->default(false);
-            $table->enum('valuation_method', ['FIFO', 'Moving Average', 'LIFO'])->default('in_stock');
+            ])
+                ->nullable()
+                ->default('purchase');
+            $table->boolean('allow_negative_stock')->nullable()->default(false);
+            $table->enum('valuation_method', ['fifo', 'moving average', 'lifo'])->nullable();
             $table->foreignId('weight_uom_id')->nullable()->constrained('uoms')->nullOnDelete();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
@@ -161,6 +185,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('item_purchasing');
+        Schema::dropIfExists('item_inventories');
         Schema::dropIfExists('item_taxes');
         Schema::dropIfExists('item_tax_templates');
         Schema::dropIfExists('item_prices');
@@ -181,7 +207,7 @@ return new class extends Migration
         Schema::dropIfExists('item_groups');
         Schema::dropIfExists('batches');
         Schema::dropIfExists('brands');
-        Schema::dropIfExists('item_inventories');
         Schema::dropIfExists('uoms');
+        Schema::dropIfExists('conversions');
     }
 };

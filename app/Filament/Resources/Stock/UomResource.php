@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\Stock;
 
 use App\Filament\Resources\Stock\UomResource\Pages;
-use App\Models\Stock\Uom;
+use App\Models\Stock\UnitOfMeasure;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,9 +12,8 @@ use Filament\Tables\Table;
 
 class UomResource extends Resource
 {
-    protected static ?string $model = Uom::class;
+    protected static ?string $model = UnitOfMeasure::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
 
     protected static ?string $label = 'UOMs';
 

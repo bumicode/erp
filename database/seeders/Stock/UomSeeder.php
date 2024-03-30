@@ -13,33 +13,34 @@ class UomSeeder extends Seeder
     public function run(): void
     {
         $uoms = [
-            ['name' => 'Piece', 'symbol' => 'pcs'],         // Potong
-            ['name' => 'Kilogram', 'symbol' => 'kg'],      // Kilogram
-            ['name' => 'Meter', 'symbol' => 'm'],         // Meter
-            ['name' => 'Liter', 'symbol' => 'L'],         // Liter
-            ['name' => 'Box', 'symbol' => 'box'],           // Kotak
-            ['name' => 'Dozen', 'symbol' => 'dz'],         // Lusin
-            ['name' => 'Pack', 'symbol' => 'pack'],          // Paket
-            ['name' => 'Carton', 'symbol' => 'ctn'],        // Karton
-            ['name' => 'Pallet', 'symbol' => 'plt'],        // Palet
-            ['name' => 'Roll', 'symbol' => 'roll'],          // Gulung
-            ['name' => 'Set', 'symbol' => 'set'],           // Set
-            ['name' => 'Gram', 'symbol' => 'g'],          // Gram
-            ['name' => 'Millimeter', 'symbol' => 'mm'],    // Milimeter
-            ['name' => 'Centimeter', 'symbol' => 'cm'],    // Sentimeter
-            ['name' => 'Inch', 'symbol' => 'in'],          // Inci
-            ['name' => 'Foot', 'symbol' => 'ft'],          // Kaki
-            ['name' => 'Yard', 'symbol' => 'yd'],          // Yard
-            ['name' => 'Hour', 'symbol' => 'hr'],          // Jam
-            ['name' => 'Day', 'symbol' => 'day'],           // Hari
-            ['name' => 'Week', 'symbol' => 'wk'],          // Minggu
-            ['name' => 'Month', 'symbol' => 'mo'],         // Bulan
-            ['name' => 'Year', 'symbol' => 'yr'],          // Tahun
+            ['name' => 'Nos', 'abbreviation' => 'nos'],         // Potong
+            ['name' => 'Piece', 'abbreviation' => 'pcs'],         // Potong
+            ['name' => 'Kilogram', 'abbreviation' => 'kg'],      // Kilogram
+            ['name' => 'Meter', 'abbreviation' => 'm'],         // Meter
+            ['name' => 'Liter', 'abbreviation' => 'L'],         // Liter
+            ['name' => 'Box', 'abbreviation' => 'box'],           // Kotak
+            ['name' => 'Dozen', 'abbreviation' => 'dz'],         // Lusin
+            ['name' => 'Pack', 'abbreviation' => 'pack'],          // Paket
+            ['name' => 'Carton', 'abbreviation' => 'ctn'],        // Karton
+            ['name' => 'Pallet', 'abbreviation' => 'plt'],        // Palet
+            ['name' => 'Roll', 'abbreviation' => 'roll'],          // Gulung
+            ['name' => 'Set', 'abbreviation' => 'set'],           // Set
+            ['name' => 'Gram', 'abbreviation' => 'g'],          // Gram
+            ['name' => 'Millimeter', 'abbreviation' => 'mm'],    // Milimeter
+            ['name' => 'Centimeter', 'abbreviation' => 'cm'],    // Sentimeter
+            ['name' => 'Inch', 'abbreviation' => 'in'],          // Inci
+            ['name' => 'Foot', 'abbreviation' => 'ft'],          // Kaki
+            ['name' => 'Yard', 'abbreviation' => 'yd'],          // Yard
+            ['name' => 'Hour', 'abbreviation' => 'hr'],          // Jam
+            ['name' => 'Day', 'abbreviation' => 'day'],           // Hari
+            ['name' => 'Week', 'abbreviation' => 'wk'],          // Minggu
+            ['name' => 'Month', 'abbreviation' => 'mo'],         // Bulan
+            ['name' => 'Year', 'abbreviation' => 'yr'],          // Tahun
             // Add more commonly used UOMs as needed
         ];
 
         foreach ($uoms as $uom) {
-            \App\Models\Stock\Uom::create($uom);
+            \App\Models\Stock\UnitOfMeasure::create($uom);
         }
     }
 }
