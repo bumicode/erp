@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\MasterData;
 use App\Filament\Resources\Accounting\PaymentTermTemplatesResource;
 use App\Filament\Resources\Accounting\SalesInvoiceResource;
 use App\Filament\Resources\Common\CountryResource;
@@ -139,6 +140,7 @@ class AdminPanelProvider extends PanelProvider
                                 ...PriceListResource::getNavigationItems(),
                             ]),
                         NavigationGroup::make('Master Data')
+                            ->icon('heroicon-o-circle-stack')
                             ->items([
                                 ...CountryResource::getNavigationItems(),
                                 ...CurrencyResource::getNavigationItems(),

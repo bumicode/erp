@@ -3,15 +3,21 @@
 namespace App\Filament\Resources\Stock;
 
 use App\Filament\Resources\Stock\ItemResource\Pages;
+use App\Filament\Resources\Stock\ItemResource\RelationManagers;
 use App\Models\Stock\Item;
+use App\Models\Stock\UnitOfMeasure;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ItemResource extends Resource
 {
@@ -45,8 +51,10 @@ class ItemResource extends Resource
                 Tables\Columns\TextColumn::make('brand.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('status')
+                Tables\Columns\IconColumn::make('active')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('status')
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('allow_alternative_item')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('maintain_stock')
@@ -67,6 +75,12 @@ class ItemResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('over_billing_allowance')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_by')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('updated_by')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -128,71 +142,75 @@ class ItemResource extends Resource
             ->columnSpan(['lg' => 4]);
     }
 
-    private static function makeMetaDataGroup(): Forms\Components\Group
-    {
-        return Forms\Components\Group::make()
-            ->schema([
-                self::makeMetaDataSection(),
-            ])
-            ->columnSpan(['lg' => 4])
-            ->columns(2)
-            ->hidden(fn (?Item $record) => $record === null);
-    }
-
     private static function makeDetailsTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Details')
             ->schema([
-                Forms\Components\Select::make('parent_id')
-                    ->relationship('parent', 'name')
-                    ->optionsLimit(5)
-                    ->searchable(),
-                Forms\Components\Select::make('item_group_id')
-                    ->relationship('itemGroup', 'name')
-                    ->optionsLimit(5)
-                    ->searchable(),
-                Forms\Components\Select::make('default_uom_id')
-                    ->relationship('defaultUom', 'name')
-                    ->searchable()
-                    ->default(1)
-                    ->optionsLimit(5),
-                Forms\Components\Select::make('brand_id')
-                    ->searchable()
-                    ->optionsLimit(5)
-                    ->relationship('brand', 'name'),
-                Forms\Components\Toggle::make('status')
-                    ->required(),
-                Forms\Components\Toggle::make('allow_alternative_item')
-                    ->required(),
-                Forms\Components\Toggle::make('maintain_stock')
-                    ->required(),
-                Forms\Components\Toggle::make('is_fixed_asset')
-                    ->required(),
-                Forms\Components\Toggle::make('has_variant')
-                    ->required(),
-                Forms\Components\TextInput::make('code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('name')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\Select::make('variant_base_on')
-                    ->options([
-                        'item attribute' => 'Item Attribute',
-                        'manufacturer' => 'Manufacturer',
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Select::make('parent_id')
+                            ->searchable()
+                            ->optionsLimit(5)
+                            ->relationship('parent', 'name'),
+                        Forms\Components\Select::make('brand_id')
+                            ->searchable()
+                            ->optionsLimit(5)
+                            ->relationship('brand', 'name'),
+                        Forms\Components\TextInput::make('code')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('name')
+                            ->maxLength(255),
+                        Forms\Components\Select::make('item_group_id')
+                            ->searchable()
+                            ->optionsLimit(5)
+                            ->preload()
+                            ->relationship('itemGroup', 'name'),
+                        Forms\Components\Select::make('default_uom_id')
+                            ->relationship('defaultUom', 'name'),
+                    ]),
+
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('status')
+                            ->required()
+                            ->maxLength(255)
+                            ->default('enabled'),
+                        Forms\Components\Toggle::make('active')
+                            ->required()
+                            ->default(true),
+                        Forms\Components\Toggle::make('allow_alternative_item')
+                            ->required(),
+                        Forms\Components\Toggle::make('maintain_stock')
+                            ->default(true)
+                            ->live()
+                            ->required(),
+                        Forms\Components\Toggle::make('has_variant')
+                            ->helperText('If this item  has variants, then it cannot be selected in sales orders etc.')
+                            ->live()
+                            ->required(),
+                        Forms\Components\Toggle::make('is_fixed_asset')
+                            ->required(),
+                        Forms\Components\TextInput::make('over_delivery_allowance')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('over_billing_allowance')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\TextInput::make('created_by')
+                            ->numeric(),
+                        Forms\Components\TextInput::make('updated_by')
+                            ->numeric(),
+                    ]),
+
+                Section::make('Description')
+                    ->schema([
+                        RichEditor::make('description')
+                            ->columnSpanFull(),
                     ])
-                    ->default('item attribute'),
-                Forms\Components\Toggle::make('allow_purchase')
-                    ->required(),
-                Forms\Components\TextInput::make('over_delivery_allowance')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('over_billing_allowance')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
+                    ->collapsed(),
             ]);
     }
 
@@ -202,25 +220,88 @@ class ItemResource extends Resource
             ->schema([
 
             ])
-            ->columns(2);
+            ->columns(2)
+            ->hidden(fn (?Item $record) => $record === null);
     }
 
     private static function makeInventoryTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Inventory')
             ->schema([
+                Forms\Components\Group::make()
+                    ->relationship('itemInventory')
+                    ->schema([
 
+                        Forms\Components\TextInput::make('shelf_life')
+                            ->label('Shelf Life In Days')
+                            ->minValue(0)
+                            ->numeric(),
+
+                        Forms\Components\DatePicker::make('end_of_life')
+                            ->label('End of Life')
+                            ->default('31-12-2099'),
+
+                        Forms\Components\Select::make('default_material_request_type')
+                            ->label('Default Material Request Type')
+                            ->options([
+                                'purchase' => 'Purchase',
+                                'material transfer' => 'Material Transfer',
+                                'material issue' => 'Material Issue',
+                                'manufacture' => 'Manufacture',
+                                'customer provided' => 'Customer Provided',
+                            ]),
+
+                        Forms\Components\Select::make('valuation_method')
+                            ->label('Default Material Request Type')
+                            ->options([
+                                'fifo' => 'FIFO',
+                                'moving average' => 'Moving Average',
+                                'lifo' => 'LIFO',
+                            ]),
+                    ]),
+
+                Forms\Components\Group::make()
+                    ->relationship('itemInventory')
+                    ->schema([
+
+                        Forms\Components\TextInput::make('warranty_period')
+                            ->label('Warranty Period (in days)')
+                            ->minValue(0)
+                            ->numeric(),
+
+                        Forms\Components\TextInput::make('weight_per_unit')
+                            ->label('Weight Per Unit')
+                            ->numeric(),
+
+                        Forms\Components\Select::make('weight_uom_id')
+                            ->options(UnitOfMeasure::all()->pluck('name', 'id'))
+                            ->searchable()
+                            ->optionsLimit(5)
+                            ->label('Weight Per Unit'),
+
+                        Forms\Components\Toggle::make('allow_negative_stock')
+                            ->label('Allow Negative Stock'),
+                    ]),
             ])
-            ->columns(2);
+            ->columns(2)
+            ->hidden(fn (Get $get): bool => ! $get('maintain_stock'));
+
     }
 
     private static function makeVariantsTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Variant')
             ->schema([
+                Forms\Components\Select::make('variant_base_on')
+                    ->options([
+                        'item attribute' => 'Item Attribute',
+                        'manufacturer' => 'Manufacturer',
+                    ])
+                    ->default('item attribute'),
 
             ])
-            ->columns(2);
+            ->columns(2)
+            ->hidden(fn (Get $get): bool => ! $get('has_variant'));
     }
 
     private static function makeAccountingTab(): Tabs\Tab
@@ -237,6 +318,9 @@ class ItemResource extends Resource
         return Tabs\Tab::make('Purchasing')
             ->schema([
 
+                Forms\Components\Toggle::make('allow_purchase')
+                    ->default(true)
+                    ->required(),
             ])
             ->columns(2);
     }
@@ -274,7 +358,21 @@ class ItemResource extends Resource
             ->schema([
 
             ])
-            ->columns(2);
+            ->columns(2)
+            ->hidden(fn (Get $get): bool => ! $get('maintain_stock'));
+    }
+
+
+    private static function makeMetaDataGroup(): Forms\Components\Group
+    {
+        return Forms\Components\Group::make()
+            ->schema([
+                self::makeMetaDataSection(),
+            ])
+            ->columnSpan(['lg' => 4])
+            ->columns(2)
+            ->hidden(fn (?Item $record) => $record === null);
+
     }
 
     private static function makeMetaDataSection(): Section
@@ -293,4 +391,5 @@ class ItemResource extends Resource
             ->columnSpan(['lg' => 4])
             ->hidden(fn (?Item $record) => $record === null);
     }
+
 }

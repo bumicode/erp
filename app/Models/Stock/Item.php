@@ -13,6 +13,7 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
+        'active',
         'status',
         'allow_alternative_item',
         'maintain_stock',
@@ -31,6 +32,14 @@ class Item extends Model
         'item_group_id',
         'default_uom_id',
         'brand_id',
+        'shelf_life',
+        'warranty_period',
+        'end_of_life',
+        'weight_per_unit',
+        'default_material_request_type',
+        'allow_negative_stock',
+        'valuation_method',
+        'weight_uom_id',
     ];
 
     public function parent(): BelongsTo
@@ -55,6 +64,16 @@ class Item extends Model
 
     public function defaultUom(): BelongsTo
     {
-        return $this->belongsTo(Uom::class);
+        return $this->belongsTo(UnitOfMeasure::class);
+    }
+
+    public function itemInventory(): HasOne
+    {
+        return $this->hasOne(ItemInventory::class);
+    }
+
+    public function conversions()
+    {
+        return $this->morphMany(Conversion::class, 'convertible');
     }
 }

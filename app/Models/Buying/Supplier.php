@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Stock;
+namespace App\Models\Buying;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Uom extends Model
+class Supplier extends Model
 {
     use HasFactory;
 }
