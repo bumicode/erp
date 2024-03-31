@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\MasterData;
 use App\Filament\Resources\Accounting\PaymentTermTemplatesResource;
 use App\Filament\Resources\Accounting\SalesInvoiceResource;
 use App\Filament\Resources\Common\CountryResource;
@@ -23,12 +22,10 @@ use App\Filament\Resources\Stock\ItemResource;
 use App\Filament\Resources\Stock\PriceListResource;
 use App\Filament\Resources\Stock\UomResource;
 use App\Filament\Resources\UserResource;
-use App\Models\Accounting\PaymentTermTemplates;
-use App\Models\Stock\PriceList;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Livewire\DatabaseNotifications;
 use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
@@ -56,6 +53,9 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->registration()
+            ->passwordReset()
+            ->emailVerification()
             ->id('admin')
             ->path('admin')
             ->login()
@@ -88,14 +88,26 @@ class AdminPanelProvider extends PanelProvider
             ])
 //            ->authGuard('customers')
             ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 2,
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 4,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
                 BreezyCore::make()
                     ->myProfile(
                         shouldRegisterUserMenu: false,
-                        shouldRegisterNavigation: false,
-                        navigationGroup: 'Settings',
-                        hasAvatars: false,
-                        slug: 'my-profile'
+                        navigationGroup: 'Settings'
                     )
                     ->passwordUpdateRules(
                         rules: [Password::default()->mixedCase()->uncompromised(3)],
