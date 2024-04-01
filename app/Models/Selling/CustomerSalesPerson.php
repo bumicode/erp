@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Wildside\Userstamps\Userstamps;
 
 class CustomerSalesPerson extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $table = 'customer_sales_person';
 

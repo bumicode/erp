@@ -13,10 +13,11 @@ use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Tags\HasTags;
+use Wildside\Userstamps\Userstamps;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, HasPanelShield, HasRoles, HasTags, Notifiable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasPanelShield, HasRoles, HasTags, Notifiable, TwoFactorAuthenticatable, Userstamps;
 
     /**
      * The attributes that are mass assignable.
