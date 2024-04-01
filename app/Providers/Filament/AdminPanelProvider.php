@@ -43,11 +43,11 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Jeffgreco13\FilamentBreezy\Pages\MyProfilePage;
+use Z3d0X\FilamentLogger\Resources\ActivityResource;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -167,6 +167,7 @@ class AdminPanelProvider extends PanelProvider
                             ->items([
                                 ...UserResource::getNavigationItems(),
                                 ...RoleResource::getNavigationItems(),
+                                ...ActivityResource::getNavigationItems(),
                             ]),
                     ]);
             })
@@ -175,6 +176,9 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Settings')
                     ->url(fn (): string => MyProfilePage::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
+            ])
+            ->resources([
+                config('filament-logger.activity_resource'),
             ])
             ->databaseNotifications();
     }

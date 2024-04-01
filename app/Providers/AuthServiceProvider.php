@@ -31,6 +31,8 @@ use App\Policies\Selling\TerritoryPolicy;
 use App\Policies\Stock\ItemGroupPolicy;
 use App\Policies\Stock\ItemPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Policies\ActivityPolicy;
+use Spatie\Activitylog\Models\Activity;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -74,6 +76,10 @@ class AuthServiceProvider extends ServiceProvider
         ItemGroup::class => ItemGroupPolicy::class,
         PriceList::class => PriceList::class,
 
+        /**
+         * Activity Log Policy
+         */
+        Activity::class => ActivityPolicy::class,
     ];
 
     /**
