@@ -53,6 +53,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Jeffgreco13\FilamentBreezy\Pages\MyProfilePage;
+use Z3d0X\FilamentLogger\Resources\ActivityResource;
 
 class AdminPanelProvider extends PanelProvider
 {
