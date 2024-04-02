@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Wildside\Userstamps\Userstamps;
 
 class Contact extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $table = 'contacts';
 

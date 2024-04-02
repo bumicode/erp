@@ -4,10 +4,11 @@ namespace App\Models\Selling;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Wildside\Userstamps\Userstamps;
 
 class Territory extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $fillable = [
         'parent_id',

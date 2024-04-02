@@ -28,7 +28,7 @@ class CustomerGroupResource extends Resource
                     ->relationship('parent', 'name'),
                 Forms\Components\Select::make('default_price_list_id')
                     ->relationship('defaultPriceList', 'name'),
-                Forms\Components\TextInput::make('default_payment_terms_template')
+                Forms\Components\TextInput::make('default_payment_terms_template_id')
                     ->numeric(),
                 Forms\Components\Toggle::make('is_group')
                     ->required(),
@@ -52,7 +52,7 @@ class CustomerGroupResource extends Resource
                 Tables\Columns\TextColumn::make('defaultPriceList.name')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('default_payment_terms_template')
+                Tables\Columns\TextColumn::make('default_payment_terms_template_id')
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

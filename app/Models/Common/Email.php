@@ -6,10 +6,11 @@ use App\Models\CRM\Contact;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Wildside\Userstamps\Userstamps;
 
 class Email extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
     protected $fillable = [
         'number',
         'is_primary_phone',

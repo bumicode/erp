@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Wildside\Userstamps\Userstamps;
 
 class Address extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $table = 'addresses';
 

@@ -9,9 +9,11 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Spatie\Permission\Models\Role;
 
 class UserResource extends Resource
 {
@@ -35,6 +37,11 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
             ]);
     }
 
@@ -64,6 +71,10 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Action::make('history')
+                    ->icon('heroicon-m-exclamation-circle')
+                    ->color('warning')
+                    ->url(fn ($record) => UserResource::getUrl('activities', ['record' => $record])),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -85,6 +96,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'view' => Pages\ViewUser::route('/{record}'),
+            'activities' => Pages\ListUserActivities::route('/{record}/activities'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }

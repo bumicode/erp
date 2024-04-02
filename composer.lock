@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7cc53b83a01d01cd248dc3104540e46a",
+    "content-hash": "cf8b6aab034115c1da5acca88ab63a26",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -8442,6 +8442,61 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "wildside/userstamps",
+            "version": "2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WildsideUK/Laravel-Userstamps.git",
+                "reference": "4ebae014be56461acb7c2e4b6d2f86a2190307b9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WildsideUK/Laravel-Userstamps/zipball/4ebae014be56461acb7c2e4b6d2f86a2190307b9",
+                "reference": "4ebae014be56461acb7c2e4b6d2f86a2190307b9",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^5.2|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "illuminate/database": "^5.2|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "orchestra/testbench": "^3.1|^4.0|^5.0|^6.0|^7.0|^8.0|^9.0",
+                "phpunit/phpunit": "^5.0|^6.0|^7.0|^8.4|^9.0|^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wildside\\Userstamps\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "WILDSIDE",
+                    "email": "hello@wildside.uk",
+                    "homepage": "https://wildside.uk"
+                }
+            ],
+            "description": "Laravel Userstamps provides an Eloquent trait which automatically maintains `created_by` and `updated_by` columns on your model, populated by the currently authenticated user in your application.",
+            "keywords": [
+                "created_by",
+                "deleted_by",
+                "eloquent",
+                "laravel",
+                "updated_by",
+                "userstamps"
+            ],
+            "support": {
+                "issues": "https://github.com/WildsideUK/Laravel-Userstamps/issues",
+                "source": "https://github.com/WildsideUK/Laravel-Userstamps/tree/2.4.0"
+            },
+            "time": "2024-03-13T08:55:57+00:00"
         }
     ],
     "packages-dev": [
@@ -10891,5 +10946,5 @@
         "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

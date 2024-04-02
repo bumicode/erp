@@ -5,10 +5,11 @@ namespace App\Models\Selling;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Wildside\Userstamps\Userstamps;
 
 class Quotation extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $table = 'quotations';
 

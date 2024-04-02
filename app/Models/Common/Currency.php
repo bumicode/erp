@@ -5,10 +5,11 @@ namespace App\Models\Common;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Wildside\Userstamps\Userstamps;
 
 class Currency extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $fillable = [
         'country_id',

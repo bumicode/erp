@@ -4,10 +4,11 @@ namespace App\Models\Stock;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Wildside\Userstamps\Userstamps;
 
 class UnitOfMeasure extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $table = 'uoms';
 

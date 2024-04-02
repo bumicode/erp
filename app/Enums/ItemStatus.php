@@ -15,9 +15,9 @@ enum ItemStatus: string implements HasColor, HasIcon, HasLabel
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::Enabled => 'info',
+            self::Enabled => 'success',
             self::Template => 'warning',
-            self::Variant => 'success',
+            self::Variant => 'info',
             self::Disabled => 'secondary',
         };
     }

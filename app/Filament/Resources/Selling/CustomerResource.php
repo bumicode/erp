@@ -8,9 +8,9 @@ use App\Filament\Resources\Selling\CustomerResource\RelationManagers\ContactRela
 use App\Filament\Resources\Selling\CustomerResource\RelationManagers\SalesRelationManager;
 use App\Models\CRM\Address;
 use App\Models\Selling\Customer;
-use App\Models\Selling\CustomerGroup;
 use App\Models\Selling\SalesPerson;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
@@ -22,8 +22,8 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Carbon;
 
 class CustomerResource extends Resource
 {
@@ -32,6 +32,7 @@ class CustomerResource extends Resource
     protected static ?string $navigationGroup = 'Selling';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -414,31 +415,32 @@ class CustomerResource extends Resource
                             ->label('Sales Person')
                             ->searchable()
                             ->options(SalesPerson::all()->pluck('name', 'id'))
-                            ->optionsLimit(5)
-                            ->required(),
+                            ->optionsLimit(5),
                         TextInput::make('contribution')
                             ->label('Contribution (%)')
                             ->minValue(0)
                             ->maxValue(100)
-                            ->numeric()
-                            ->required(),
+                            ->numeric(),
                         TextInput::make('contribution_to_net_total')
                             ->label('Contribution to Net Total')
                             ->prefix('Rp')
                             ->disabled(),
                         TextInput::make('commission_rate')
                             ->label('Commission Rate')
-                            ->numeric()
-                            ->required(),
+                            ->numeric(),
                         TextInput::make('incentives')
                             ->label('Incentives')
                             ->numeric()
                             ->prefix('Rp')
                             ->disabled(),
                     ])
+                    ->defaultItems(0)
                     ->columns(3)
                     ->columnSpan(['lg' => 4])
-                    ->itemLabel(fn (array $state): ?string => $state['name'] ?? null),
+                    ->itemLabel(fn (array $state): ?string => $state['name'] ?? null)
+                    ->deleteAction(
+                        fn (Action $action) => $action->requiresConfirmation(),
+                    ),
 
                 Forms\Components\TextInput::make('sales_partner')
                     ->label('Sales Partner')
@@ -498,7 +500,6 @@ class CustomerResource extends Resource
             ->hidden(fn (?Customer $record) => $record === null);
     }
 
-
     public static function table(Table $table): Table
     {
         return $table
@@ -555,8 +556,37 @@ class CustomerResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        Forms\Components\DatePicker::make('created_from')
+                            ->placeholder(fn ($state): string => 'Dec 18, '.now()->subYear()->format('Y')),
+                        Forms\Components\DatePicker::make('created_until')
+                            ->placeholder(fn ($state): string => now()->format('M d, Y')),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'] ?? null,
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'] ?? null,
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['created_from'] ?? null) {
+                            $indicators['created_from'] = 'Order from '.Carbon::parse($data['created_from'])->toFormattedDateString();
+                        }
+                        if ($data['created_until'] ?? null) {
+                            $indicators['created_until'] = 'Order until '.Carbon::parse($data['created_until'])->toFormattedDateString();
+                        }
+
+                        return $indicators;
+                    }),
             ])
+            ->deferFilters()
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -596,5 +626,4 @@ class CustomerResource extends Resource
     {
         return static::getModel()::count();
     }
-
 }

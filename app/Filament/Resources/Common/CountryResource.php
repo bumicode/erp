@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Common;
 
 use App\Filament\Exports\Common\CountryExporter;
-use App\Filament\Imports\Common\CountryImporter;
 use App\Filament\Resources\Common\CountryResource\Pages;
 use App\Models\Common\Country;
 use Filament\Forms;
@@ -80,14 +79,14 @@ class CountryResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->exporter(CountryExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+
             ])
             ->headerActions([
-                Tables\Actions\ImportAction::make()
-                    ->importer(CountryImporter::class),
-                ExportBulkAction::make()
-                    ->exporter(CountryExporter::class),
+
             ]);
     }
 
