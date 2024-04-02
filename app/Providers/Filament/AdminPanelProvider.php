@@ -2,11 +2,16 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\AppSetting;
 use App\Filament\Resources\Accounting\PaymentTermTemplatesResource;
 use App\Filament\Resources\Accounting\SalesInvoiceResource;
+use App\Filament\Resources\Common\CityResource;
 use App\Filament\Resources\Common\CountryResource;
 use App\Filament\Resources\Common\CurrencyResource;
+use App\Filament\Resources\Common\ProvinceResource;
+use App\Filament\Resources\Common\SubDistrictResource;
 use App\Filament\Resources\Common\TimezoneResource;
+use App\Filament\Resources\Common\VillageResource;
 use App\Filament\Resources\CRM\AddressResource;
 use App\Filament\Resources\CRM\ContactResource;
 use App\Filament\Resources\Selling\CustomerGroupResource;
@@ -74,51 +79,14 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-            ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-            ])
+            ->middleware($this->getMiddleware())
             ->authMiddleware([
                 Authenticate::class,
             ])
-//            ->authGuard('customers')
+            //->authGuard('customers')
             ->plugins([
-                FilamentShieldPlugin::make()
-                    ->gridColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                        'lg' => 2,
-                    ])
-                    ->sectionColumnSpan(1)
-                    ->checkboxListColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                        'lg' => 4,
-                    ])
-                    ->resourceCheckboxListColumns([
-                        'default' => 1,
-                        'sm' => 2,
-                    ]),
-                BreezyCore::make()
-                    ->myProfile(
-                        shouldRegisterUserMenu: false,
-                        navigationGroup: 'Settings'
-                    )
-                    ->passwordUpdateRules(
-                        rules: [Password::default()->mixedCase()->uncompromised(3)],
-                        requiresCurrentPassword: true,
-                    )
-                    ->enableTwoFactorAuthentication(
-                        force: false, // force the user to enable 2FA before they can use the application (default = false)
-                    )
-                    ->customMyProfilePage(MyProfilePage::class),
+                $this->getFilamentShieldPlugin(),
+                $this->getBreezyCorePlugin(),
             ])
             ->sidebarCollapsibleOnDesktop()
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
@@ -129,45 +97,13 @@ class AdminPanelProvider extends PanelProvider
                         ->url(fn (): string => Dashboard::getUrl()),
                 ])
                     ->groups([
-                        NavigationGroup::make('Accounting')
-                            ->items([
-                                ...SalesInvoiceResource::getNavigationItems(),
-                                ...PaymentTermTemplatesResource::getNavigationItems(),
-                            ]),
-                        NavigationGroup::make('CRM')
-                            ->items([
-                                ...AddressResource::getNavigationItems(),
-                                ...ContactResource::getNavigationItems(),
-                            ]),
-                        NavigationGroup::make('Selling')
-                            ->items([
-                                ...CustomerResource::getNavigationItems(),
-                                ...CustomerGroupResource::getNavigationItems(),
-                                ...QuotationResource::getNavigationItems(),
-                                ...SalesOrderResource::getNavigationItems(),
-                                ...SalesPersonResource::getNavigationItems(),
-                                ...TargetResource::getNavigationItems(),
-                                ...TerritoryResource::getNavigationItems(),
-                            ]),
-                        NavigationGroup::make('Stock')
-                            ->items([
-                                ...ItemResource::getNavigationItems(),
-                                ...ItemGroupResource::getNavigationItems(),
-                                ...PriceListResource::getNavigationItems(),
-                            ]),
-                        NavigationGroup::make('Master Data')
-                            ->icon('heroicon-o-circle-stack')
-                            ->items([
-                                ...CountryResource::getNavigationItems(),
-                                ...CurrencyResource::getNavigationItems(),
-                                ...TimezoneResource::getNavigationItems(),
-                                ...UomResource::getNavigationItems(),
-                            ]),
-                        NavigationGroup::make('User Management')
-                            ->items([
-                                ...UserResource::getNavigationItems(),
-                                ...RoleResource::getNavigationItems(),
-                            ]),
+                        $this->getAccountingNavigationGroup(),
+                        $this->getCRMNavigationGroup(),
+                        $this->getSellingNavigationGroup(),
+                        $this->getStockNavigationGroup(),
+                        $this->getMasterDataNavigationGroup(),
+                        $this->getUserManagementNavigationGroup(),
+                        $this->getSettingsNavigationGroup(),
                     ]);
             })
             ->userMenuItems([
@@ -176,6 +112,137 @@ class AdminPanelProvider extends PanelProvider
                     ->url(fn (): string => MyProfilePage::getUrl())
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
-            ->databaseNotifications();
+            ->databaseNotifications()
+            ->renderHook(
+                'panels::body.end',
+                fn () => view('customFooter'),
+            );
+    }
+
+    protected function getMiddleware(): array
+    {
+        return [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            AuthenticateSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
+            SubstituteBindings::class,
+            DisableBladeIconComponents::class,
+            DispatchServingFilamentEvent::class,
+        ];
+    }
+
+    protected function getFilamentShieldPlugin(): FilamentShieldPlugin
+    {
+        return FilamentShieldPlugin::make()
+            ->gridColumns([
+                'default' => 1,
+                'sm' => 2,
+                'lg' => 2,
+            ])
+            ->sectionColumnSpan(1)
+            ->checkboxListColumns([
+                'default' => 1,
+                'sm' => 2,
+                'lg' => 4,
+            ])
+            ->resourceCheckboxListColumns([
+                'default' => 1,
+                'sm' => 2,
+            ]);
+    }
+
+    protected function getBreezyCorePlugin(): BreezyCore
+    {
+        return BreezyCore::make()
+            ->myProfile(
+                shouldRegisterUserMenu: false,
+                navigationGroup: 'Settings'
+            )
+            ->passwordUpdateRules(
+                rules: [Password::default()->mixedCase()->uncompromised(3)],
+                requiresCurrentPassword: true,
+            )
+            ->enableTwoFactorAuthentication(
+                force: false, // force the user to enable 2FA before they can use the application (default = false)
+            )
+            ->customMyProfilePage(MyProfilePage::class);
+    }
+
+    protected function getAccountingNavigationGroup(): NavigationGroup
+    {
+        return NavigationGroup::make('Accounting')
+            ->items([
+                ...SalesInvoiceResource::getNavigationItems(),
+                ...PaymentTermTemplatesResource::getNavigationItems(),
+            ])->collapsed();
+    }
+
+    protected function getCRMNavigationGroup(): NavigationGroup
+    {
+        return NavigationGroup::make('CRM')
+            ->items([
+                ...AddressResource::getNavigationItems(),
+                ...ContactResource::getNavigationItems(),
+            ])->collapsed();
+    }
+
+    private function getSellingNavigationGroup(): NavigationGroup
+    {
+        return NavigationGroup::make('Selling')
+            ->items([
+                ...CustomerResource::getNavigationItems(),
+                ...CustomerGroupResource::getNavigationItems(),
+                ...QuotationResource::getNavigationItems(),
+                ...SalesOrderResource::getNavigationItems(),
+                ...SalesPersonResource::getNavigationItems(),
+                ...TargetResource::getNavigationItems(),
+                ...TerritoryResource::getNavigationItems(),
+            ])->collapsed();
+    }
+
+    private function getStockNavigationGroup(): NavigationGroup
+    {
+        return NavigationGroup::make('Stock')
+            ->items([
+                ...ItemResource::getNavigationItems(),
+                ...ItemGroupResource::getNavigationItems(),
+                ...PriceListResource::getNavigationItems(),
+            ])->collapsed();
+    }
+
+    private function getMasterDataNavigationGroup(): NavigationGroup
+    {
+        return NavigationGroup::make('Master Data')
+            ->icon('heroicon-o-circle-stack')
+            ->items([
+                ...CountryResource::getNavigationItems(),
+                ...ProvinceResource::getNavigationItems(),
+                ...CityResource::getNavigationItems(),
+                ...SubDistrictResource::getNavigationItems(),
+                ...VillageResource::getNavigationItems(),
+                ...CurrencyResource::getNavigationItems(),
+                ...TimezoneResource::getNavigationItems(),
+                ...UomResource::getNavigationItems(),
+            ])->collapsed();
+    }
+
+    private function getUserManagementNavigationGroup(): NavigationGroup
+    {
+        return NavigationGroup::make('User Management')
+            ->items([
+                ...UserResource::getNavigationItems(),
+                ...RoleResource::getNavigationItems(),
+            ])->collapsed();
+    }
+
+    protected function getSettingsNavigationGroup(): NavigationGroup
+    {
+        return NavigationGroup::make('Settings')
+            ->items([
+                ...AppSetting::getNavigationItems(),
+            ])->collapsed();
     }
 }

@@ -35,9 +35,66 @@ return new class extends Migration
             $table->string('iso_alpha_3', 3);
             $table->string('iso_numeric', 3);
             $table->string('calling_code');
-            $table->string('date_format')->nullable();
-            $table->string('time_format')->nullable();
-            $table->string('timezone')->nullable();
+            $table->text('geometry')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('provinces', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('province_code')->unique();
+            $table->string('name');
+            $table->string('postal_code');
+            $table->foreignId('country_id')->constrained('countries')->cascadeOnDelete();
+            $table->text('geometry')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('cities', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('city_code')->unique();
+            $table->string('name');
+            $table->string('postal_code');
+            $table->foreignId('province_code')->constrained('provinces', 'province_code')->cascadeOnDelete();
+            $table->text('geometry')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('sub_districts', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('sub_district_code')->unique();
+            $table->string('name');
+            $table->string('postal_code');
+            $table->foreignId('city_code')->constrained('cities', 'city_code')->cascadeOnDelete();
+            $table->text('geometry')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('villages', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('village_code')->unique();
+            $table->string('name');
+            $table->string('postal_code');
+            $table->foreignId('sub_district_code')
+                ->constrained('sub_districts', 'sub_district_code')->cascadeOnDelete();
+            $table->text('geometry')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
@@ -231,6 +288,10 @@ return new class extends Migration
             $table->dropForeign(['customer_id']);
             $table->dropColumn('customer_id');
         });
+        Schema::dropIfExists('villages');
+        Schema::dropIfExists('sub_districts');
+        Schema::dropIfExists('cities');
+        Schema::dropIfExists('provinces');
         Schema::dropIfExists('countries');
         Schema::dropIfExists('countryables');
         Schema::dropIfExists('interactions');
