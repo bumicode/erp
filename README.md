@@ -17,4 +17,14 @@ BUMICODE ERP | code with ❤ from sukabumi
 - **[WIP]** Dokumentasi Developer bisa dilihat pada [**Link Ini**](https://bumicode.gitbook.io/erp-dev/)
 - **[WIP]** Dokumentasi Database bisa dilihat pada [**Link Ini**](https://dbdocs.io/mohamadsyalvasr/bumicode_erp)
 - **[WIP]** UI bisa dilihat pada [**Link Ini**](https://www.figma.com/file/zmsJ1HOdVMCrdp2FvKwlRW/ERP?node-id=0%3A1&t=lp0ek86C1gNfSxFR-1)
-- Gunakan **[Fitur Diskusi](https://github.com/bumicode/erp/discussions)** untuk berbagi ide dan sebagainya 
+- Gunakan **[Fitur Diskusi](https://github.com/bumicode/erp/discussions)** untuk berbagi ide dan sebagainya
+
+## Star History
+
+<a href="https://star-history.com/#bumicode/erp&Timeline">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bumicode/erp&type=Timeline&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bumicode/erp&type=Timeline" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=bumicode/erp&type=Timeline" />
+ </picture>
+</a>
