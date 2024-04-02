@@ -28,10 +28,12 @@ return new class extends Migration
         Schema::create('customer_sales_person', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sales_person_id')->nullable()->constrained('sales_people')->cascadeOnDelete();
-            $table->float('contribution')->default(0);
+            $table->float('contribution')->nullable();
             $table->float('commission_rate')->nullable();
             $table->bigInteger('contribution_to_net_total')->nullable();
             $table->bigInteger('incentives')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
