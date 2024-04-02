@@ -1,45 +1,55 @@
 version: "3.3"
 
 volumes:
-    mysql_data:
+    postgres_data:
+    redis_data:
 
 services:
     sqldb:
-        image: mysql:5.7
-        container_name: erp-mysql
+        image: postgres:15
+        container_name: erp-postgres
         volumes:
-            - mysql_data:/var/lib/mysql
+            - postgres_data:/var/lib/postgresql/data
         environment:
-            - MYSQL_DATABASE=epr
-            - MYSQL_USER=epr
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD:-erp}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-erp}
-        command: --default-storage-engine innodb
+            - POSTGRES_DB=erp
+            - POSTGRES_USER=erp
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-erp}
         restart: unless-stopped
         healthcheck:
-            test: mysqladmin -p$MYSQL_ROOT_PASSWORD ping -h localhost
+            test: pg_isready -U erp
             interval: 20s
             start_period: 10s
             timeout: 10s
             retries: 3
+
+    redis:
+        image: redis:latest
+        container_name: erp-redis
+        volumes:
+            - redis_data:/data
+        restart: unless-stopped
+
     erp:
         image: bumicode/erp:latest
         container_name: erp-server
         environment:
-            - DB_CONNECTION=mysql
+            - DB_CONNECTION=pgsql
             - DB_HOST=sqldb
-            - DB_PORT=3306
+            - DB_PORT=5432
             - DB_DATABASE=erp
             - DB_USERNAME=erp
-            - DB_PASSWORD=${MYSQL_PASSWORD:-erp}
+            - DB_PASSWORD=${POSTGRES_PASSWORD:-erp}
             - MAIL_MAILER=smtp
             - MAIL_HOST=smtp.mailtrap.io
             - MAIL_PORT=2525
             - MAIL_USERNAME=your_username
             - MAIL_PASSWORD=your_password
             - MAIL_ENCRYPTION=tls
+            - REDIS_HOST=redis
+            - REDIS_PORT=6379
         depends_on:
             - sqldb
+            - redis
         restart: "no"
         ports:
             - "8000:8000"
