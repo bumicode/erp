@@ -3,10 +3,10 @@
 namespace App\Policies\Stock;
 
 use App\Models\User;
-use App\Models\Stock\PriceList;
+use App\Models\Stock\StockEntryType;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PriceListPolicy
+class StockEntryTypePolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class PriceListPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_stock::price::list');
+        return $user->can('view_any_stock::stock::entry::type');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, PriceList $priceList): bool
+    public function view(User $user, StockEntryType $stockEntryType): bool
     {
-        return $user->can('view_stock::price::list');
+        return $user->can('view_stock::stock::entry::type');
     }
 
     /**
@@ -31,23 +31,23 @@ class PriceListPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_stock::price::list');
+        return $user->can('create_stock::stock::entry::type');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, PriceList $priceList): bool
+    public function update(User $user, StockEntryType $stockEntryType): bool
     {
-        return $user->can('update_stock::price::list');
+        return $user->can('update_stock::stock::entry::type');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, PriceList $priceList): bool
+    public function delete(User $user, StockEntryType $stockEntryType): bool
     {
-        return $user->can('delete_stock::price::list');
+        return $user->can('delete_stock::stock::entry::type');
     }
 
     /**
@@ -55,15 +55,15 @@ class PriceListPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_stock::price::list');
+        return $user->can('delete_any_stock::stock::entry::type');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, PriceList $priceList): bool
+    public function forceDelete(User $user, StockEntryType $stockEntryType): bool
     {
-        return $user->can('force_delete_stock::price::list');
+        return $user->can('force_delete_stock::stock::entry::type');
     }
 
     /**
@@ -71,15 +71,15 @@ class PriceListPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_stock::price::list');
+        return $user->can('force_delete_any_stock::stock::entry::type');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, PriceList $priceList): bool
+    public function restore(User $user, StockEntryType $stockEntryType): bool
     {
-        return $user->can('restore_stock::price::list');
+        return $user->can('restore_stock::stock::entry::type');
     }
 
     /**
@@ -87,15 +87,15 @@ class PriceListPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_stock::price::list');
+        return $user->can('restore_any_stock::stock::entry::type');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, PriceList $priceList): bool
+    public function replicate(User $user, StockEntryType $stockEntryType): bool
     {
-        return $user->can('replicate_stock::price::list');
+        return $user->can('replicate_stock::stock::entry::type');
     }
 
     /**
@@ -103,6 +103,6 @@ class PriceListPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_stock::price::list');
+        return $user->can('reorder_stock::stock::entry::type');
     }
 }

@@ -36,7 +36,7 @@ return new class extends Migration
             $table->foreignId('supplier_group_id')->constrained('supplier_groups')->cascadeOnDelete();
             $table->enum('type', ['individual', 'company'])->default('company');
             $table->foreignId('billing_currency_id')->nullable()->constrained('currencies')->nullOnDelete();
-            $table->foreignId('price_list_id')->nullable()->constrained('price_lists')->nullOnDelete();
+            $table->foreignId('price_list_id')->nullable()->constrained('item_price_lists')->nullOnDelete();
             $table->foreignId('default_company_bank_account_id')->nullable()
                 ->constrained('bank_accounts')->nullOnDelete();
             $table->boolean('is_transporter')->default(false);

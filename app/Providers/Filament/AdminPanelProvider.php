@@ -14,6 +14,7 @@ use App\Filament\Resources\Common\TimezoneResource;
 use App\Filament\Resources\Common\VillageResource;
 use App\Filament\Resources\CRM\AddressResource;
 use App\Filament\Resources\CRM\ContactResource;
+use App\Filament\Resources\CRM\LeadResource;
 use App\Filament\Resources\Selling\CustomerGroupResource;
 use App\Filament\Resources\Selling\CustomerResource;
 use App\Filament\Resources\Selling\QuotationResource;
@@ -24,8 +25,11 @@ use App\Filament\Resources\Selling\TerritoryResource;
 use App\Filament\Resources\Shield\RoleResource;
 use App\Filament\Resources\Stock\BrandResource;
 use App\Filament\Resources\Stock\ItemGroupResource;
+use App\Filament\Resources\Stock\ItemPriceListResource;
 use App\Filament\Resources\Stock\ItemResource;
 use App\Filament\Resources\Stock\PriceListResource;
+use App\Filament\Resources\Stock\StockEntryResource;
+use App\Filament\Resources\Stock\StockEntryTypeResource;
 use App\Filament\Resources\Stock\UomResource;
 use App\Filament\Resources\UserResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -187,6 +191,7 @@ class AdminPanelProvider extends PanelProvider
             ->items([
                 ...AddressResource::getNavigationItems(),
                 ...ContactResource::getNavigationItems(),
+                ...LeadResource::getNavigationItems(),
             ])->collapsed();
     }
 
@@ -211,7 +216,9 @@ class AdminPanelProvider extends PanelProvider
                 ...BrandResource::getNavigationItems(),
                 ...ItemResource::getNavigationItems(),
                 ...ItemGroupResource::getNavigationItems(),
-                ...PriceListResource::getNavigationItems(),
+                ...ItemPriceListResource::getNavigationItems(),
+                ...StockEntryResource::getNavigationItems(),
+                ...StockEntryTypeResource::getNavigationItems(),
             ])->collapsed();
     }
 

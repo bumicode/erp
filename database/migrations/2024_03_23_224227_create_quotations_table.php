@@ -30,7 +30,6 @@ return new class extends Migration
             $table->integer('total_qty');
             $table->integer('total_net_weight');
             $table->bigInteger('total_amount');
-            $table->foreignId('tax_category_id')->constrained('tax_categories')->nullOnDelete();
             $table->bigInteger('sales_tax_charge_template')->nullable();
             $table->foreign('sales_tax_charge_template')->references('id')->on('tax_charge_templates');
             $table->bigInteger('total_tax_charge');

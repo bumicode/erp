@@ -161,16 +161,26 @@ class ItemResource extends Resource
                             ->helperText('If this item  has variants, then it cannot be selected in sales orders etc.')
                             ->live()
                             ->required(),
-                        Forms\Components\Toggle::make('is_fixed_asset')
-                            ->required(),
                         Forms\Components\TextInput::make('over_delivery_allowance')
                             ->required()
                             ->numeric()
-                            ->default(0),
+                            ->default(0)
+                            ->hidden(fn (?Item $record) => $record === null),
                         Forms\Components\TextInput::make('over_billing_allowance')
                             ->required()
                             ->numeric()
+                            ->default(0)
+                            ->hidden(fn (?Item $record) => $record === null),
+                        Forms\Components\TextInput::make('opening_stock')
+                            ->numeric()
+                            ->default(0)
+                            ->hidden(fn (Get $get): bool => ! $get('maintain_stock')),
+                        Forms\Components\TextInput::make('standard_selling_rate')
+                            ->label('Standard Selling Rate')
+                            ->numeric()
                             ->default(0),
+                        Forms\Components\Toggle::make('is_fixed_asset')
+                            ->required(),
                     ]),
 
                 Section::make('Description')

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->boolean('is_group')->default(false);
             $table->string('name');
             $table->foreignId('parent_id')->nullable()->constrained('customer_groups')->nullOnDelete();
-            $table->foreignId('default_price_list_id')->nullable()->constrained('price_lists')->nullOnDelete();
+            $table->foreignId('default_price_list_id')->nullable()->constrained('item_price_lists')->nullOnDelete();
             $table->foreignId('default_payment_terms_template_id')
                 ->nullable()->constrained('payment_terms_templates')
                 ->nullOnDelete();

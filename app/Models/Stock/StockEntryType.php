@@ -4,15 +4,13 @@ namespace App\Models\Stock;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Wildside\Userstamps\Userstamps;
 
-class PriceList extends Model
+class StockEntryType extends Model
 {
-    use HasFactory, Userstamps;
+    use HasFactory;
 
     protected $fillable = [
         'name',
-        'is_buying',
-        'is_selling',
+        'purpose'
     ];
 }

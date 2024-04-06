@@ -11,13 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tax_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->timestamps();
-        });
 
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
@@ -49,7 +42,6 @@ return new class extends Migration
             $table->string('email_address')->nullable();
             $table->string('phone')->nullable();
             $table->string('fax')->nullable();
-            $table->foreignId('tax_category_id')->nullable()->constrained('tax_categories')->nullOnDelete();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

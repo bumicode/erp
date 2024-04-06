@@ -36,14 +36,14 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('price_lists', function (Blueprint $table) {
+        Schema::create('item_price_lists', function (Blueprint $table) {
             $table->id();
-            $table->boolean('status')->default(true);
+            $table->boolean('is_active')->default(true);
             $table->string('name');
             $table->foreignId('currency_id')->constrained('currencies')->nullOnDelete();
-            $table->boolean('buying')->default(false);
-            $table->boolean('selling')->default(false);
-            $table->boolean('price_not_uom_dependent')->default(false);
+            $table->boolean('is_buying')->default(false);
+            $table->boolean('is_selling')->default(false);
+            $table->boolean('is_price_not_uom_dependent')->default(false);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
@@ -55,7 +55,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('price_lists');
+        Schema::dropIfExists('item_price_lists');
         Schema::dropIfExists('currencies');
     }
 };

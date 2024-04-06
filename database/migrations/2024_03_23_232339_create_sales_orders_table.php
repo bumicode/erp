@@ -51,8 +51,6 @@ return new class extends Migration
             $table->double('total_qty');
             $table->integer('total_net_weight');
             $table->double('total_amount');
-            $table->bigInteger('tax_category')->unsigned();
-            $table->foreign('tax_category')->references('id')->on('tax_categories');
             $table->bigInteger('sales_tax_charge_template')->nullable();
             $table->foreign('sales_tax_charge_template')->references('id')->on('tax_charge_templates');
             $table->double('total_tax_charge');

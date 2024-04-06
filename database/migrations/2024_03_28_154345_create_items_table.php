@@ -104,7 +104,7 @@ return new class extends Migration
             $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
             $table->foreignId('uom_id')->nullable()->constrained('uoms')->cascadeOnDelete();
             $table->integer('packing_unit')->default(1);
-            $table->foreignId('price_list_id')->constrained('price_lists')->cascadeOnDelete();
+            $table->foreignId('price_list_id')->constrained('item_price_lists')->cascadeOnDelete();
             $table->boolean('is_buying')->default(false);
             $table->boolean('is_selling')->default(false);
             $table->foreignId('batch_id')->nullable()->constrained('batches')->nullOnDelete();
@@ -131,7 +131,6 @@ return new class extends Migration
         Schema::create('item_taxes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
-            $table->foreignId('tax_category_id')->nullable()->constrained('tax_categories')->nullOnDelete();
             $table->date('valid_from')->nullable();
             $table->decimal('minimum_nat_rate')->nullable();
             $table->decimal('maximum_nat_rate')->nullable();

@@ -170,7 +170,6 @@ return new class extends Migration
             $table->string('company_phone')->nullable();
             $table->string('industry')->nullable();
             $table->string('tax_id')->nullable();
-            $table->foreignId('tax_category_id')->nullable()->constrained('tax_categories')->nullOnDelete();
             $table->foreignId('tax_withholding_category_id')->nullable()
                 ->constrained('tax_withholding_categories')->nullOnDelete();
             $table->foreignId('currency_id')->nullable()->constrained('currencies')->nullOnDelete();
