@@ -3,6 +3,7 @@
 namespace App\Observers\CRM;
 
 use App\Models\CRM\Address;
+use App\Models\Stock\Warehouse;
 use Illuminate\Support\Facades\DB;
 
 class AddressObserver
