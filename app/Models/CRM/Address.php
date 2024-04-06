@@ -3,6 +3,7 @@
 namespace App\Models\CRM;
 
 use App\Models\Selling\Customer;
+use App\Models\Stock\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,8 +47,12 @@ class Address extends Model
         return $this->morphedByMany(Customer::class, 'addressable');
     }
 
-    public function customer(): HasOne
+    public function warehouses(): MorphToMany
+    {
+        return $this->morphedByMany(Warehouse::class, 'addressable');
+    }
 
+    public function customer(): HasOne
     {
         return $this->hasOne(Customer::class);
     }

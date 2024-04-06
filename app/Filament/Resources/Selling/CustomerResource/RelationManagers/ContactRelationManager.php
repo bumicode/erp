@@ -2,13 +2,12 @@
 
 namespace App\Filament\Resources\Selling\CustomerResource\RelationManagers;
 
-use Filament\Forms;
+use App\Filament\Resources\CRM\ContactResource;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ContactRelationManager extends RelationManager
 {
@@ -18,54 +17,10 @@ class ContactRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('first_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('middle_name')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('last_name')
-                    ->maxLength(255),
-                Forms\Components\Select::make('address_id')
-                    ->searchable()
-                    ->preload()
-                    ->optionsLimit(10)
-                    ->default(null)
-                    ->relationship('address', 'address_title'),
-                Forms\Components\Select::make('salutation_id')
-                    ->searchable()
-                    ->preload()
-                    ->optionsLimit(10)
-                    ->default(null)
-                    ->relationship('salutation', 'name'),
-                Forms\Components\Select::make('user_id')
-                    ->searchable()
-                    ->preload()
-                    ->optionsLimit(10)
-                    ->default(null)
-                    ->relationship('user', 'name'),
-                Forms\Components\Toggle::make('is_primary_contact')
-                    ->required(),
-                Forms\Components\Toggle::make('is_billing_contact')
-                    ->required(),
-                Forms\Components\Select::make('status')
-                    ->required()
-                    ->default('Passive')
-                    ->options([
-                        'Open' => 'Open',
-                        'Replied' => 'Replied',
-                        'Passive' => 'Passive',
+                Section::make()
+                    ->schema([
+                        ContactResource::makeGroup(),
                     ]),
-                Forms\Components\TextInput::make('designation')
-                    ->maxLength(255),
-                Forms\Components\Select::make('gender')
-                    ->required()
-                    ->default('Male')
-                    ->options([
-                        'Male' => 'Male',
-                        'Female' => 'Female',
-                    ]),
-                Forms\Components\TextInput::make('company_name')
-                    ->maxLength(255),
             ]);
     }
 

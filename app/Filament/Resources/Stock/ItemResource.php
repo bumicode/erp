@@ -191,6 +191,7 @@ class ItemResource extends Resource
                     ->collapsed(),
             ]);
     }
+
     private static function makeInventoryTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Inventory')

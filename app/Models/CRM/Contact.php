@@ -5,6 +5,7 @@ namespace App\Models\CRM;
 use App\Models\Common\Email;
 use App\Models\Common\PhoneNumber;
 use App\Models\Selling\Customer;
+use App\Models\Stock\Warehouse;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,11 @@ class Contact extends Model
     public function customers(): MorphToMany
     {
         return $this->morphedByMany(Customer::class, 'contactable');
+    }
+
+    public function warehouses(): MorphToMany
+    {
+        return $this->morphedByMany(Warehouse::class, 'contactable');
     }
 
     public function user(): BelongsTo
