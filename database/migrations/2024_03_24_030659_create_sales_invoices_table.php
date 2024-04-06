@@ -69,9 +69,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sales_invoice_id')->constrained('sales_invoices')->cascadeOnDelete();
             $table->foreignId('item_id')->constrained('items')->nullOnDelete();
-            $table->foreignId('warehouse_accepted_id')->constrained('warehouses')->nullOnDelete();
-            $table->foreignId('warehouse_rejected_id')->nullable()->constrained('warehouses')->nullOnDelete();
-            $table->integer('accepted_qty');
+           $table->integer('accepted_qty');
             $table->integer('rejected_qty')->default(0);
             $table->double('item_rate');
             $table->double('total_amount');

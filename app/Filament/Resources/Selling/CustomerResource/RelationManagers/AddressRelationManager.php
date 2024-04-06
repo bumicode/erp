@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\Selling\CustomerResource\RelationManagers;
 
-use App\Models\CRM\Address;
-use Filament\Forms;
+use App\Filament\Resources\CRM\AddressResource;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -17,75 +17,10 @@ class AddressRelationManager extends RelationManager
     {
         return $form
             ->schema([
-
-                Forms\Components\Toggle::make('status')
-                    ->label('Status')
-                    ->default(true)
-                    ->hidden(fn (?Address $record) => $record === null),
-
-                Forms\Components\Toggle::make('is_preferred_billing_address')
-                    ->label('Is Preferred Billing Addresses')
-                    ->required(),
-
-                Forms\Components\Toggle::make('is_preferred_shipping_address')
-                    ->label('Is Preferred Shipping Addresses')
-                    ->required(),
-
-                Forms\Components\TextInput::make('address_title')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\Select::make('address_type')
-                    ->required()
-                    ->options([
-                        'Billing' => 'Billing',
-                        'Shipping' => 'Shipping',
-                        'Office' => 'Office',
-                        'Personal' => 'Personal',
-                        'Plant' => 'Plant',
-                        'Postal' => 'Postal',
-                        'Shop' => 'Shop',
-                        'Subsidiary' => 'Subsidiary',
-                        'Warehouse' => 'Warehouse',
-                        'Current' => 'Current',
-                        'Permanent' => 'Permanent',
-                        'Other' => 'Other',
+                Section::make()
+                    ->schema([
+                        AddressResource::makeGroup(),
                     ]),
-
-                Forms\Components\TextInput::make('address_line_one')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('address_line_two')
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('city_town')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('county')
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('state_province')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('country')
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('postal_code')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('email_address')
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('phone')
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('fax')
-                    ->maxLength(255),
-
             ]);
     }
 

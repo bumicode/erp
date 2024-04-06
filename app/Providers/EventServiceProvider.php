@@ -6,10 +6,12 @@ use App\Models\CRM\Address;
 use App\Models\CRM\Contact;
 use App\Models\Selling\Customer;
 use App\Models\Stock\Item;
+use App\Models\Stock\Warehouse;
 use App\Observers\CRM\AddressObserver;
 use App\Observers\CRM\ContactObserver;
 use App\Observers\Selling\CustomerObserver;
 use App\Observers\Stock\ItemObserver;
+use App\Observers\Stock\WarehouseObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -40,6 +42,7 @@ class EventServiceProvider extends ServiceProvider
         Customer::observe(CustomerObserver::class);
         Contact::observe(ContactObserver::class);
         Item::observe(ItemObserver::class);
+        Warehouse::observe(WarehouseObserver::class);
     }
 
     /**

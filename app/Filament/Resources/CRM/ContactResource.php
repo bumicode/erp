@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\CRM;
 
 use App\Filament\Resources\CRM\ContactResource\Pages;
-use App\Filament\Resources\CRM\ContactResource\RelationManagers;
 use App\Models\CRM\Contact;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
@@ -11,15 +10,15 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ContactResource extends Resource
 {
     protected static ?string $model = Contact::class;
 
     protected static ?string $navigationGroup = 'CRM';
+
     protected static ?string $slug = 'crm/contact';
+
     protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     public static function form(Form $form): Form
@@ -28,57 +27,8 @@ class ContactResource extends Resource
             ->schema([
                 Section::make()
                     ->schema([
-                        Forms\Components\Toggle::make('is_primary_contact')
-                            ->required(),
-                        Forms\Components\Toggle::make('is_billing_contact')
-                            ->required(),
-                        Forms\Components\TextInput::make('first_name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Select::make('status')
-                            ->required()
-                            ->default('Passive')
-                            ->options([
-                                'Open' => 'Open',
-                                'Replied' => 'Replied',
-                                'Passive' => 'Passive',
-                            ])
-                            ->default('Open'),
-                        Forms\Components\TextInput::make('middle_name')
-                            ->maxLength(255),
-                        Forms\Components\Select::make('salutation_id')
-                            ->searchable()
-                            ->preload()
-                            ->optionsLimit(10)
-                            ->default(null)
-                            ->relationship('salutation', 'name'),
-                        Forms\Components\TextInput::make('last_name')
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('designation')
-                            ->maxLength(255),
-                        Forms\Components\Select::make('user_id')
-                            ->searchable()
-                            ->preload()
-                            ->optionsLimit(10)
-                            ->default(null)
-                            ->relationship('user', 'name'),
-                        Forms\Components\Select::make('gender')
-                            ->required()
-                            ->default('Male')
-                            ->options([
-                                'Male' => 'Male',
-                                'Female' => 'Female',
-                            ]),
-                        Forms\Components\Select::make('address_id')
-                            ->searchable()
-                            ->preload()
-                            ->optionsLimit(10)
-                            ->default(null)
-                            ->relationship('address', 'address_title'),
-                        Forms\Components\TextInput::make('company_name')
-                            ->maxLength(255),
-                    ])
-                    ->columns(2),
+                        self::makeGroup(),
+                    ]),
             ]);
     }
 
@@ -160,5 +110,61 @@ class ContactResource extends Resource
             'view' => Pages\ViewContact::route('/{record}'),
             'edit' => Pages\EditContact::route('/{record}/edit'),
         ];
+    }
+
+    public static function makeGroup(): Forms\Components\Group
+    {
+        return Forms\Components\Group::make()
+            ->schema([
+                Forms\Components\Toggle::make('is_primary_contact')
+                    ->required(),
+                Forms\Components\Toggle::make('is_billing_contact')
+                    ->required(),
+                Forms\Components\TextInput::make('first_name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('status')
+                    ->required()
+                    ->default('Passive')
+                    ->options([
+                        'Open' => 'Open',
+                        'Replied' => 'Replied',
+                        'Passive' => 'Passive',
+                    ])
+                    ->default('Open'),
+                Forms\Components\TextInput::make('middle_name')
+                    ->maxLength(255),
+                Forms\Components\Select::make('salutation_id')
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10)
+                    ->default(null)
+                    ->relationship('salutation', 'name'),
+                Forms\Components\TextInput::make('last_name')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('designation')
+                    ->maxLength(255),
+                Forms\Components\Select::make('user_id')
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10)
+                    ->default(null)
+                    ->relationship('user', 'name'),
+                Forms\Components\Select::make('gender')
+                    ->required()
+                    ->default('Male')
+                    ->options([
+                        'Male' => 'Male',
+                        'Female' => 'Female',
+                    ]),
+                Forms\Components\Select::make('address_id')
+                    ->searchable()
+                    ->preload()
+                    ->optionsLimit(10)
+                    ->default(null)
+                    ->relationship('address', 'address_title'),
+                Forms\Components\TextInput::make('company_name')
+                    ->maxLength(255),
+            ])->columns(2);
     }
 }

@@ -31,6 +31,8 @@ use App\Filament\Resources\Stock\PriceListResource;
 use App\Filament\Resources\Stock\StockEntryResource;
 use App\Filament\Resources\Stock\StockEntryTypeResource;
 use App\Filament\Resources\Stock\UomResource;
+use App\Filament\Resources\Stock\WarehouseResource;
+use App\Filament\Resources\Stock\WarehouseTypeResource;
 use App\Filament\Resources\UserResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -92,7 +94,6 @@ class AdminPanelProvider extends PanelProvider
                 $this->getFilamentShieldPlugin(),
                 $this->getBreezyCorePlugin(),
             ])
-            ->sidebarCollapsibleOnDesktop()
             ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
                 return $builder->items([
                     NavigationItem::make('Dashboard')
@@ -219,6 +220,8 @@ class AdminPanelProvider extends PanelProvider
                 ...ItemPriceListResource::getNavigationItems(),
                 ...StockEntryResource::getNavigationItems(),
                 ...StockEntryTypeResource::getNavigationItems(),
+                ...WarehouseResource::getNavigationItems(),
+                ...WarehouseTypeResource::getNavigationItems(),
             ])->collapsed();
     }
 

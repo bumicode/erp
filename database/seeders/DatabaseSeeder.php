@@ -11,6 +11,7 @@ use Database\Seeders\Selling\CustomerGroupSeeder;
 use Database\Seeders\Selling\TerritorySeeder;
 use Database\Seeders\Stock\ItemGroupSeeder;
 use Database\Seeders\Stock\UomSeeder;
+use Database\Seeders\Stock\WarehouseSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
             UomSeeder::class,
             ItemGroupSeeder::class,
+            WarehouseSeeder::class
         ]);
     }
 }

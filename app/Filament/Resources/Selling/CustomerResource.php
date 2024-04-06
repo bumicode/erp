@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\Selling;
 
+use App\Filament\Resources\CRM\AddressResource;
+use App\Filament\Resources\CRM\ContactResource;
 use App\Filament\Resources\Selling\CustomerResource\Pages;
 use App\Filament\Resources\Selling\CustomerResource\RelationManagers\AddressRelationManager;
 use App\Filament\Resources\Selling\CustomerResource\RelationManagers\ContactRelationManager;
 use App\Filament\Resources\Selling\CustomerResource\RelationManagers\SalesRelationManager;
-use App\Models\CRM\Address;
 use App\Models\Selling\Customer;
 use App\Models\Selling\SalesPerson;
 use Filament\Forms;
@@ -214,73 +215,7 @@ class CustomerResource extends Resource
                             ->relationship(name: 'primaryAddress', titleAttribute: 'address_title')
                             ->optionsLimit(10)
                             ->createOptionForm([
-                                Forms\Components\Toggle::make('status')
-                                    ->label('Status')
-                                    ->default(true)
-                                    ->hidden(fn (?Address $record) => $record === null),
-
-                                Forms\Components\Toggle::make('is_preferred_billing_address')
-                                    ->label('Is Preferred Billing Addresses')
-                                    ->required(),
-
-                                Forms\Components\Toggle::make('is_preferred_shipping_address')
-                                    ->label('Is Preferred Shipping Addresses')
-                                    ->required(),
-
-                                Forms\Components\TextInput::make('address_title')
-                                    ->required()
-                                    ->maxLength(255),
-
-                                Forms\Components\Select::make('address_type')
-                                    ->required()
-                                    ->options([
-                                        'Billing' => 'Billing',
-                                        'Shipping' => 'Shipping',
-                                        'Office' => 'Office',
-                                        'Personal' => 'Personal',
-                                        'Plant' => 'Plant',
-                                        'Postal' => 'Postal',
-                                        'Shop' => 'Shop',
-                                        'Subsidiary' => 'Subsidiary',
-                                        'Warehouse' => 'Warehouse',
-                                        'Current' => 'Current',
-                                        'Permanent' => 'Permanent',
-                                        'Other' => 'Other',
-                                    ]),
-
-                                Forms\Components\TextInput::make('address_line_one')
-                                    ->required()
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('address_line_two')
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('city_town')
-                                    ->required()
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('county')
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('state_province')
-                                    ->required()
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('country')
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('postal_code')
-                                    ->required()
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('email_address')
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('phone')
-                                    ->maxLength(255),
-
-                                Forms\Components\TextInput::make('fax')
-                                    ->maxLength(255),
+                                AddressResource::makeGroup(),
                             ])
                             ->searchable()
                             ->hidden(fn (?Customer $record) => $record != null),
@@ -291,54 +226,7 @@ class CustomerResource extends Resource
                                 name: 'primaryContact', titleAttribute: 'full_name')
                             ->optionsLimit(10)
                             ->createOptionForm([
-                                Forms\Components\TextInput::make('first_name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('middle_name')
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('last_name')
-                                    ->maxLength(255),
-                                Forms\Components\Select::make('address_id')
-                                    ->searchable()
-                                    ->preload()
-                                    ->optionsLimit(10)
-                                    ->default(null)
-                                    ->relationship('address', 'address_title'),
-                                Forms\Components\Select::make('salutation_id')
-                                    ->searchable()
-                                    ->preload()
-                                    ->optionsLimit(10)
-                                    ->default(null)
-                                    ->relationship('salutation', 'name'),
-                                Forms\Components\Select::make('user_id')
-                                    ->searchable()
-                                    ->preload()
-                                    ->optionsLimit(10)
-                                    ->default(null)
-                                    ->relationship('user', 'name'),
-                                Forms\Components\Toggle::make('is_primary_contact')
-                                    ->required(),
-                                Forms\Components\Toggle::make('is_billing_contact')
-                                    ->required(),
-                                Forms\Components\Select::make('status')
-                                    ->required()
-                                    ->default('Passive')
-                                    ->options([
-                                        'Open' => 'Open',
-                                        'Replied' => 'Replied',
-                                        'Passive' => 'Passive',
-                                    ]),
-                                Forms\Components\TextInput::make('designation')
-                                    ->maxLength(255),
-                                Forms\Components\Select::make('gender')
-                                    ->required()
-                                    ->default('Male')
-                                    ->options([
-                                        'Male' => 'Male',
-                                        'Female' => 'Female',
-                                    ]),
-                                Forms\Components\TextInput::make('company_name')
-                                    ->maxLength(255),
+                                ContactResource::makeGroup(),
                             ])
                             ->searchable(['full_name'])
                             ->hidden(fn (?Customer $record) => $record != null),
