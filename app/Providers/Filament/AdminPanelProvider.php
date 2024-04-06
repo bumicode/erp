@@ -22,12 +22,12 @@ use App\Filament\Resources\Selling\SalesPersonResource;
 use App\Filament\Resources\Selling\TargetResource;
 use App\Filament\Resources\Selling\TerritoryResource;
 use App\Filament\Resources\Shield\RoleResource;
+use App\Filament\Resources\Stock\BrandResource;
 use App\Filament\Resources\Stock\ItemGroupResource;
 use App\Filament\Resources\Stock\ItemResource;
 use App\Filament\Resources\Stock\PriceListResource;
 use App\Filament\Resources\Stock\UomResource;
 use App\Filament\Resources\UserResource;
-use App\Models\User;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -48,7 +48,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
@@ -117,7 +116,8 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 'panels::body.end',
                 fn () => view('customFooter'),
-            );
+            )
+            ->spa();
     }
 
     protected function getMiddleware(): array
@@ -208,6 +208,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return NavigationGroup::make('Stock')
             ->items([
+                ...BrandResource::getNavigationItems(),
                 ...ItemResource::getNavigationItems(),
                 ...ItemGroupResource::getNavigationItems(),
                 ...PriceListResource::getNavigationItems(),

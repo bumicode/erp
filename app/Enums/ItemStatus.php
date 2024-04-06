@@ -12,6 +12,7 @@ enum ItemStatus: string implements HasColor, HasIcon, HasLabel
     case Disabled = 'disabled';
     case Template = 'template';
     case Variant = 'variant';
+
     public function getColor(): string|array|null
     {
         return match ($this) {

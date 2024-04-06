@@ -121,6 +121,11 @@ class ItemResource extends Resource
                         Forms\Components\Select::make('brand_id')
                             ->searchable()
                             ->optionsLimit(5)
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                            ])
                             ->relationship('brand', 'name'),
                         Forms\Components\TextInput::make('code')
                             ->default($code)
@@ -136,6 +141,8 @@ class ItemResource extends Resource
                             ->preload(),
                         Forms\Components\Select::make('default_uom_id')
                             ->relationship('defaultUom', 'abbreviation')
+                            ->searchable()
+                            ->optionsLimit(5)
                             ->default(1),
                     ]),
 

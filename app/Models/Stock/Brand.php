@@ -9,4 +9,9 @@ use Wildside\Userstamps\Userstamps;
 class Brand extends Model
 {
     use HasFactory, Userstamps;
+
+    protected $fillable = [
+        'name',
+        'description'
+    ];
 }
