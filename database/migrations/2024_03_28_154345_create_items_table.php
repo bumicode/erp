@@ -113,7 +113,7 @@ return new class extends Migration
             $table->date('valid_from')->default(Now());
             $table->date('valid_upto')->nullable();
             $table->integer('lead_time_in_days')->default(0);
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

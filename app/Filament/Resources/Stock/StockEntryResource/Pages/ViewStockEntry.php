@@ -4,17 +4,16 @@ namespace App\Filament\Resources\Stock\StockEntryResource\Pages;
 
 use App\Filament\Resources\Stock\StockEntryResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditStockEntry extends EditRecord
+class ViewStockEntry extends ViewRecord
 {
     protected static string $resource = StockEntryResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\EditAction::make(),
         ];
     }
 }

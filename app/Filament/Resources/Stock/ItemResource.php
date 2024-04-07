@@ -143,7 +143,8 @@ class ItemResource extends Resource
                             ->relationship('defaultUom', 'abbreviation')
                             ->searchable()
                             ->optionsLimit(5)
-                            ->default(1),
+                            ->default(1)
+                            ->live(),
                     ]),
 
                 Forms\Components\Group::make()
@@ -174,8 +175,18 @@ class ItemResource extends Resource
                         Forms\Components\TextInput::make('opening_stock')
                             ->numeric()
                             ->default(0)
+                            ->suffix(fn (Get $get): string => UnitOfMeasure::where('id', $get('default_uom_id'))
+                                ->pluck('abbreviation')
+                                ->first()
+                            )
                             ->hidden(fn (Get $get): bool => ! $get('maintain_stock')),
+                        Forms\Components\TextInput::make('standard_buying_rate')
+                            ->prefix('Rp')
+                            ->label('Standard Buying Rate')
+                            ->numeric()
+                            ->default(0),
                         Forms\Components\TextInput::make('standard_selling_rate')
+                            ->prefix('Rp')
                             ->label('Standard Selling Rate')
                             ->numeric()
                             ->default(0),

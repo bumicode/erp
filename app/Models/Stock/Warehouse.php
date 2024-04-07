@@ -5,13 +5,14 @@ namespace App\Models\Stock;
 use App\Models\Accounting\Account;
 use App\Models\CRM\Address;
 use App\Models\CRM\Contact;
+use App\Traits\SelectableOptions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Warehouse extends Model
 {
-    use HasFactory;
+    use HasFactory, SelectableOptions;
 
     protected $fillable = [
         'is_active',

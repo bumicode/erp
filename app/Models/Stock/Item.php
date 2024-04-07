@@ -2,7 +2,7 @@
 
 namespace App\Models\Stock;
 
-use App\Enums\ItemStatus;
+use App\Enums\Stock\ItemStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

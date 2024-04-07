@@ -26,9 +26,18 @@ class StockEntryTypeResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('purpose')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('purpose')
+                    ->options([
+                        'material issue' => 'Material Issue',
+                        'material receipt' => 'Material Receipt',
+                        'material transfer' => 'Material Transfer',
+                        'material transfer for manufacture' => 'Material Transfer for Manufacture',
+                        'material consumption for manufacture' => 'Material Consumption for Manufacture',
+                        'manufacture' => 'Manufacture',
+                        'repack' => 'Repack',
+                        'send to subcontractor' => 'Send to Subcontractor',
+                    ])
+                    ->required(),
             ]);
     }
 
