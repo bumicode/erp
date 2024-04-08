@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3b9caaee93392a81a0b9acd14ba28b5d",
+    "content-hash": "b2bc73b61f8edc647f6fb674a76220de",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1682,7 +1682,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v3.2.62",
+            "version": "v3.2.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
@@ -3289,16 +3289,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.26.0",
+            "version": "3.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "072735c56cc0da00e10716dd90d5a7f7b40b36be"
+                "reference": "4729745b1ab737908c7d055148c9a6b3e959832f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/072735c56cc0da00e10716dd90d5a7f7b40b36be",
-                "reference": "072735c56cc0da00e10716dd90d5a7f7b40b36be",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4729745b1ab737908c7d055148c9a6b3e959832f",
+                "reference": "4729745b1ab737908c7d055148c9a6b3e959832f",
                 "shasum": ""
             },
             "require": {
@@ -3363,7 +3363,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.26.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.27.0"
             },
             "funding": [
                 {
@@ -3375,7 +3375,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-25T11:49:53+00:00"
+            "time": "2024-04-07T19:17:50+00:00"
         },
         {
             "name": "league/flysystem-local",
@@ -11456,5 +11456,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
