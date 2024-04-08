@@ -28,7 +28,6 @@ use App\Filament\Resources\Stock\ItemGroupResource;
 use App\Filament\Resources\Stock\ItemPriceListResource;
 use App\Filament\Resources\Stock\ItemPriceResource;
 use App\Filament\Resources\Stock\ItemResource;
-use App\Filament\Resources\Stock\PriceListResource;
 use App\Filament\Resources\Stock\StockEntryResource;
 use App\Filament\Resources\Stock\StockEntryTypeResource;
 use App\Filament\Resources\Stock\UomResource;
@@ -123,6 +122,9 @@ class AdminPanelProvider extends PanelProvider
                 'panels::body.end',
                 fn () => view('customFooter'),
             )
+            ->resources([
+                config('filament-logger.activity_resource'),
+            ])
             ->spa();
     }
 
@@ -257,6 +259,8 @@ class AdminPanelProvider extends PanelProvider
         return NavigationGroup::make('Settings')
             ->items([
                 ...AppSetting::getNavigationItems(),
+                ...ActivityResource::getNavigationItems(),
+//                ...\App\Filament\Resources\Activitylog\ActivityResource::getNavigationItems(),
             ])->collapsed();
     }
 }

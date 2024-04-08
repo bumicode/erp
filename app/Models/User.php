@@ -19,7 +19,15 @@ use Wildside\Userstamps\Userstamps;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasApiTokens, HasFactory, HasPanelShield, HasRoles, HasTags,LogsActivity, Notifiable, TwoFactorAuthenticatable, Userstamps;
+    use HasApiTokens,
+        HasFactory,
+        HasPanelShield,
+        HasRoles,
+        HasTags,
+        LogsActivity,
+        Notifiable,
+        TwoFactorAuthenticatable,
+        Userstamps;
 
     /**
      * The attributes that are mass assignable.
