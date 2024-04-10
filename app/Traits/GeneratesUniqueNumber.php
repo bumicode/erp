@@ -11,7 +11,7 @@ trait GeneratesUniqueNumber
      */
     public static function generateNumber(): string
     {
-        $withYear = isset(static::$withYear) ? static::$withYear : true;
+        $withYear = static::$withYear ?? true;
 
         if (! isset(static::$numberPrefix) || ! isset(static::$numberField)) {
             throw new MissingAttributeException('numberPrefix or numberField');
@@ -41,7 +41,7 @@ trait GeneratesUniqueNumber
             $lastNumber = 0;
         } else {
             $lastFiveDigits = substr($lastNumber, -5);
-            $lastFiveDigits = preg_replace('/[^0-9]/', '', $lastFiveDigits);
+            $lastFiveDigits = preg_replace('/\D/', '', $lastFiveDigits);
             $lastNumber = (int) $lastFiveDigits;
         }
 
