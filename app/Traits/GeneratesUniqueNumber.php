@@ -45,7 +45,14 @@ trait GeneratesUniqueNumber
             $lastNumber = (int) $lastFiveDigits;
         }
 
-        return str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
+        // Check for duplicates
+        $counter = 0;
+        $newNumber = $lastNumber + 1;
+        while (static::where($field, $newNumber)->exists()) {
+            $newNumber = $lastNumber + ++$counter;
+        }
+
+        return str_pad($newNumber, 5, '0', STR_PAD_LEFT);
     }
 
     private static function hasField($field): bool
