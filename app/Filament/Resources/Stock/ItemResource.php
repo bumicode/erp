@@ -118,7 +118,7 @@ class ItemResource extends Resource
                             ->label('Item Template')
                             ->relationship('parent', 'name')
                             ->hidden(function (?Item $item): bool {
-                                return $item !== null || $item->parent_id === null;
+                                return $item->parent_id === null || $item !== null;
                             }),
                         Forms\Components\Select::make('brand_id')
                             ->searchable()
