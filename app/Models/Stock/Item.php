@@ -192,6 +192,23 @@ class Item extends Model
     }
 
     /**
+     * Get the item stock levels.
+     * @return HasMany
+     */
+    public function itemStockLevels(): HasMany
+    {
+        return $this->hasMany(ItemStockLevel::class);
+    }
+
+    /**
+     * Get the stock entries associated with the item.
+     */
+    public function stockEntries(): HasMany
+    {
+        return $this->hasMany(StockEntry::class, 'item_id', 'id');
+    }
+
+    /**
      * Scope to get the default uom id of an item.
      *
      * @param  Builder  $query

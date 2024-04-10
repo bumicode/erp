@@ -6,6 +6,8 @@ use App\Enums\Stock\StockEntryStatus;
 use App\Traits\GeneratesUniqueNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class StockEntry extends Model
 {
@@ -48,16 +50,16 @@ class StockEntry extends Model
     /*
      * Get the stock entry type that owns the stock entry.
      */
-    public function stockEntryType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function stockEntryType(): BelongsTo
     {
         return $this->belongsTo(StockEntryType::class);
     }
 
-    /*
-     * Get the items that owns the stock entry.
+    /**
+     * Get the items associated with the stock entry.
      */
-    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function items(): HasMany
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(Item::class, 'id', 'item_id');
     }
 }

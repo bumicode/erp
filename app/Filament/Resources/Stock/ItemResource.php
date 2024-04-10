@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Stock;
 use App\Exceptions\MissingAttributeException;
 use App\Filament\Resources\Stock\ItemResource\Pages;
 use App\Models\Stock\Item;
+use App\Models\Stock\ItemGroup;
 use App\Models\Stock\UnitOfMeasure;
 use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
@@ -133,19 +134,23 @@ class ItemResource extends Resource
                             ->helperText(__('Leave it blank if you want it to be automatic'))
                             ->maxLength(255),
                         Forms\Components\TextInput::make('name')
+                            ->label('Item Name')
+                            ->required()
                             ->maxLength(255),
                         Forms\Components\Select::make('item_group_id')
                             ->relationship('itemGroup', 'name')
                             ->searchable()
+                            ->options(ItemGroup::getAllDataWithoutGroup())
                             ->optionsLimit(5)
                             ->required()
                             ->preload(),
                         Forms\Components\Select::make('default_uom_id')
-                            ->label('Default UOM (Smaller UOM)')
+                            ->label('Default UOM')
+                            ->default(1)
+                            ->helperText(__('Smaller UOM for this item'))
                             ->relationship('defaultUom', 'abbreviation')
                             ->searchable()
                             ->optionsLimit(5)
-                            ->default(1)
                             ->live(),
                     ]),
 
