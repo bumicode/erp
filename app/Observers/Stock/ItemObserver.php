@@ -3,15 +3,29 @@
 namespace App\Observers\Stock;
 
 use App\Models\Stock\Item;
+use App\Models\Stock\ItemPrice;
+use App\Models\Stock\ItemPriceList;
 
 class ItemObserver
 {
+    /**
+     * Handle the Item "creating" event.
+     */
+    public function creating(Item $item): void
+    {
+        if (empty($item->code)) {
+            $code = Item::generateNumber();
+            $item->code = $code;
+        }
+    }
+
     /**
      * Handle the Item "created" event.
      */
     public function created(Item $item): void
     {
-        //
+        $this->createItemPrice($item, 1, $item->standard_selling_rate);
+        $this->createItemPrice($item, 2, $item->standard_buying_rate);
     }
 
     /**
@@ -76,5 +90,31 @@ class ItemObserver
         if (! $item->maintain_stock && $item->itemInventory) {
             $item->itemInventory->delete();
         }
+    }
+
+    /**
+     * Create an item price entry.
+     */
+    private function createItemPrice(Item $item, int $priceListId, $standardRate): void
+    {
+        $priceList = ItemPriceList::find($priceListId);
+
+        if (! $priceList) {
+            return;
+        }
+
+        $currencyId = $priceList->currency_id;
+        $isSelling = $priceList->is_selling;
+        $isBuying = $priceList->is_buying;
+
+        ItemPrice::create([
+            'item_id' => $item->id,
+            'uom_id' => $item->default_uom_id,
+            'price_list_id' => $priceListId,
+            'is_selling' => $isSelling,
+            'is_buying' => $isBuying,
+            'currency_id' => $currencyId,
+            'rate' => $standardRate,
+        ]);
     }
 }

@@ -156,44 +156,36 @@ class ItemPriceResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('item.name')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('uom.name')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('uom.abbreviation')
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('packing_unit')
                     ->numeric()
-                    ->sortable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('priceList.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\IconColumn::make('is_buying')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_selling')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('batch.id')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('currency_id')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('currency.code')
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('rate')
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('valid_from')
                     ->date()
-                    ->sortable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('valid_upto')
                     ->date()
-                    ->sortable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('lead_time_in_days')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_by')
-                    ->numeric()
-                    ->sortable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

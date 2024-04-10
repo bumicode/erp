@@ -3,13 +3,20 @@
 namespace App\Models\Stock;
 
 use App\Enums\Stock\StockEntryStatus;
+use App\Traits\GeneratesUniqueNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class StockEntry extends Model
 {
-    use HasFactory;
+    use GeneratesUniqueNumber, HasFactory;
 
+    public static $numberPrefix = 'STE'; // set the desired prefix
+    public static $numberField = 'series'; // set the desired field name
+
+    /*
+     * The attributes that are mass assignable.
+     */
     protected $fillable = [
         'status',
         'series',
@@ -24,6 +31,9 @@ class StockEntry extends Model
         'total_additional_cost',
     ];
 
+    /*
+     * The attributes that should be cast to native types.
+     */
     protected $casts = [
         'items' => 'json',
         'total_outgoing' => 'float',
@@ -35,11 +45,17 @@ class StockEntry extends Model
         'status' => StockEntryStatus::class,
     ];
 
+    /*
+     * Get the stock entry type that owns the stock entry.
+     */
     public function stockEntryType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(StockEntryType::class);
     }
 
+    /*
+     * Get the items that owns the stock entry.
+     */
     public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Item::class);

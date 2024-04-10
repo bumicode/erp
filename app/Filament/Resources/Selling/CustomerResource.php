@@ -217,6 +217,7 @@ class CustomerResource extends Resource
                             ->createOptionForm([
                                 AddressResource::makeGroup(),
                             ])
+                            ->preload()
                             ->searchable()
                             ->hidden(fn (?Customer $record) => $record != null),
 
@@ -228,6 +229,7 @@ class CustomerResource extends Resource
                             ->createOptionForm([
                                 ContactResource::makeGroup(),
                             ])
+                            ->preload()
                             ->searchable(['full_name'])
                             ->hidden(fn (?Customer $record) => $record != null),
 
