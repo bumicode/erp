@@ -18,8 +18,7 @@ return [
 
     'tab' => [
         'details' => 'Detail',
-        'contact' => 'Kontak',
-        'address' => 'Alamat',
+        'contact_address' => 'Kontak & Alamat',
         'tax' => 'Pajak',
         'accounting' => 'Akuntansi',
         'sales_team' => 'Tim Penjualan',
@@ -55,7 +54,7 @@ return [
             ],
         ],
         'contact_address' => [
-            'title' => 'Alamat Utama dan Kontak',
+            'title' => 'Alamat dan Kontak Utama',
             'description' => 'Pilih, untuk membuat konsumen dapat dicari dengan menggunakan bidang ini',
             'field' => [
                 'address' => 'Alamat Utama',

@@ -18,8 +18,7 @@ return [
 
     'tab' => [
         'details' => 'Details',
-        'contact' => 'Contact',
-        'address' => 'Address',
+        'contact_address' => 'Contact & Address',
         'tax' => 'Tax',
         'accounting' => 'Accounting',
         'sales_team' => 'Sales Team',

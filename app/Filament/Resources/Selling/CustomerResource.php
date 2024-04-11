@@ -67,7 +67,7 @@ class CustomerResource extends Resource
 
     private static function makeDetailsTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Details')
+        return Tabs\Tab::make(__('selling/customers.tab.details'))
             ->schema([
                 Forms\Components\Select::make('salutation_id')
                     ->label(__('selling/customers.field.detail.salutation'))
@@ -217,14 +217,15 @@ class CustomerResource extends Resource
 
     private static function makeContactAddressTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Contact & Address')
+        return Tabs\Tab::make(__('selling/customers.tab.contact_address'))
             ->schema([
-                Section::make('Primary Address and Contact')
-                    ->description('Select, to make the customer searchable with these fields')
+                Section::make(__('selling/customers.field.contact_address.title'))
+                    ->description(__('selling/customers.field.contact_address.description'))
                     ->schema([
 
                         Select::make('primary_address_id')
-                            ->helperText('Reselect, if the chosen address is edited after save')
+                            ->label(__('selling/customers.field.contact_address.field.address'))
+                            ->helperText(__('selling/customers.field.contact_address.field.address_hint'))
                             ->relationship(name: 'primaryAddress', titleAttribute: 'address_title')
                             ->optionsLimit(10)
                             ->createOptionForm([
@@ -235,7 +236,8 @@ class CustomerResource extends Resource
                             ->hidden(fn (?Customer $record) => $record != null),
 
                         Select::make('primary_contact_id')
-                            ->helperText('Reselect, if the chosen contact is edited after save')
+                            ->label(__('selling/customers.field.contact_address.field.contact'))
+                            ->helperText(__('selling/customers.field.contact_address.field.contact_hint'))
                             ->relationship(
                                 name: 'primaryContact', titleAttribute: 'full_name')
                             ->optionsLimit(10)
@@ -273,7 +275,7 @@ class CustomerResource extends Resource
 
     private static function makeTaxTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Tax')
+        return Tabs\Tab::make(__('selling/customers.tab.tax'))
             ->schema([
 
                 Forms\Components\TextInput::make('tax_id')
@@ -293,7 +295,7 @@ class CustomerResource extends Resource
 
     private static function makeAccountingTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Accounting')
+        return Tabs\Tab::make(__('selling/customers.tab.accounting'))
             ->schema([
                 Section::make('Credit Limit and Payment Terms')
                     ->schema([
@@ -308,7 +310,7 @@ class CustomerResource extends Resource
 
     private static function makeSalesTeamTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Sales Team')
+        return Tabs\Tab::make(__('selling/customers.tab.sales_team'))
             ->schema([
 
                 Repeater::make('Sales Team')
@@ -358,7 +360,7 @@ class CustomerResource extends Resource
 
     private static function makeSettingsTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Settings')
+        return Tabs\Tab::make(__('selling/customers.tab.settings'))
             ->schema([
                 Forms\Components\Toggle::make('allow_sales_invoice_creation_without_sales_order')
                     ->label('Allow sales invoice creation without Sales Order')
