@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Stock;
 
+use App\Exceptions\MissingAttributeException;
 use App\Filament\Resources\Stock\ItemResource\Pages;
 use App\Models\Stock\Item;
+use App\Models\Stock\ItemGroup;
 use App\Models\Stock\UnitOfMeasure;
 use Filament\Forms;
 use Filament\Forms\Components\RichEditor;
@@ -12,6 +14,7 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -108,8 +111,6 @@ class ItemResource extends Resource
 
     private static function makeDetailsTab(): Tabs\Tab
     {
-        $code = self::generateCode();
-
         return Tabs\Tab::make('Details')
             ->schema([
                 Forms\Components\Group::make()
@@ -117,7 +118,9 @@ class ItemResource extends Resource
                         Forms\Components\Select::make('parent_id')
                             ->label('Item Template')
                             ->relationship('parent', 'name')
-                            ->hidden(fn (?Item $record) => $record === null),
+                            ->hidden(function (?Item $item): bool {
+                                return $item->parent_id === null || $item !== null;
+                            }),
                         Forms\Components\Select::make('brand_id')
                             ->searchable()
                             ->optionsLimit(5)
@@ -128,22 +131,27 @@ class ItemResource extends Resource
                             ])
                             ->relationship('brand', 'name'),
                         Forms\Components\TextInput::make('code')
-                            ->default($code)
-                            ->required()
+                            ->helperText(__('Leave it blank if you want it to be automatic'))
                             ->maxLength(255),
                         Forms\Components\TextInput::make('name')
+                            ->label('Item Name')
+                            ->required()
                             ->maxLength(255),
                         Forms\Components\Select::make('item_group_id')
                             ->relationship('itemGroup', 'name')
                             ->searchable()
+                            ->options(ItemGroup::getAllDataWithoutGroup())
                             ->optionsLimit(5)
                             ->required()
                             ->preload(),
                         Forms\Components\Select::make('default_uom_id')
+                            ->label('Default UOM')
+                            ->default(1)
+                            ->helperText(__('Smaller UOM for this item'))
                             ->relationship('defaultUom', 'abbreviation')
                             ->searchable()
                             ->optionsLimit(5)
-                            ->default(1),
+                            ->live(),
                     ]),
 
                 Forms\Components\Group::make()
@@ -173,12 +181,28 @@ class ItemResource extends Resource
                             ->hidden(fn (?Item $record) => $record === null),
                         Forms\Components\TextInput::make('opening_stock')
                             ->numeric()
-                            ->default(0)
-                            ->hidden(fn (Get $get): bool => ! $get('maintain_stock')),
-                        Forms\Components\TextInput::make('standard_selling_rate')
-                            ->label('Standard Selling Rate')
+                            ->default(1)
+                            ->hidden(function (Get $get, ?Item $record): bool {
+                                return ! $get('maintain_stock') || $record !== null;
+                            }),
+                        Forms\Components\TextInput::make('standard_buying_rate')
+                            ->prefix('Rp')
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->label('Standard Buying Rate')
                             ->numeric()
-                            ->default(0),
+                            ->default(0)
+                            ->required()
+                            ->hidden(fn (?Item $record) => $record != null),
+                        Forms\Components\TextInput::make('standard_selling_rate')
+                            ->prefix('Rp')
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->label('Standard Selling Rate')
+                            ->required()
+                            ->numeric()
+                            ->default(0)
+                            ->hidden(fn (?Item $record) => $record != null),
                         Forms\Components\Toggle::make('is_fixed_asset')
                             ->required(),
                     ]),
@@ -197,61 +221,130 @@ class ItemResource extends Resource
         return Tabs\Tab::make('Inventory')
             ->schema([
                 Forms\Components\Group::make()
-                    ->relationship('itemInventory')
                     ->schema([
+                        Forms\Components\Group::make()
+                            ->relationship('itemInventory')
+                            ->schema([
 
-                        Forms\Components\TextInput::make('shelf_life')
-                            ->label('Shelf Life In Days')
-                            ->minValue(0)
-                            ->numeric(),
+                                Forms\Components\TextInput::make('shelf_life')
+                                    ->label('Shelf Life In Days')
+                                    ->minValue(0)
+                                    ->numeric(),
 
-                        Forms\Components\DatePicker::make('end_of_life')
-                            ->label('End of Life')
-                            ->default('31-12-2099'),
+                                Forms\Components\DatePicker::make('end_of_life')
+                                    ->label('End of Life')
+                                    ->default('31-12-2099'),
 
-                        Forms\Components\Select::make('default_material_request_type')
-                            ->label('Default Material Request Type')
-                            ->options([
-                                'purchase' => 'Purchase',
-                                'material transfer' => 'Material Transfer',
-                                'material issue' => 'Material Issue',
-                                'manufacture' => 'Manufacture',
-                                'customer provided' => 'Customer Provided',
+                                Forms\Components\Select::make('default_material_request_type')
+                                    ->label('Default Material Request Type')
+                                    ->options([
+                                        'purchase' => 'Purchase',
+                                        'material transfer' => 'Material Transfer',
+                                        'material issue' => 'Material Issue',
+                                        'manufacture' => 'Manufacture',
+                                        'customer provided' => 'Customer Provided',
+                                    ]),
+
+                                Forms\Components\Select::make('valuation_method')
+                                    ->label('Valuation Method')
+                                    ->options([
+                                        'fifo' => 'FIFO',
+                                        'moving average' => 'Moving Average',
+                                        'lifo' => 'LIFO',
+                                    ]),
                             ]),
 
-                        Forms\Components\Select::make('valuation_method')
-                            ->label('Default Material Request Type')
-                            ->options([
-                                'fifo' => 'FIFO',
-                                'moving average' => 'Moving Average',
-                                'lifo' => 'LIFO',
+                        Forms\Components\Group::make()
+                            ->relationship('itemInventory')
+                            ->schema([
+
+                                Forms\Components\TextInput::make('warranty_period')
+                                    ->label('Warranty Period (in days)')
+                                    ->minValue(0)
+                                    ->numeric(),
+
+                                Forms\Components\TextInput::make('weight_per_unit')
+                                    ->label('Weight Per Unit')
+                                    ->numeric(),
+
+                                Forms\Components\Select::make('weight_uom_id')
+                                    ->options(UnitOfMeasure::all()->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->optionsLimit(5)
+                                    ->label('Weight Per Unit'),
+
+                                Forms\Components\Toggle::make('allow_negative_stock')
+                                    ->label('Allow Negative Stock'),
                             ]),
-                    ]),
-
-                Forms\Components\Group::make()
-                    ->relationship('itemInventory')
+                    ])
+                    ->columns(2)
+                    ->columnSpan(['lg' => 4]),
+                Section::make('Barcodes')
                     ->schema([
-
-                        Forms\Components\TextInput::make('warranty_period')
-                            ->label('Warranty Period (in days)')
-                            ->minValue(0)
-                            ->numeric(),
-
-                        Forms\Components\TextInput::make('weight_per_unit')
-                            ->label('Weight Per Unit')
-                            ->numeric(),
-
-                        Forms\Components\Select::make('weight_uom_id')
-                            ->options(UnitOfMeasure::all()->pluck('name', 'id'))
-                            ->searchable()
-                            ->optionsLimit(5)
-                            ->label('Weight Per Unit'),
-
-                        Forms\Components\Toggle::make('allow_negative_stock')
-                            ->label('Allow Negative Stock'),
-                    ]),
+                        Forms\Components\Repeater::make('barcodes')
+                            ->label('Barcodes')
+                            ->relationship('itemBarcodes')
+                            ->schema([
+                                Forms\Components\TextInput::make('barcode')
+                                    ->unique(),
+                                Forms\Components\Select::make('barcode_type')
+                                    ->options([
+                                        'EAN-13' => 'EAN-13',
+                                        'EAN-8' => 'EAN-8',
+                                        'UPC-A' => 'UPC-A',
+                                        'UPC-E' => 'UPC-E',
+                                        'JAN' => 'JAN',
+                                        'ISBN' => 'ISBN',
+                                        'ISSN' => 'ISSN',
+                                    ]),
+                                Forms\Components\Select::make('uom_id')
+                                    ->label('UOM')
+                                    ->relationship('uom', 'abbreviation')
+                                    ->searchable()
+                                    ->optionsLimit(5)
+                                    ->preload()
+                                    ->disableOptionWhen(function ($value, $state, Get $get) {
+                                        return collect($get('../*.uom_id'))
+                                            ->reject(fn ($id) => $id == $state)
+                                            ->filter()
+                                            ->contains($value);
+                                    })
+                                    ->live(),
+                            ])
+                            ->defaultItems(0)
+                            ->columns(3)
+                            ->columnSpan(['lg' => 4]),
+                    ])
+                    ->collapsed(),
+                Section::make('Units of Measure')
+                    ->schema([
+                        Forms\Components\Repeater::make('uoms')
+                            ->label('UOMs')
+                            ->relationship('itemUomConversion')
+                            ->schema([
+                                Forms\Components\Select::make('uom_id')
+                                    ->label('UOM')
+                                    ->relationship('uom', 'abbreviation')
+                                    ->searchable()
+                                    ->optionsLimit(5)
+                                    ->preload()
+                                    ->disableOptionWhen(function ($value, $state, Get $get) {
+                                        return collect($get('../*.uom_id'))
+                                            ->reject(fn ($id) => $id == $state)
+                                            ->filter()
+                                            ->contains($value);
+                                    })
+                                    ->live(),
+                                Forms\Components\TextInput::make('conversion_rate')
+                                    ->numeric()
+                                    ->default(1),
+                            ])
+                            ->defaultItems(0)
+                            ->columns(2)
+                            ->columnSpan(['lg' => 4]),
+                    ])
+                    ->collapsed(),
             ])
-            ->columns(2)
             ->hidden(fn (Get $get): bool => ! $get('maintain_stock'));
     }
 
@@ -374,17 +467,5 @@ class ItemResource extends Resource
             ->columns(2)
             ->columnSpan(['lg' => 4])
             ->hidden(fn (?Item $record) => $record === null || $record->parent_id === null);
-    }
-
-    private static function generateCode()
-    {
-        $latestItem = Item::latest()->first();
-        if ($latestItem) {
-            $seriesNumber = intval(substr($latestItem->code, 3)) + 1;
-        } else {
-            $seriesNumber = 1;
-        }
-
-        return 'ITM'.str_pad($seriesNumber, 4, '0', STR_PAD_LEFT);
     }
 }

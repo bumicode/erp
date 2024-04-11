@@ -2,6 +2,7 @@
 
 namespace App\Models\Stock;
 
+use App\Models\Common\Currency;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
@@ -38,11 +39,16 @@ class ItemPrice extends Model
 
     public function priceList(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(PriceList::class);
+        return $this->belongsTo(ItemPriceList::class);
     }
 
     public function batch(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Batch::class);
+    }
+
+    public function currency(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
     }
 }

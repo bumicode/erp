@@ -34,14 +34,21 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
+
         Schema::table('quotation_items', function (Blueprint $table) {
             $table->foreignId('warehouse_accepted_id')->nullable()->constrained('warehouses')->nullOnDelete();
             $table->foreignId('warehouse_rejected_id')->nullable()->constrained('warehouses')->nullOnDelete();
         });
+
         Schema::table('sales_items', function (Blueprint $table) {
             $table->foreignId('warehouse_accepted_id')->nullable()->constrained('warehouses')->nullOnDelete();
             $table->foreignId('warehouse_rejected_id')->nullable()->constrained('warehouses')->nullOnDelete();
         });
+
+        Schema::table('item_stock_levels', function (Blueprint $table) {
+            $table->foreignId('warehouse_id')->nullable()->constrained('warehouses')->nullOnDelete();
+        });
+
         Schema::table('sales_invoice_items', function (Blueprint $table) {
             $table->foreignId('warehouse_accepted_id')->nullable()->constrained('warehouses')->nullOnDelete();
             $table->foreignId('warehouse_rejected_id')->nullable()->constrained('warehouses')->nullOnDelete();
@@ -70,6 +77,10 @@ return new class extends Migration
             $table->dropColumn('warehouse_accepted_id');
             $table->dropForeign(['warehouse_rejected_id']);
             $table->dropColumn('warehouse_rejected_id');
+        });
+        Schema::table('item_stock_levels', function (Blueprint $table) {
+            $table->dropForeign(['warehouse_id']);
+            $table->dropColumn('warehouse_id');
         });
         Schema::dropIfExists('warehouses');
         Schema::dropIfExists('warehouse_types');

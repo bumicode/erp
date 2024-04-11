@@ -19,11 +19,6 @@ class ListCountries extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ImportAction::make()
-                ->importer(CountryImporter::class),
-            Actions\ExportAction::make()
-                ->label('Export All Countries')
-                ->exporter(CountryExporter::class),
             Actions\CreateAction::make(),
             Actions\ImportAction::make()
                 ->importer(CountryImporter::class),

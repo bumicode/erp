@@ -30,6 +30,7 @@ return new class extends Migration
         Schema::create('stock_entries', function (Blueprint $table) {
             $table->id();
             $table->string('series')->unique();
+            $table->enum('status', ['draft', 'submitted', 'canceled'])->default('draft');
             $table->foreignId('stock_entry_type_id')->constrained('stock_entry_types')->nullOnDelete();
             $table->boolean('is_inspection_required')->default(false);
             $table->timestamp('posting_at');

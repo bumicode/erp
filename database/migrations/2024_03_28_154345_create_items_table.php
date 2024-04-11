@@ -22,12 +22,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('conversions', function (Blueprint $table) {
-            $table->foreignId('uom_id');
-            $table->morphs('convertible');
-            $table->float('conversion_factor');
-        });
-
         Schema::create('item_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -48,11 +42,75 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('items', function (Blueprint $table) {
+        Schema::create('items', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('parent_id')->nullable()->constrained('items')->cascadeOnDelete();
+            $table->string('code')->unique();
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->enum('status', ['enabled', 'disabled', 'template', 'variant'])->default('enabled');
+            $table->boolean('active')->default(true);
+            $table->boolean('allow_alternative_item')->default(false);
+            $table->boolean('maintain_stock')->default(true);
+            $table->boolean('is_fixed_asset')->default(false);
+            $table->boolean('has_variant')->default(false);
+            $table->enum('variant_base_on', ['item attribute', 'manufacturer'])->default('item attribute');
+            $table->boolean('allow_purchase')->default(true);
+            $table->integer('over_delivery_allowance')->default(0);
+            $table->integer('over_billing_allowance')->default(0);
+            $table->integer('opening_stock')->default(0);
+            $table->float('standard_selling_rate')->default(0);
+            $table->float('standard_buying_rate')->default(0);
             $table->foreignId('item_group_id')->nullable()->constrained('item_groups')->nullOnDelete();
             $table->foreignId('default_uom_id')->nullable()->constrained('uoms')->nullOnDelete();
             $table->foreignId('brand_id')->nullable()->constrained('brands')->nullOnDelete();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('item_has_barcodes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            $table->string('barcode');
+            $table->enum('barcode_type', ['EAN-13', 'EAN-8', 'UPC-A', 'UPC-E', 'JAN', 'ISBN', 'ISSN'])->default('EAN-13');
+            $table->foreignId('uom_id')->constrained('uoms')->cascadeOnDelete();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('item_has_uoms', function (Blueprint $table) {
+            $table->id();
+            $table->boolean('is_default')->default(false);
+            $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            $table->foreignId('uom_id')->constrained('uoms')->cascadeOnDelete();
+            $table->float('conversion_rate')->default(1);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('item_stock_levels', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            $table->foreignId('uom_id')->constrained('uoms')->cascadeOnDelete();
+            $table->bigInteger('stock');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::table('quotation_items', function (Blueprint $table) {
+            $table->foreignId('item_id')->nullable()->constrained('items')->nullOnDelete();
+        });
+
+        Schema::table('sales_items', function (Blueprint $table) {
+            $table->foreignId('item_id')->nullable()->constrained('items')->nullOnDelete();
+        });
+
+        Schema::table('sales_invoice_items', function (Blueprint $table) {
+            $table->foreignId('item_id')->nullable()->constrained('items')->nullOnDelete();
         });
 
         Schema::create('item_attributes', function (Blueprint $table) {
@@ -109,11 +167,11 @@ return new class extends Migration
             $table->boolean('is_selling')->default(false);
             $table->foreignId('batch_id')->nullable()->constrained('batches')->nullOnDelete();
             $table->foreignId('currency_id')->nullable()->constrained('currencies')->nullOnDelete();
-            $table->decimal('rate')->default(0, 000);
+            $table->float('rate');
             $table->date('valid_from')->default(Now());
             $table->date('valid_upto')->nullable();
             $table->integer('lead_time_in_days')->default(0);
-            $table->text('note');
+            $table->text('note')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
@@ -132,8 +190,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
             $table->date('valid_from')->nullable();
-            $table->decimal('minimum_nat_rate')->nullable();
-            $table->decimal('maximum_nat_rate')->nullable();
+            $table->decimal('minimum_net_rate')->nullable();
+            $table->decimal('maximum_net_rate')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
@@ -178,6 +236,12 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('conversions', function (Blueprint $table) {
+            $table->foreignId('uom_id');
+            $table->morphs('convertible');
+            $table->float('conversion_factor');
+        });
     }
 
     /**
@@ -185,6 +249,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('conversions');
         Schema::dropIfExists('item_purchasing');
         Schema::dropIfExists('item_inventories');
         Schema::dropIfExists('item_taxes');
@@ -192,22 +257,27 @@ return new class extends Migration
         Schema::dropIfExists('item_prices');
         Schema::dropIfExists('item_has_attributes');
 
-        Schema::table('items', function (Blueprint $table) {
-            $table->dropForeign(['parent_id']);
-            $table->dropColumn('parent_id');
-            $table->dropForeign(['item_group_id']);
-            $table->dropColumn('item_group_id');
-            $table->dropForeign(['default_uom_id']);
-            $table->dropColumn('default_uom_id');
-            $table->dropForeign(['brand_id']);
+        Schema::table('quotation_items', function (Blueprint $table) {
+            $table->dropForeign(['item_id']);
+            $table->dropColumn('item_id');
+        });
+        Schema::table('sales_items', function (Blueprint $table) {
+            $table->dropForeign(['item_id']);
+            $table->dropColumn('item_id');
+        });
+        Schema::table('sales_invoice_items', function (Blueprint $table) {
+            $table->dropForeign(['item_id']);
+            $table->dropColumn('item_id');
         });
 
         Schema::dropIfExists('item_attribute_values');
+        Schema::dropIfExists('item_has_barcode');
+        Schema::dropIfExists('item_has_uoms');
         Schema::dropIfExists('item_attributes');
-        Schema::dropIfExists('item_groups');
         Schema::dropIfExists('batches');
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('items');
         Schema::dropIfExists('uoms');
-        Schema::dropIfExists('conversions');
+        Schema::dropIfExists('brands');
+        Schema::dropIfExists('item_groups');
     }
 };

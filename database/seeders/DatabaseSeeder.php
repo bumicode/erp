@@ -10,6 +10,8 @@ use Database\Seeders\CRM\SalutationSeed;
 use Database\Seeders\Selling\CustomerGroupSeeder;
 use Database\Seeders\Selling\TerritorySeeder;
 use Database\Seeders\Stock\ItemGroupSeeder;
+use Database\Seeders\Stock\ItemPriceListSeeder;
+use Database\Seeders\Stock\StockEntryTypeSeeder;
 use Database\Seeders\Stock\UomSeeder;
 use Database\Seeders\Stock\WarehouseSeeder;
 use Illuminate\Database\Seeder;
@@ -40,7 +42,9 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
             UomSeeder::class,
             ItemGroupSeeder::class,
-            WarehouseSeeder::class
+            ItemPriceListSeeder::class,
+            WarehouseSeeder::class,
+            StockEntryTypeSeeder::class,
         ]);
     }
 }

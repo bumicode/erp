@@ -22,7 +22,7 @@ return new class extends Migration
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
             $table->string('series')->unique();
-            $table->enum('status', ['Draft', 'Open', 'Replied', 'Partially Ordered', 'Lost', 'Cancelled', 'Expired'])
+            $table->enum('status', ['draft', 'open', 'replied', 'partially ordered', 'lost', 'cancelled', 'expired'])
                 ->default('Draft');
             $table->timestamp('posting_date');
             $table->timestamp('valid_upto');
@@ -41,30 +41,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('items', function (Blueprint $table) {
-            $table->id();
-            $table->boolean('active')->default(true);
-            $table->enum('status', ['enabled', 'disabled', 'template', 'variant'])->default(true);
-            $table->boolean('allow_alternative_item')->default(false);
-            $table->boolean('maintain_stock')->default(true);
-            $table->boolean('is_fixed_asset')->default(false);
-            $table->boolean('has_variant')->default(false);
-            $table->string('code')->unique();
-            $table->string('name')->nullable();
-            $table->text('description')->nullable();
-            $table->enum('variant_base_on', ['item attribute', 'manufacturer'])->default('item attribute');
-            $table->boolean('allow_purchase')->default(true);
-            $table->integer('over_delivery_allowance')->default(0);
-            $table->integer('over_billing_allowance')->default(0);
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->timestamps();
-        });
-
         Schema::create('quotation_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('quotation_id')->constrained('quotations')->cascadeOnDelete();
-            $table->foreignId('item_id')->nullable()->constrained('items')->nullOnDelete();
             $table->integer('accepted_qty');
             $table->integer('rejected_qty')->default(0);
             $table->float('item_rate');
@@ -86,11 +65,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('quotation_id')->constrained('quotations')->cascadeOnDelete();
             $table->enum('tax_type', [
-                'Actual',
-                'On Net Total',
-                'On Previous Row Amount',
-                'On Previous Row Total',
-                'On Item Quantity',
+                'actual',
+                'on net total',
+                'on previous row amount',
+                'on previous row total',
+                'on item quantity',
             ]);
             $table->foreignId('account_id')->constrained('accounts')->nullOnDelete();
             $table->float('tax_rate');
@@ -118,7 +97,6 @@ return new class extends Migration
         Schema::dropIfExists('quotationables');
         Schema::dropIfExists('quotations');
         Schema::dropIfExists('tax_charge_templates');
-        Schema::dropIfExists('items');
         Schema::dropIfExists('warehouses');
         Schema::dropIfExists('accounts');
     }

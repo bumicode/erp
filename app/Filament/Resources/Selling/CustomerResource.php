@@ -25,6 +25,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Lang;
 
 class CustomerResource extends Resource
 {
@@ -33,6 +34,11 @@ class CustomerResource extends Resource
     protected static ?string $navigationGroup = 'Selling';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
+
+    public static function getLabel(): string
+    {
+        return __('selling/customers.customer');
+    }
 
     public static function form(Form $form): Form
     {
@@ -61,9 +67,10 @@ class CustomerResource extends Resource
 
     private static function makeDetailsTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Details')
+        return Tabs\Tab::make(__('selling/customers.tab.details'))
             ->schema([
                 Forms\Components\Select::make('salutation_id')
+                    ->label(__('selling/customers.field.detail.salutation'))
                     ->searchable()
                     ->preload()
                     ->optionsLimit(10)
@@ -72,6 +79,7 @@ class CustomerResource extends Resource
 
                 Forms\Components\Select::make('territory_id')
                     ->relationship('territory', 'name')
+                    ->label(__('selling/customers.field.detail.territory'))
                     ->searchable()
                     ->preload()
                     ->required()
@@ -93,11 +101,12 @@ class CustomerResource extends Resource
                     ->optionsLimit(10),
 
                 Forms\Components\TextInput::make('name')
-                    ->label('Customer Name')
+                    ->label(__('selling/customers.field.detail.name'))
                     ->required()
                     ->maxLength(255),
 
                 Forms\Components\Select::make('gender')
+                    ->label(__('selling/customers.field.detail.gender'))
                     ->required()
                     ->options([
                         'Male' => 'Male',
@@ -105,6 +114,7 @@ class CustomerResource extends Resource
                     ]),
 
                 Forms\Components\Select::make('customer_type')
+                    ->label(__('selling/customers.field.detail.customer_type'))
                     ->required()
                     ->options([
                         'Individual' => 'Individual',
@@ -112,13 +122,14 @@ class CustomerResource extends Resource
                     ]),
 
                 Forms\Components\Select::make('from_lead')
+                    ->label(__('selling/customers.field.detail.from_lead'))
                     ->options([
                         'Individual' => 'Individual',
                         'Corporate' => 'Corporate',
                     ]),
 
                 Forms\Components\Select::make('customer_group_id')
-                    ->label('Customer Group')
+                    ->label(__('selling/customers.field.detail.customer_group'))
                     ->relationship('group', 'name')
                     ->searchable()
                     ->required()
@@ -142,13 +153,14 @@ class CustomerResource extends Resource
                     ]),
 
                 Forms\Components\Select::make('from_opportunity')
+                    ->label(__('selling/customers.field.detail.from_opportunity'))
                     ->options([
                         'Individual' => 'Individual',
                         'Corporate' => 'Corporate',
                     ]),
 
                 Forms\Components\Select::make('account_manager_id')
-                    ->label('Account Manager')
+                    ->label(__('selling/customers.field.detail.customer_manager'))
                     ->searchable()
                     ->optionsLimit(10)
                     ->relationship('manager', 'name'),
@@ -170,33 +182,34 @@ class CustomerResource extends Resource
 
                     ])->columns(2),
 
-                Section::make('Internal Customer')
-                    ->description('Marks that the consumer is an internal customer')
+                Section::make(__('selling/customers.field.detail.internal_customer.title'))
+                    ->description(__('selling/customers.field.detail.internal_customer.description'))
                     ->schema([
 
                         Forms\Components\Toggle::make('is_internal_customer')
-                            ->label('Mark as Internal Customer')
+                            ->label(__('selling/customers.field.detail.internal_customer.action'))
                             ->required(),
 
                     ])
                     ->collapsed(),
 
-                Section::make('More Information')
+                Section::make(__('selling/customers.field.detail.more_information.title'))
                     ->schema([
 
                         Forms\Components\TextInput::make('market_segment_id')
-                            ->label('Market Segment')
+                            ->label(__('selling/customers.field.detail.more_information.field.market_segment'))
                             ->numeric(),
 
                         Forms\Components\TextInput::make('industry_id')
-                            ->label('Industry')
+                            ->label(__('selling/customers.field.detail.more_information.field.industry'))
                             ->numeric(),
 
                         Forms\Components\TextInput::make('website')
-                            ->label('Website')
+                            ->label(__('selling/customers.field.detail.more_information.field.website'))
                             ->numeric(),
 
-                        RichEditor::make('content'),
+                        RichEditor::make('content')
+                            ->label(__('selling/customers.field.detail.more_information.field.content')),
                     ])
                     ->collapsed(),
             ]);
@@ -204,30 +217,34 @@ class CustomerResource extends Resource
 
     private static function makeContactAddressTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Contact & Address')
+        return Tabs\Tab::make(__('selling/customers.tab.contact_address'))
             ->schema([
-                Section::make('Primary Address and Contact')
-                    ->description('Select, to make the customer searchable with these fields')
+                Section::make(__('selling/customers.field.contact_address.title'))
+                    ->description(__('selling/customers.field.contact_address.description'))
                     ->schema([
 
                         Select::make('primary_address_id')
-                            ->helperText('Reselect, if the chosen address is edited after save')
+                            ->label(__('selling/customers.field.contact_address.field.address'))
+                            ->helperText(__('selling/customers.field.contact_address.field.address_hint'))
                             ->relationship(name: 'primaryAddress', titleAttribute: 'address_title')
                             ->optionsLimit(10)
                             ->createOptionForm([
                                 AddressResource::makeGroup(),
                             ])
+                            ->preload()
                             ->searchable()
                             ->hidden(fn (?Customer $record) => $record != null),
 
                         Select::make('primary_contact_id')
-                            ->helperText('Reselect, if the chosen contact is edited after save')
+                            ->label(__('selling/customers.field.contact_address.field.contact'))
+                            ->helperText(__('selling/customers.field.contact_address.field.contact_hint'))
                             ->relationship(
                                 name: 'primaryContact', titleAttribute: 'full_name')
                             ->optionsLimit(10)
                             ->createOptionForm([
                                 ContactResource::makeGroup(),
                             ])
+                            ->preload()
                             ->searchable(['full_name'])
                             ->hidden(fn (?Customer $record) => $record != null),
 
@@ -258,7 +275,7 @@ class CustomerResource extends Resource
 
     private static function makeTaxTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Tax')
+        return Tabs\Tab::make(__('selling/customers.tab.tax'))
             ->schema([
 
                 Forms\Components\TextInput::make('tax_id')
@@ -278,7 +295,7 @@ class CustomerResource extends Resource
 
     private static function makeAccountingTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Accounting')
+        return Tabs\Tab::make(__('selling/customers.tab.accounting'))
             ->schema([
                 Section::make('Credit Limit and Payment Terms')
                     ->schema([
@@ -293,7 +310,7 @@ class CustomerResource extends Resource
 
     private static function makeSalesTeamTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Sales Team')
+        return Tabs\Tab::make(__('selling/customers.tab.sales_team'))
             ->schema([
 
                 Repeater::make('Sales Team')
@@ -343,7 +360,7 @@ class CustomerResource extends Resource
 
     private static function makeSettingsTab(): Tabs\Tab
     {
-        return Tabs\Tab::make('Settings')
+        return Tabs\Tab::make(__('selling/customers.tab.settings'))
             ->schema([
                 Forms\Components\Toggle::make('allow_sales_invoice_creation_without_sales_order')
                     ->label('Allow sales invoice creation without Sales Order')

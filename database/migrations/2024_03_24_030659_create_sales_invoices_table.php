@@ -68,7 +68,6 @@ return new class extends Migration
         Schema::create('sales_invoice_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sales_invoice_id')->constrained('sales_invoices')->cascadeOnDelete();
-            $table->foreignId('item_id')->constrained('items')->nullOnDelete();
            $table->integer('accepted_qty');
             $table->integer('rejected_qty')->default(0);
             $table->double('item_rate');

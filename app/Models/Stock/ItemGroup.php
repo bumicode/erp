@@ -2,13 +2,14 @@
 
 namespace App\Models\Stock;
 
+use App\Traits\SelectableOptions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Wildside\Userstamps\Userstamps;
 
 class ItemGroup extends Model
 {
-    use HasFactory, Userstamps;
+    use HasFactory, SelectableOptions, Userstamps;
 
     protected $table = 'item_groups';
 

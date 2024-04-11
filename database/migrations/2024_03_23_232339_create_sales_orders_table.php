@@ -67,7 +67,6 @@ return new class extends Migration
         Schema::create('sales_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sales_order_id')->constrained('sales_orders')->cascadeOnDelete();
-            $table->foreignId('item_id')->constrained('items')->nullOnDelete();
             $table->integer('accepted_qty');
             $table->integer('rejected_qty')->default(0);
             $table->double('item_rate');

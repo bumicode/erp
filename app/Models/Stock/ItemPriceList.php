@@ -19,6 +19,12 @@ class ItemPriceList extends Model
         'is_price_not_uom_dependent',
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+        'is_buying' => 'boolean',
+        'is_selling' => 'boolean',
+    ];
+
     public function currency(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Currency::class);

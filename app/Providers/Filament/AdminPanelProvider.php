@@ -26,6 +26,7 @@ use App\Filament\Resources\Shield\RoleResource;
 use App\Filament\Resources\Stock\BrandResource;
 use App\Filament\Resources\Stock\ItemGroupResource;
 use App\Filament\Resources\Stock\ItemPriceListResource;
+use App\Filament\Resources\Stock\ItemPriceResource;
 use App\Filament\Resources\Stock\ItemResource;
 use App\Filament\Resources\Stock\PriceListResource;
 use App\Filament\Resources\Stock\StockEntryResource;
@@ -217,6 +218,7 @@ class AdminPanelProvider extends PanelProvider
                 ...BrandResource::getNavigationItems(),
                 ...ItemResource::getNavigationItems(),
                 ...ItemGroupResource::getNavigationItems(),
+                ...ItemPriceResource::getNavigationItems(),
                 ...ItemPriceListResource::getNavigationItems(),
                 ...StockEntryResource::getNavigationItems(),
                 ...StockEntryTypeResource::getNavigationItems(),
