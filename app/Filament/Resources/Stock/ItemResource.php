@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Stock;
 
 use App\Exceptions\MissingAttributeException;
 use App\Filament\Resources\Stock\ItemResource\Pages;
+use App\Filament\Resources\Stock\ItemResource\RelationManagers\ItemPricesRelationManager;
+use App\Filament\Resources\Stock\ItemResource\RelationManagers\ItemStockLevelsRelationManager;
 use App\Models\Stock\Item;
 use App\Models\Stock\ItemGroup;
 use App\Models\Stock\UnitOfMeasure;
@@ -77,7 +79,8 @@ class ItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ItemPricesRelationManager::class,
+            ItemStockLevelsRelationManager::class,
         ];
     }
 
