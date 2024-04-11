@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "bezhansalleh/filament-language-switch": "^3.1",
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",
@@ -16,7 +17,8 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.7",
         "pxlrbt/filament-activity-log": "^1.0",
-        "wildside/userstamps": "^2.4"
+        "wildside/userstamps": "^2.4",
+        "z3d0x/filament-logger": "^0.7.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
