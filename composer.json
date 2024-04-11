@@ -9,7 +9,7 @@
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",
-        "filament/spatie-laravel-tags-plugin": "3.2.63",
+        "filament/spatie-laravel-tags-plugin": "3.2.64",
         "guzzlehttp/guzzle": "^7.2",
         "jeffgreco13/filament-breezy": "^2.3",
         "laravel/framework": "^10.0",
