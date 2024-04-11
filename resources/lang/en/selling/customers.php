@@ -53,6 +53,7 @@ return [
                 ],
             ],
         ],
+
         'contact_address' => [
             'title' => 'Primary Address and Contact',
             'description' => 'Select, to make the customer searchable with these fields',
@@ -63,6 +64,7 @@ return [
                 'contact_hint' => 'Reselect, if the chosen contact is edited after save',
             ],
         ],
+
         'tax' => [
             'title' => 'Tax',
             'field' => [
@@ -71,6 +73,7 @@ return [
                 'tax_withholding_category' => 'Tax Withholding Category',
             ],
         ],
+
         'accounting' => [
             'title' => 'Credit Limit and Payment Terms',
             'field' => [
