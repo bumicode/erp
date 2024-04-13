@@ -15,83 +15,50 @@ return new class extends Migration
             $table->id();
             $table->string('series')->unique();
             $table->enum('status', [
-                'Draft',
-                'On Hold',
-                'To Deliver and Bill',
-                'To Bill',
-                'To Deliver',
-                'Completed',
-                'Cancelled',
-                'Closed',
-            ])->default('Draft');
+                'draft',
+                'on hold',
+                'to deliver and bill',
+                'to bill',
+                'to deliver',
+                'completed',
+                'cancelled',
+                'closed',
+            ])->default('draft');
             $table->enum('delivery_status', [
-                'Not Delivered',
-                'Partially Delivered',
-                'Fully Delivered',
-                'Closed',
-                'Not Applicable',
-            ])->default('Not Delivered');
+                'not delivered',
+                'partially delivered',
+                'fully delivered',
+                'closed',
+                'not applicable',
+            ])->default('not delivered');
             $table->enum('billed_status', [
-                'Not Billed',
-                'Partially Billed',
-                'Fully Billed',
-                'Closed',
-            ])->default('Not Billed');
+                'not billed',
+                'partially billed',
+                'fully billed',
+                'closed',
+            ])->default('not billed');
             $table->timestamp('posting_date');
             $table->timestamp('delivery_date')->nullable();
-            $table->enum('order_type', ['Sales', 'Maintenance', 'Shopping Chart']);
-            $table->bigInteger('customer_id')->unsigned();
-            $table->foreign('customer_id')->references('id')->on('customers');
-            $table->bigInteger('customer_address_id')->unsigned();
-            $table->foreign('customer_address_id')->references('id')->on('addresses');
-            $table->bigInteger('customer_contact_id')->unsigned();
-            $table->foreign('customer_contact_id')->references('id')->on('contacts');
-            $table->bigInteger('customer_shipping_address_id')->unsigned()->nullable();
-            $table->foreign('customer_shipping_address_id')->references('id')->on('addresses');
-            $table->double('total_qty');
-            $table->integer('total_net_weight');
-            $table->double('total_amount');
-            $table->bigInteger('sales_tax_charge_template')->nullable();
-            $table->foreign('sales_tax_charge_template')->references('id')->on('tax_charge_templates');
-            $table->double('total_tax_charge');
-            $table->double('grand_total');
-            $table->double('rounding_adjustment')->nullable();
-            $table->double('rounded_total')->nullable();
-            $table->bigInteger('payment_terms_template_id')->unsigned();
-            $table->foreign('payment_terms_template_id')->references('id')->on('payment_terms_templates');
+            $table->enum('order_type', ['sales', 'maintenance', 'shopping chart']);
+            $table->json('items');
+            $table->integer('total_qty');
+            $table->float('total_net_weight');
+            $table->float('total_amount');
+            $table->json('sales_taxes_and_charges');
+            $table->float('total_tax_charge');
+            $table->float('grand_total');
+            $table->float('rounding_adjustment');
+            $table->float('rounded_total');
+            $table->float('advance_paid');
+            $table->foreignId('sales_tax_charge_template')->nullable()->constrained('tax_charge_templates')->nullOnDelete();
+            $table->foreignId('customer_id')->constrained('customers')->cascadeOnDelete();
+            $table->foreignId('customer_billing_address_id')->nullable()->constrained('addresses')->nullOnDelete();
+            $table->foreignId('customer_shipping_address_id')->nullable()->constrained('addresses')->nullOnDelete();
+            $table->foreignId('customer_contact_id')->nullable()->constrained('contacts')->nullOnDelete();
+            $table->foreignId('payment_terms_template_id')->nullable()->constrained('payment_terms_templates')->nullOnDelete();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('sales_items', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('sales_order_id')->constrained('sales_orders')->cascadeOnDelete();
-            $table->integer('accepted_qty');
-            $table->integer('rejected_qty')->default(0);
-            $table->double('item_rate');
-            $table->double('total_amount');
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('sales_tax_charges', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('sales_order_id')->constrained('sales_orders')->cascadeOnDelete();
-            $table->enum('tax_type', [
-                'Actual',
-                'On Net Total',
-                'On Previous Row Amount',
-                'On Previous Row Total',
-                'On Item Quantity',
-            ]);
-            $table->foreignId('account_id')->constrained('accounts')->nullOnDelete();
-            $table->double('tax_rate');
-            $table->double('tax_amount');
-            $table->double('tax_total');
-            $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -101,8 +68,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sales_items');
-        Schema::dropIfExists('sales_tax_charges');
         Schema::dropIfExists('sales_orders');
     }
 };

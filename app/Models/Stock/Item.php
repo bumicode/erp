@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
 
 class Item extends Model
 {
-    use GeneratesUniqueNumber, HasFactory, Userstamps;
+    use GeneratesUniqueNumber, HasFactory, SoftDeletes, Userstamps;
 
     public static $numberPrefix = 'ITM'; // set the desired prefix
     public static $numberField = 'code'; // set the desired field name

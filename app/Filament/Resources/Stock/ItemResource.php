@@ -325,6 +325,13 @@ class ItemResource extends Resource
                             ->label('UOMs')
                             ->relationship('itemUomConversion')
                             ->schema([
+                                Forms\Components\Select::make('is_default')
+                                    ->label('Default UOM')
+                                    ->options([
+                                        '1' => 'Yes',
+                                        '0' => 'No',
+                                    ])
+                                    ->disabled(),
                                 Forms\Components\Select::make('uom_id')
                                     ->label('UOM')
                                     ->relationship('uom', 'abbreviation')
@@ -343,7 +350,7 @@ class ItemResource extends Resource
                                     ->default(1),
                             ])
                             ->defaultItems(0)
-                            ->columns(2)
+                            ->columns(3)
                             ->columnSpan(['lg' => 4]),
                     ])
                     ->collapsed(),

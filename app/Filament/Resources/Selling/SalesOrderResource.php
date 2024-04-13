@@ -2,87 +2,42 @@
 
 namespace App\Filament\Resources\Selling;
 
+use App\Exceptions\MissingAttributeException;
+use App\Filament\Resources\Selling\SalesOrderResource\Form\AddressContactForm;
+use App\Filament\Resources\Selling\SalesOrderResource\Form\DetailForm;
+use App\Filament\Resources\Selling\SalesOrderResource\Form\MoreInfoForm;
+use App\Filament\Resources\Selling\SalesOrderResource\Form\TermForm;
 use App\Filament\Resources\Selling\SalesOrderResource\Pages;
-use App\Filament\Resources\Selling\SalesOrderResource\RelationManagers;
 use App\Models\Selling\SalesOrder;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SalesOrderResource extends Resource
 {
     protected static ?string $model = SalesOrder::class;
+
     protected static ?string $navigationGroup = 'Selling';
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
+    /**
+     * @throws MissingAttributeException
+     */
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('customer_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('customer_address_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('customer_contact_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('customer_shipping_address_id')
-                    ->numeric(),
-                Forms\Components\TextInput::make('tax_category')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('sales_tax_charge_template')
-                    ->numeric(),
-                Forms\Components\TextInput::make('payment_terms_template_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('series')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('Draft'),
-                Forms\Components\TextInput::make('delivery_status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('Not Delivered'),
-                Forms\Components\TextInput::make('billed_status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('Not Billed'),
-                Forms\Components\DateTimePicker::make('posting_date')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('delivery_date'),
-                Forms\Components\TextInput::make('order_type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('total_qty')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('total_net_weight')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('total_amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('total_tax_charge')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('grand_total')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('rounding_adjustment')
-                    ->numeric(),
-                Forms\Components\TextInput::make('rounded_total')
-                    ->numeric(),
+                Forms\Components\Tabs::make()
+                    ->tabs([
+                        DetailForm::schema(),
+                        AddressContactForm::schema(),
+                        TermForm::schema(),
+                        MoreInfoForm::schema(),
+                    ])
+                    ->columnSpan(['lg' => 4]),
             ]);
     }
 
