@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\AppSetting;
+use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\Auth\Register;
 use App\Filament\Resources\Accounting\PaymentTermTemplatesResource;
 use App\Filament\Resources\Accounting\SalesInvoiceResource;
 use App\Filament\Resources\Common\CityResource;
@@ -66,12 +68,12 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->registration()
+            ->registration(Register::class)
             ->passwordReset()
             ->emailVerification()
+            ->login(Login::class)
             ->id('admin')
             ->path('admin')
-            ->login()
             ->colors([
                 'primary' => Color::Blue,
             ])

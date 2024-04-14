@@ -16,7 +16,7 @@ use App\Models\Selling\Target;
 use App\Models\Selling\Territory;
 use App\Models\Stock\Item;
 use App\Models\Stock\ItemGroup;
-use App\Models\Stock\PriceList;
+use App\Models\Stock\ItemPriceList;
 use App\Policies\Accounting\PaymentTermTemplatesPolicy;
 use App\Policies\Accounting\SalesInvoicePolicy;
 use App\Policies\CRM\AddressPolicy;
@@ -30,6 +30,7 @@ use App\Policies\Selling\TargetPolicy;
 use App\Policies\Selling\TerritoryPolicy;
 use App\Policies\Stock\ItemGroupPolicy;
 use App\Policies\Stock\ItemPolicy;
+use App\Policies\Stock\ItemPriceListPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Policies\ActivityPolicy;
 use Spatie\Activitylog\Models\Activity;
@@ -74,7 +75,7 @@ class AuthServiceProvider extends ServiceProvider
          */
         Item::class => ItemPolicy::class,
         ItemGroup::class => ItemGroupPolicy::class,
-        PriceList::class => PriceList::class,
+        ItemPriceList::class => ItemPriceListPolicy::class,
 
         /**
          * Activity Log Policy

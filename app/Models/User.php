@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Tags\HasTags;
 use Wildside\Userstamps\Userstamps;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, HasPanelShield, HasRoles, HasTags,LogsActivity, Notifiable, TwoFactorAuthenticatable, Userstamps;
 
@@ -30,6 +30,8 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'team_id',
+        'username',
     ];
 
     /**
