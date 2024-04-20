@@ -23,6 +23,11 @@ class SalesOrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
+    public static function getLabel(): string
+    {
+        return __('selling/order.sales_order');
+    }
+
     /**
      * @throws MissingAttributeException
      */

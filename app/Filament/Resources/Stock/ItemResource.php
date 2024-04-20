@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
+use ZeeshanTariq\FilamentAttachmate\Forms\Components\AttachmentFileUpload;
 
 class ItemResource extends Resource
 {
@@ -216,6 +217,8 @@ class ItemResource extends Resource
                             ->columnSpanFull(),
                     ])
                     ->collapsed(),
+
+                AttachmentFileUpload::make(),
             ]);
     }
 

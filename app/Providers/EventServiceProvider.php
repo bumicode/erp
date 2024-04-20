@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\CRM\Address;
 use App\Models\CRM\Contact;
 use App\Models\Selling\Customer;
+use App\Models\Selling\SalesOrder;
 use App\Models\Stock\Item;
 use App\Models\Stock\ItemUom;
 use App\Models\Stock\StockEntry;
@@ -12,6 +13,7 @@ use App\Models\Stock\Warehouse;
 use App\Observers\CRM\AddressObserver;
 use App\Observers\CRM\ContactObserver;
 use App\Observers\Selling\CustomerObserver;
+use App\Observers\Selling\SalesOrderObserver;
 use App\Observers\Stock\ItemObserver;
 use App\Observers\Stock\ItemUomObserver;
 use App\Observers\Stock\StockEntryObserver;
@@ -41,10 +43,21 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        /**
+         * Common model observer
+         */
         Address::observe(AddressObserver::class);
-        Customer::observe(CustomerObserver::class);
         Contact::observe(ContactObserver::class);
+
+        /**
+         * Selling model observer
+         */
+        Customer::observe(CustomerObserver::class);
+        SalesOrder::observe(SalesOrderObserver::class);
+
+        /**
+         * Stock model observer
+         */
         Item::observe(ItemObserver::class);
         ItemUom::observe(ItemUomObserver::class);
         Warehouse::observe(WarehouseObserver::class);

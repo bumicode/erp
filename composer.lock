@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9a6bf8aa6f869e5b74d5466c6d4b6a06",
+    "content-hash": "a1571fde01e586bed1b0781762bf91d8",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -9400,6 +9400,58 @@
                 "source": "https://github.com/Z3d0X/filament-logger/tree/v0.7.1"
             },
             "time": "2024-04-07T12:19:52+00:00"
+        },
+        {
+            "name": "zeeshantariq/filament-attachmate",
+            "version": "v1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zeeshantariq08/filament-attachmate.git",
+                "reference": "18b0cde106d04fe627ae127800cdbe483e105591"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zeeshantariq08/filament-attachmate/zipball/18b0cde106d04fe627ae127800cdbe483e105591",
+                "reference": "18b0cde106d04fe627ae127800cdbe483e105591",
+                "shasum": ""
+            },
+            "require": {
+                "filament/support": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ZeeshanTariq\\FilamentAttachmate\\FilamentAttachmateServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ZeeshanTariq\\FilamentAttachmate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zeeshan Tariq",
+                    "email": "zeeshiq58@gmail.com"
+                }
+            ],
+            "description": "Implement a polymorphic morphMany relationship for managing attachments within Filament",
+            "keywords": [
+                "attachment",
+                "filament",
+                "polymorphic"
+            ],
+            "support": {
+                "issues": "https://github.com/zeeshantariq08/filament-attachmate/issues",
+                "source": "https://github.com/zeeshantariq08/filament-attachmate/tree/v1.1"
+            },
+            "time": "2024-03-01T08:44:35+00:00"
         }
     ],
     "packages-dev": [
