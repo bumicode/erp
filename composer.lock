@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "799f227d8f33f0ec2eac38a2d344a1a5",
+    "content-hash": "d9b7bc08148364d0feafaaf91c5ec281",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1687,7 +1687,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v3.2.76",
+            "version": "v3.2.77",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
@@ -6250,16 +6250,16 @@
         },
         {
             "name": "spatie/laravel-translatable",
-            "version": "6.6.2",
+            "version": "6.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-translatable.git",
-                "reference": "529b4e89ad0b0982d9c635696260661d1cf2612c"
+                "reference": "b75b3300949cdc6ce191f9a4b70addbce5d54ff5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/529b4e89ad0b0982d9c635696260661d1cf2612c",
-                "reference": "529b4e89ad0b0982d9c635696260661d1cf2612c",
+                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/b75b3300949cdc6ce191f9a4b70addbce5d54ff5",
+                "reference": "b75b3300949cdc6ce191f9a4b70addbce5d54ff5",
                 "shasum": ""
             },
             "require": {
@@ -6320,7 +6320,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-translatable/issues",
-                "source": "https://github.com/spatie/laravel-translatable/tree/6.6.2"
+                "source": "https://github.com/spatie/laravel-translatable/tree/6.7.0"
             },
             "funding": [
                 {
@@ -6328,7 +6328,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-01T10:24:53+00:00"
+            "time": "2024-05-13T12:34:22+00:00"
         },
         {
             "name": "spatie/temporary-directory",
