@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44520eb8e73ab4831d21ee6711899148",
+    "content-hash": "9fdeb19bc4ba2b01a0a0c880481f0199",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1687,16 +1687,16 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v3.2.82",
+            "version": "v3.2.83",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
-                "reference": "ae187153789ffa0110256b2a948765c17eff0543"
+                "reference": "7c4af9be7cf5e02c4c620861527f7c55ec6e8c54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/spatie-laravel-tags-plugin/zipball/ae187153789ffa0110256b2a948765c17eff0543",
-                "reference": "ae187153789ffa0110256b2a948765c17eff0543",
+                "url": "https://api.github.com/repos/filamentphp/spatie-laravel-tags-plugin/zipball/7c4af9be7cf5e02c4c620861527f7c55ec6e8c54",
+                "reference": "7c4af9be7cf5e02c4c620861527f7c55ec6e8c54",
                 "shasum": ""
             },
             "require": {
@@ -1720,7 +1720,7 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2024-03-17T21:53:17+00:00"
+            "time": "2024-05-27T10:09:04+00:00"
         },
         {
             "name": "filament/support",
