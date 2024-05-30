@@ -3,12 +3,12 @@
 namespace App\Filament\Resources\Selling\SalesOrderResource\Form;
 
 use App\Exceptions\MissingAttributeException;
+use App\Filament\Resources\Stock\ItemResource;
 use App\Models\Selling\SalesOrder;
 use App\Models\Stock\Item;
 use App\Models\Stock\Warehouse;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Repeater;
@@ -49,6 +49,7 @@ class DetailForm
     private static function makeDetailsSection(): Section
     {
         return Section::make(__('selling/order.tab.details.detail.title'))
+            ->description(__('selling/order.tab.details.detail.description'))
             ->schema([
                 Group::make()
                     ->schema([
@@ -103,6 +104,7 @@ class DetailForm
     private static function makeAccountDimensionsSection(): Section
     {
         return Section::make(__('selling/order.tab.details.account.title'))
+            ->description(__('selling/order.tab.details.account.description'))
             ->schema([
                 TextInput::make('cost_center')
                     ->label(__('selling/order.tab.details.account.fields.cost_center')),
@@ -126,6 +128,7 @@ class DetailForm
     private static function makeCurrencyAndPriceListSection(): Section
     {
         return Section::make(__('selling/order.tab.details.currency.title'))
+            ->description(__('selling/order.tab.details.currency.description'))
             ->schema([
                 TextInput::make('currency')
                     ->label(__('selling/order.tab.details.currency.fields.currency')),
@@ -149,6 +152,7 @@ class DetailForm
         $items = Item::get();
 
         return Section::make(__('selling/order.tab.details.items.title'))
+            ->description(__('selling/order.tab.details.items.description'))
             ->schema([
                 Group::make()
                     ->schema([
@@ -203,7 +207,7 @@ class DetailForm
                             ->columnSpan(['lg' => 4]),
                         Group::make()
                             ->schema([
-                                TextInput::make('weight')
+                                TextInput::make('basic_weight')
                                     ->label('Berat Item')
                                     ->readOnly()
                                     ->numeric()
@@ -227,11 +231,29 @@ class DetailForm
                             ->columns(4)
                             ->columnSpan(['lg' => 4]),
                     ])
+                    ->extraItemActions([
+                        Action::make('openProduct')
+                            ->tooltip('Open product')
+                            ->icon('heroicon-m-arrow-top-right-on-square')
+                            ->url(function (array $arguments, Repeater $component): ?string {
+                                $itemData = $component->getRawItemState($arguments['item']);
+
+                                $item = Item::find($itemData['item_id']);
+
+                                if (! $item) {
+                                    return null;
+                                }
+
+                                return ItemResource::getUrl('edit', ['record' => $item]);
+                            }, shouldOpenInNewTab: true)
+                            ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['item_id'])),
+                    ])
                     // Repeatable field is live so that it will trigger the state update on each change
                     ->live()
                     // After adding a new row, we need to update the totals
                     ->afterStateUpdated(function (Get $get, Set $set) {
                         self::updateTotals($get, $set);
+                        self::updateGrandTotals($get, $set);
                     })
                     // After deleting a row, we need to update the totals
                     ->deleteAction(
@@ -268,6 +290,7 @@ class DetailForm
     private static function makeTaxesSection(): Section
     {
         return Section::make(__('selling/order.tab.details.taxes.title'))
+            ->description(__('selling/order.tab.details.taxes.description'))
             ->schema([
                 Group::make()
                     ->schema([
@@ -314,9 +337,10 @@ class DetailForm
                             ->schema([]),
                         Group::make()
                             ->schema([
-                                TextInput::make('total_taxes_and_charges')
+                                TextInput::make('total_tax_charge')
                                     ->label(__('selling/order.tab.details.taxes.fields.total_taxes_and_charges'))
                                     ->prefix('Rp')
+                                    ->default(0)
                                     ->readOnly()
                                     ->numeric(),
                             ]),
@@ -331,6 +355,7 @@ class DetailForm
     private static function makeTotalsSection(): Section
     {
         return Section::make(__('selling/order.tab.details.total.title'))
+            ->description(__('selling/order.tab.details.total.description'))
             ->schema([
                 Group::make()
                     ->schema([
@@ -342,21 +367,24 @@ class DetailForm
                                     ->label(__('selling/order.tab.details.total.fields.grand_total'))
                                     ->prefix('Rp')
                                     ->readOnly()
+                                    ->default(0)
                                     ->numeric(),
                                 TextInput::make('rounding_adjustment')
                                     ->label(__('selling/order.tab.details.total.fields.rounding_adjustment'))
                                     ->prefix('Rp')
                                     ->readOnly()
+                                    ->default(0)
                                     ->numeric(),
                                 TextInput::make('rounded_total')
                                     ->label(__('selling/order.tab.details.total.fields.rounded_total'))
                                     ->prefix('Rp')
                                     ->readOnly()
+                                    ->default(0)
                                     ->numeric(),
                                 TextInput::make('advance_paid')
                                     ->label(__('selling/order.tab.details.total.fields.advance_paid'))
                                     ->prefix('Rp')
-                                    ->readOnly()
+                                    ->default(0)
                                     ->numeric(),
                             ]),
                     ])
@@ -370,6 +398,7 @@ class DetailForm
     private static function makeAdditionalDiscountSection(): Section
     {
         return Section::make(__('selling/order.tab.details.discount.title'))
+            ->description(__('selling/order.tab.details.discount.description'))
             ->schema([
                 Group::make()
                     ->schema([
@@ -394,17 +423,24 @@ class DetailForm
             ->columns(2);
     }
 
-    public static function setRates(Set $set, ?Item $item, $quantity)
+    public static function setRates(Set $set, ?Item $item, $quantity): void
     {
         if ($item && $quantity) {
             $basicRate = number_format($item->standard_selling_rate, 2, '.', '');
             $totalRate = number_format($item->standard_selling_rate * $quantity, 2, '.', '');
+            $basicWeight = (int) ($item->itemInventory->weight_per_unit) / 1000;
+            $totalWeight = (int) ($item->itemInventory->weight_per_unit * $quantity) / 1000;
 
             $set('basic_rate', $basicRate);
             $set('total_rate', $totalRate);
+
+            $set('basic_weight', $basicWeight);
+            $set('total_weight', $totalWeight);
         } else {
             $set('basic_rate', null);
             $set('total_rate', null);
+            $set('basic_weight', null);
+            $set('total_weight', null);
         }
     }
 
@@ -412,21 +448,42 @@ class DetailForm
     {
         // Retrieve all selected products and remove empty rows
         $selectedProducts = collect($get('items'))->filter(fn ($item) => ! empty($item['item_id']) && ! empty($item['quantity']));
+
         // Retrieve prices for all selected products
         $prices = Item::find($selectedProducts->pluck('item_id'))->pluck('standard_selling_rate', 'id');
 
-        // Calculate subtotal based on the selected products and quantities
+        // Retrieve weight per unit for all selected products
+        $itemWeights = Item::with('itemInventory')->find($selectedProducts->pluck('item_id'))->pluck('itemInventory.weight_per_unit', 'id');
+
+        // Calculate subtotal, quantity, and total net weight based on the selected products and quantities
         $subtotal = $selectedProducts->reduce(function ($subtotal, $product) use ($prices) {
             return $subtotal + ($prices[$product['item_id']] * $product['quantity']);
         }, 0);
 
-        // Calculate quantity
         $quantity = $selectedProducts->reduce(function ($quantity, $product) {
             return $quantity + $product['quantity'];
+        }, 0);
+
+        $totalNetWeight = $selectedProducts->reduce(function ($totalWeight, $product) use ($itemWeights) {
+            return $totalWeight + ($itemWeights[$product['item_id']] * $product['quantity']);
         }, 0);
 
         // Update the state with the new values
         $set('total_amount', number_format($subtotal, 2, '.', ''));
         $set('total_qty', $quantity);
+        $set('total_net_weight', $totalNetWeight / 1000);
+    }
+
+    private static function updateGrandTotals(Get $get, Set $set): void
+    {
+        $totalAmountProduct = $get('total_amount');
+        $totalAmountTaxes = $get('total_tax_charge');
+        $grandTotal = $totalAmountProduct + $totalAmountTaxes;
+        $roundedTotal = round($grandTotal);
+        $difference = $roundedTotal - $grandTotal;
+
+        $set('grand_total', $grandTotal);
+        $set('rounding_adjustment', round($difference));
+        $set('rounded_total', round($roundedTotal));
     }
 }

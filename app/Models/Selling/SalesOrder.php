@@ -2,6 +2,7 @@
 
 namespace App\Models\Selling;
 
+use App\Enums\Stock\SalesOrderStatus;
 use App\Models\CRM\Address;
 use App\Models\CRM\Contact;
 use App\Models\Stock\Item;
@@ -59,6 +60,7 @@ class SalesOrder extends Model
     protected $casts = [
         'items' => 'json',
         'sales_taxes_and_charges' => 'json',
+        'status' => SalesOrderStatus::class,
     ];
 
     /**

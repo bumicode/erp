@@ -38,7 +38,7 @@ class MoreInfoForm
                 Select::make('status')
                     ->default('draft')
                     ->disabled()
-                    ->options(SalesOrderStatus::toSelectArray()),
+                    ->options(SalesOrderStatus::class),
             ])
             ->collapsed()
             ->columns(2);

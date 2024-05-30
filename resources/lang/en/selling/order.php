@@ -8,9 +8,9 @@ return [
     'tab' => [
         'details' => [
             'title' => 'Detail',
-            'description' => 'Sales order details',
             'detail' => [
                 'title' => 'Detail',
+                'description' => 'This section contains general information about the sales order, such as order number, date, customer details, and shipping address.',
                 'fields' => [
                     'series' => 'Series',
                     'posting_date' => 'Posting Date',
@@ -22,6 +22,7 @@ return [
             ],
             'account' => [
                 'title' => 'Account Dimensions',
+                'description' => 'Account Dimensions refer to specific accounting categories or segments used for tracking and analyzing sales transactions, such as department, project, or cost center.',
                 'fields' => [
                     'cost_center' => 'Cost Center',
                     'project' => 'Project',
@@ -31,6 +32,7 @@ return [
             ],
             'currency' => [
                 'title' => 'Currency and Price List',
+                'description' => 'This section specifies the currency in which the sales order is conducted and the applicable price list for the items.',
                 'fields' => [
                     'currency' => 'Currency',
                     'price_list' => 'Price List',
@@ -39,6 +41,7 @@ return [
             ],
             'items' => [
                 'title' => 'Items',
+                'description' => ' Items section lists all the products or services included in the sales order, along with their quantities, prices, and total amounts.',
                 'fields' => [
                     'scan_barcode' => 'Scan Barcode',
                     'set_source_warehouse' => 'Set Source Warehouse',
@@ -53,6 +56,7 @@ return [
             ],
             'taxes' => [
                 'title' => 'Taxes',
+                'description' => 'This part displays any applicable taxes or tax rates that are applied to the sales order items.',
                 'fields' => [
                     'tax_category' => 'Tax Category',
                     'shipping_rule' => 'Shipping Rule',
@@ -69,6 +73,7 @@ return [
             ],
             'total' => [
                 'title' => 'Total',
+                'description' => 'This section displays the total amount of the sales order, including any discounts, taxes, and rounding adjustments.',
                 'fields' => [
                     'grand_total' => 'Grand Total',
                     'rounding_adjustment' => 'Rounding Adjustment',
@@ -78,6 +83,7 @@ return [
             ],
             'discount' => [
                 'title' => 'Additional Discount',
+                'description' => 'This section allows you to apply additional discounts to the sales order.',
                 'fields' => [
                     'apply_discount_on' => 'Apply Additional Account On',
                     'coupon_code' => 'Coupon Code',

@@ -10,7 +10,7 @@ return [
         'quality' => 90,
         'math' => false,
         'expire' => 60,
-        'encrypt' => false,
+        'encrypt' => true,
     ],
     'math' => [
         'length' => 9,

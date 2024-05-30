@@ -34,7 +34,7 @@ class ItemUomObserver
         if ($item->default_uom_id = $itemUom->is_default) {
             Notification::make()
                 ->danger()
-                ->title('UOM cannot be deleted because it is set as default in uom conversions.')
+                ->title('Terdapat admin fee yang sudah diterapkan pada tanggal yang sama.')
                 ->send();
 
             return false;
