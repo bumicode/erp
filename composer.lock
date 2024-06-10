@@ -2423,16 +2423,16 @@
         },
         {
             "name": "jeffgreco13/filament-breezy",
-            "version": "v2.4.1",
+            "version": "v2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeffgreco13/filament-breezy.git",
-                "reference": "84f4f5b59ca21ad308f2a8ed1cf2a04355f2dc66"
+                "reference": "532336964e30500c0b4f68372850ca7299b78e3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeffgreco13/filament-breezy/zipball/84f4f5b59ca21ad308f2a8ed1cf2a04355f2dc66",
-                "reference": "84f4f5b59ca21ad308f2a8ed1cf2a04355f2dc66",
+                "url": "https://api.github.com/repos/jeffgreco13/filament-breezy/zipball/532336964e30500c0b4f68372850ca7299b78e3b",
+                "reference": "532336964e30500c0b4f68372850ca7299b78e3b",
                 "shasum": ""
             },
             "require": {
@@ -2493,9 +2493,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jeffgreco13/filament-breezy/issues",
-                "source": "https://github.com/jeffgreco13/filament-breezy/tree/v2.4.1"
+                "source": "https://github.com/jeffgreco13/filament-breezy/tree/v2.4.2"
             },
-            "time": "2024-05-06T17:04:38+00:00"
+            "time": "2024-06-09T18:50:11+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
@@ -4392,16 +4392,16 @@
         },
         {
             "name": "paragonie/constant_time_encoding",
-            "version": "v2.6.3",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/constant_time_encoding.git",
-                "reference": "58c3f47f650c94ec05a151692652a868995d2938"
+                "reference": "52a0d99e69f56b9ec27ace92ba56897fe6993105"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/58c3f47f650c94ec05a151692652a868995d2938",
-                "reference": "58c3f47f650c94ec05a151692652a868995d2938",
+                "url": "https://api.github.com/repos/paragonie/constant_time_encoding/zipball/52a0d99e69f56b9ec27ace92ba56897fe6993105",
+                "reference": "52a0d99e69f56b9ec27ace92ba56897fe6993105",
                 "shasum": ""
             },
             "require": {
@@ -4455,7 +4455,7 @@
                 "issues": "https://github.com/paragonie/constant_time_encoding/issues",
                 "source": "https://github.com/paragonie/constant_time_encoding"
             },
-            "time": "2022-06-14T06:56:20+00:00"
+            "time": "2024-05-08T12:18:48+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
