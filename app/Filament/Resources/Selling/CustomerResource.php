@@ -408,6 +408,11 @@ class CustomerResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading('Clients')
+            ->description('Manage your clients here.')
+            ->modifyQueryUsing(function ($query) {
+                return $query->where('created_by', auth()->user()->id);
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('parent.name')
                     ->numeric()

@@ -40,11 +40,6 @@ return new class extends Migration
             $table->foreignId('warehouse_rejected_id')->nullable()->constrained('warehouses')->nullOnDelete();
         });
 
-        Schema::table('sales_items', function (Blueprint $table) {
-            $table->foreignId('warehouse_accepted_id')->nullable()->constrained('warehouses')->nullOnDelete();
-            $table->foreignId('warehouse_rejected_id')->nullable()->constrained('warehouses')->nullOnDelete();
-        });
-
         Schema::table('item_stock_levels', function (Blueprint $table) {
             $table->foreignId('warehouse_id')->nullable()->constrained('warehouses')->nullOnDelete();
         });

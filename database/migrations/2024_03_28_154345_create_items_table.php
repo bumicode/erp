@@ -66,6 +66,7 @@ return new class extends Migration
             $table->foreignId('brand_id')->nullable()->constrained('brands')->nullOnDelete();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 
@@ -102,10 +103,6 @@ return new class extends Migration
         });
 
         Schema::table('quotation_items', function (Blueprint $table) {
-            $table->foreignId('item_id')->nullable()->constrained('items')->nullOnDelete();
-        });
-
-        Schema::table('sales_items', function (Blueprint $table) {
             $table->foreignId('item_id')->nullable()->constrained('items')->nullOnDelete();
         });
 

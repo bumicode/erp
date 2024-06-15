@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Stock;
 
 use App\Filament\Resources\Stock\StockEntryResource\Pages;
-use App\Helpers\UniqueNumberGenerator;
 use App\Models\Stock\Item;
 use App\Models\Stock\StockEntry;
 use App\Models\Stock\Warehouse;
@@ -45,17 +44,17 @@ class StockEntryResource extends Resource
 
     private static function detailsTab(): Forms\Components\Tabs\Tab
     {
-        return Forms\Components\Tabs\Tab::make('Details')
+        return Forms\Components\Tabs\Tab::make(__('selling/stock.tab.details.title'))
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\TextInput::make('series')
-                            ->label('Series')
+                            ->label(__('selling/stock.tab.details.fields.series'))
                             ->default('STE-YYYY-')
                             ->readOnly()
                             ->maxLength(255),
                         Forms\Components\Select::make('stock_entry_type_id')
-                            ->label('Stock Entry Type')
+                            ->label(__('selling/stock.tab.details.fields.stock_entry_type'))
                             ->relationship('stockEntryType', 'name')
                             ->optionsLimit(10)
                             ->preload()
@@ -65,8 +64,10 @@ class StockEntryResource extends Resource
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\DateTimePicker::make('posting_at')
+                            ->label(__('selling/stock.tab.details.fields.posting_at'))
                             ->default(Now()),
                         Forms\Components\Toggle::make('is_inspection_required')
+                            ->label(__('selling/stock.tab.details.action.is_inspection_required'))
                             ->required(),
                     ]),
             ]);
@@ -76,18 +77,19 @@ class StockEntryResource extends Resource
     {
         $items = Item::get();
 
-        return Forms\Components\Tabs\Tab::make('Items')
+        return Forms\Components\Tabs\Tab::make(__('selling/stock.tab.items.title'))
             ->schema([
                 Repeater::make('items')
+                    ->label(__('selling/stock.tab.items.title'))
                     ->schema([
                         Forms\Components\Group::make()
                             ->schema([
                                 Select::make('source_warehouse_id')
-                                    ->label('Source Warehouse')
+                                    ->label(__('selling/stock.tab.items.fields.source_warehouse'))
                                     ->searchable()
                                     ->options(Warehouse::getAllDataWithoutGroup()),
                                 Select::make('target_warehouse_id')
-                                    ->label('Target Warehouse')
+                                    ->label(__('selling/stock.tab.items.fields.target_warehouse'))
                                     ->searchable()
                                     ->options(Warehouse::getAllDataWithoutGroup())
                                     ->required(),
@@ -96,6 +98,7 @@ class StockEntryResource extends Resource
                         Forms\Components\Group::make()
                             ->schema([
                                 Select::make('item_id')
+                                    ->label(__('selling/stock.tab.items.title'))
                                     ->relationship('items', 'name')
                                     ->options(
                                         $items->mapWithKeys(function ($item) {
@@ -116,6 +119,7 @@ class StockEntryResource extends Resource
                                     })
                                     ->required(),
                                 TextInput::make('quantity')
+                                    ->label(__('selling/stock.tab.items.fields.quantity'))
                                     ->integer()
                                     ->default(1)
                                     ->live()
@@ -126,11 +130,11 @@ class StockEntryResource extends Resource
                                     })
                                     ->required(),
                                 TextInput::make('basic_rate')
-                                    ->label('Basic Rate')
+                                    ->label(__('selling/stock.tab.items.fields.basic_rate'))
                                     ->prefix('Rp')
                                     ->readOnly(),
                                 TextInput::make('total_rate')
-                                    ->label('Total')
+                                    ->label(__('selling/stock.tab.items.fields.total.title'))
                                     ->prefix('Rp')
                                     ->readOnly(),
                             ])
@@ -153,19 +157,19 @@ class StockEntryResource extends Resource
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\TextInput::make('total_outgoing')
-                            ->label('Total Outgoing Value (Consumption)')
+                            ->label(__('selling/stock.tab.items.fields.total.outgoing'))
                             ->readOnly()
                             ->prefix('Rp')
                             ->default(0)
                             ->numeric(),
                         Forms\Components\TextInput::make('total_incoming')
-                            ->label('Total Incoming Value (Receipt)')
+                            ->label(__('selling/stock.tab.items.fields.total.incoming'))
                             ->prefix('Rp')
                             ->default(0)
                             ->readOnly()
                             ->numeric(),
                         Forms\Components\TextInput::make('total_value')
-                            ->label('Total Value Difference (Incoming - Outgoing)')
+                            ->label(__('selling/stock.tab.items.fields.total.net'))
                             ->readOnly()
                             ->prefix('Rp')
                             ->numeric(),
@@ -177,20 +181,25 @@ class StockEntryResource extends Resource
 
     private static function additionalCostTab(): Forms\Components\Tabs\Tab
     {
-        return Forms\Components\Tabs\Tab::make('Additional Cost')
+        return Forms\Components\Tabs\Tab::make(__('selling/stock.tab.additional_cost.title'))
             ->schema([
                 Repeater::make('additional_costs')
+                    ->label(__('selling/stock.tab.additional_cost.title'))
                     ->schema([
-                        Select::make('expense_account_id'),
+                        Select::make('expense_account_id')
+                            ->label(__('selling/stock.tab.additional_cost.fields.expense_account')),
                         TextInput::make('description')
+                            ->label(__('selling/stock.tab.additional_cost.fields.description'))
                             ->required(),
                         TextInput::make('amount')
+                            ->label(__('selling/stock.tab.additional_cost.fields.amount'))
                             ->required()
                             ->numeric(),
                     ])
-                    ->columns(2)
+                    ->columns(3)
                     ->columnSpan(['lg' => 4]),
                 Forms\Components\TextInput::make('total_additional_cost')
+                    ->label(__('selling/stock.tab.additional_cost.fields.total'))
                     ->required()
                     ->numeric(),
                 //                    ->hidden(fn (?StockEntry $record) => $record == null),
@@ -199,7 +208,7 @@ class StockEntryResource extends Resource
 
     private static function supplierInfo(): Forms\Components\Tabs\Tab
     {
-        return Forms\Components\Tabs\Tab::make('Supplier Info')
+        return Forms\Components\Tabs\Tab::make(__('selling/stock.tab.supplier_info.title'))
             ->schema([
                 // Define schema for this tab
             ]);
@@ -207,7 +216,7 @@ class StockEntryResource extends Resource
 
     private static function accountingDimensionsTab(): Forms\Components\Tabs\Tab
     {
-        return Forms\Components\Tabs\Tab::make('Accounting Dimensions')
+        return Forms\Components\Tabs\Tab::make(__('selling/stock.tab.accounting_dimension.title'))
             ->schema([
                 // Define schema for this tab
             ]);
@@ -215,7 +224,7 @@ class StockEntryResource extends Resource
 
     private static function otherInfoTab(): Forms\Components\Tabs\Tab
     {
-        return Forms\Components\Tabs\Tab::make('Other Info')
+        return Forms\Components\Tabs\Tab::make(__('selling/stock.tab.other_info.title'))
             ->schema([
                 // Define schema for this tab
             ]);

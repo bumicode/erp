@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\AppSetting;
+use App\Filament\Pages\Auth\Login;
+use App\Filament\Pages\Auth\Register;
 use App\Filament\Resources\Accounting\PaymentTermTemplatesResource;
 use App\Filament\Resources\Accounting\SalesInvoiceResource;
 use App\Filament\Resources\Common\CityResource;
@@ -28,7 +30,6 @@ use App\Filament\Resources\Stock\ItemGroupResource;
 use App\Filament\Resources\Stock\ItemPriceListResource;
 use App\Filament\Resources\Stock\ItemPriceResource;
 use App\Filament\Resources\Stock\ItemResource;
-use App\Filament\Resources\Stock\PriceListResource;
 use App\Filament\Resources\Stock\StockEntryResource;
 use App\Filament\Resources\Stock\StockEntryTypeResource;
 use App\Filament\Resources\Stock\UomResource;
@@ -67,12 +68,12 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->registration()
+            ->registration(Register::class)
             ->passwordReset()
             ->emailVerification()
+            ->login(Login::class)
             ->id('admin')
             ->path('admin')
-            ->login()
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -123,6 +124,10 @@ class AdminPanelProvider extends PanelProvider
                 'panels::body.end',
                 fn () => view('customFooter'),
             )
+            ->resources([
+                config('filament-logger.activity_resource'),
+            ])
+            ->topNavigation()
             ->spa();
     }
 
@@ -257,6 +262,7 @@ class AdminPanelProvider extends PanelProvider
         return NavigationGroup::make('Settings')
             ->items([
                 ...AppSetting::getNavigationItems(),
+                ...ActivityResource::getNavigationItems(),
             ])->collapsed();
     }
 }

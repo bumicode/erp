@@ -3,7 +3,7 @@
 namespace App\Models\Selling;
 
 use App\Models\Accounting\PaymentTermTemplates;
-use App\Models\Stock\PriceList;
+use App\Models\Stock\ItemPriceList;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,7 +35,7 @@ class CustomerGroup extends Model
 
     public function defaultPriceList(): BelongsTo
     {
-        return $this->belongsTo(PriceList::class, 'default_price_list_id');
+        return $this->belongsTo(ItemPriceList::class, 'default_price_list_id');
     }
 
     public function defaultPaymentTermsTemplate(): BelongsTo

@@ -179,6 +179,8 @@ return new class extends Migration
             $table->foreign('from_lead_id')->references('id')->on('leads');
             $table->unsignedBigInteger('from_opportunity')->nullable();
             $table->foreign('from_opportunity')->references('id')->on('opportunities');
+            $table->foreignId('default_price_list_id')->nullable()->constrained('item_price_lists')->nullOnDelete();
+            $table->foreignId('default_currency_id')->nullable()->constrained('currencies')->nullOnDelete();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();

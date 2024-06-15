@@ -11,16 +11,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Wildside\Userstamps\Userstamps;
+use ZeeshanTariq\FilamentAttachmate\Core\InteractsWithAttachments;
 
 class Item extends Model
 {
-    use GeneratesUniqueNumber, HasFactory, Userstamps;
+    use GeneratesUniqueNumber, HasFactory, InteractsWithAttachments, SoftDeletes, Userstamps;
 
     public static $numberPrefix = 'ITM'; // set the desired prefix
-    public static $numberField = 'code'; // set the desired field name
-    public static $withYear = false; // set true to include the year in the generated number
 
+    public static $numberField = 'code'; // set the desired field name
+
+    public static $withYear = false; // set true to include the year in the generated number
 
     /**
      * Indicates the fields that are mass assignable.
@@ -193,7 +196,6 @@ class Item extends Model
 
     /**
      * Get the item stock levels.
-     * @return HasMany
      */
     public function itemStockLevels(): HasMany
     {
@@ -213,7 +215,6 @@ class Item extends Model
      *
      * @param  Builder  $query
      * @param  int  $itemId
-     * @return int
      */
     public function scopeDefaultUomId($query, $itemId): int
     {

@@ -6,6 +6,7 @@ use App\Exceptions\MissingAttributeException;
 use App\Models\Stock\Item;
 use App\Models\Stock\ItemPrice;
 use App\Models\Stock\ItemPriceList;
+use App\Models\Stock\ItemUom;
 use App\Models\Stock\StockEntry;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,8 @@ class ItemObserver
                 $this->createStockEntry($item);
             }
 
+            $this->createItemUoms($item);
+
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
@@ -55,10 +58,22 @@ class ItemObserver
 
     /**
      * Handle the Item "updated" event.
+     *
+     * @throws Exception
      */
     public function updated(Item $item): void
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $this->updateDefaultItemUoms($item);
+
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            throw $exception;
+        }
     }
 
     /**
@@ -120,7 +135,7 @@ class ItemObserver
     /**
      * Create an item price entry.
      */
-    private function createItemPrice(Item $item, int $priceListId, $standardRate)
+    private function createItemPrice(Item $item, int $priceListId, $standardRate): ?int
     {
         $priceList = ItemPriceList::find($priceListId);
 
@@ -174,5 +189,78 @@ class ItemObserver
         $stockEntry->additional_costs = [];
         $stockEntry->total_additional_cost = 0;
         $stockEntry->save();
+    }
+
+    /**
+     * Create item uoms.
+     *
+     * @return void
+     */
+    private function createItemUoms(Item $item)
+    {
+        $existingItemUom = ItemUom::where('item_id', $item->id)
+            ->where('uom_id', $item->default_uom_id)
+            ->first();
+
+        if (! $existingItemUom) {
+            $itemUomConversion = new ItemUom();
+            $itemUomConversion->is_default = true;
+            $itemUomConversion->item_id = $item->id;
+            $itemUomConversion->uom_id = $item->default_uom_id;
+            $itemUomConversion->conversion_rate = 1;
+            $itemUomConversion->save();
+        }
+    }
+
+    /**
+     * Update item uoms.
+     *
+     * @return void
+     */
+    private function updateDefaultItemUoms(Item $item)
+    {
+        $existingItemUoms = ItemUom::where('item_id', $item->id)->get();
+
+        $foundDefault = false; // Flag to track if default item uom is found
+
+        foreach ($existingItemUoms as $existingItemUom) {
+            if ($existingItemUom->uom_id == $item->default_uom_id) {
+                if (! $existingItemUom->is_default) {
+                    $existingItemUom->update([
+                        'is_default' => true,
+                    ]);
+                }
+
+                $foundDefault = true;
+            } else {
+                // If not default uom, set is_default to false
+                $existingItemUom->update([
+                    'is_default' => false,
+                ]);
+            }
+        }
+
+        // If default item uom not found, create a new one
+        if (! $foundDefault) {
+            // First, set all existing item uoms to non-default
+            foreach ($existingItemUoms as $existingItemUom) {
+                $existingItemUom->update([
+                    'is_default' => false,
+                ]);
+            }
+
+            // Then, create a new default item uom
+            $itemUomConversion = new ItemUom();
+            $itemUomConversion->is_default = true;
+            $itemUomConversion->item_id = $item->id;
+            $itemUomConversion->uom_id = $item->default_uom_id;
+            $itemUomConversion->conversion_rate = 1;
+            $itemUomConversion->save();
+        }
+
+        Notification::make()
+            ->warning()
+            ->title("You've successfully updated the default UOM. Please update the conversion rate in the Inventory tab.")
+            ->send();
     }
 }

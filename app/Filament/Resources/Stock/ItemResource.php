@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Stock;
 
 use App\Exceptions\MissingAttributeException;
 use App\Filament\Resources\Stock\ItemResource\Pages;
+use App\Filament\Resources\Stock\ItemResource\RelationManagers\ItemPricesRelationManager;
+use App\Filament\Resources\Stock\ItemResource\RelationManagers\ItemStockLevelsRelationManager;
 use App\Models\Stock\Item;
 use App\Models\Stock\ItemGroup;
 use App\Models\Stock\UnitOfMeasure;
@@ -17,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Table;
+use ZeeshanTariq\FilamentAttachmate\Forms\Components\AttachmentFileUpload;
 
 class ItemResource extends Resource
 {
@@ -77,7 +80,8 @@ class ItemResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ItemPricesRelationManager::class,
+            ItemStockLevelsRelationManager::class,
         ];
     }
 
@@ -213,6 +217,8 @@ class ItemResource extends Resource
                             ->columnSpanFull(),
                     ])
                     ->collapsed(),
+
+                AttachmentFileUpload::make(),
             ]);
     }
 
@@ -322,6 +328,13 @@ class ItemResource extends Resource
                             ->label('UOMs')
                             ->relationship('itemUomConversion')
                             ->schema([
+                                Forms\Components\Select::make('is_default')
+                                    ->label('Default UOM')
+                                    ->options([
+                                        '1' => 'Yes',
+                                        '0' => 'No',
+                                    ])
+                                    ->disabled(),
                                 Forms\Components\Select::make('uom_id')
                                     ->label('UOM')
                                     ->relationship('uom', 'abbreviation')
@@ -340,7 +353,7 @@ class ItemResource extends Resource
                                     ->default(1),
                             ])
                             ->defaultItems(0)
-                            ->columns(2)
+                            ->columns(3)
                             ->columnSpan(['lg' => 4]),
                     ])
                     ->collapsed(),

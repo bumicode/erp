@@ -7,6 +7,7 @@ use App\Exceptions\MissingAttributeException;
 trait GeneratesUniqueNumber
 {
     /**
+     * Generate a unique number
      * @throws MissingAttributeException
      */
     public static function generateNumber(): string
@@ -33,6 +34,9 @@ trait GeneratesUniqueNumber
         }
     }
 
+    /**
+     * Get the last number in the database
+     */
     private static function generateLastNumber($field): string
     {
         $lastNumber = static::max($field);
@@ -55,6 +59,9 @@ trait GeneratesUniqueNumber
         return str_pad($newNumber, 5, '0', STR_PAD_LEFT);
     }
 
+    /**
+     * Check if the field exists in the model
+     */
     private static function hasField($field): bool
     {
         return in_array($field, (new static)->getFillable());
