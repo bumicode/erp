@@ -9394,16 +9394,16 @@
         },
         {
             "name": "zeeshantariq/filament-attachmate",
-            "version": "v1.1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zeeshantariq08/filament-attachmate.git",
-                "reference": "18b0cde106d04fe627ae127800cdbe483e105591"
+                "reference": "f53fbe171faa039b4d53369af5ad6236c59a2c7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zeeshantariq08/filament-attachmate/zipball/18b0cde106d04fe627ae127800cdbe483e105591",
-                "reference": "18b0cde106d04fe627ae127800cdbe483e105591",
+                "url": "https://api.github.com/repos/zeeshantariq08/filament-attachmate/zipball/f53fbe171faa039b4d53369af5ad6236c59a2c7b",
+                "reference": "f53fbe171faa039b4d53369af5ad6236c59a2c7b",
                 "shasum": ""
             },
             "require": {
@@ -9440,9 +9440,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zeeshantariq08/filament-attachmate/issues",
-                "source": "https://github.com/zeeshantariq08/filament-attachmate/tree/v1.1"
+                "source": "https://github.com/zeeshantariq08/filament-attachmate/tree/v1.1.1"
             },
-            "time": "2024-03-01T08:44:35+00:00"
+            "time": "2024-05-29T15:25:02+00:00"
         }
     ],
     "packages-dev": [
