@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9704865762001cc5e973cbb902f63d17",
+    "content-hash": "6ea635f12c29218c97174d5d9257389e",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1310,22 +1310,22 @@
         },
         {
             "name": "dominion-solutions/filament-captcha",
-            "version": "0.0.1",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dominion-solutions/filament-captcha.git",
-                "reference": "786fa5fdffd3e6da1854466fa407444b6657508d"
+                "reference": "55d26d6fda6d94937bd85beba1cedae30e2059fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dominion-solutions/filament-captcha/zipball/786fa5fdffd3e6da1854466fa407444b6657508d",
-                "reference": "786fa5fdffd3e6da1854466fa407444b6657508d",
+                "url": "https://api.github.com/repos/dominion-solutions/filament-captcha/zipball/55d26d6fda6d94937bd85beba1cedae30e2059fe",
+                "reference": "55d26d6fda6d94937bd85beba1cedae30e2059fe",
                 "shasum": ""
             },
             "require": {
                 "filament/filament": "^3.2",
                 "filament/forms": "^3.0",
-                "illuminate/contracts": "^10.0",
+                "illuminate/contracts": "^10.0|^11.0",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.15.0"
             },
@@ -1392,7 +1392,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-26T02:24:09+00:00"
+            "time": "2024-04-15T11:49:42+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
