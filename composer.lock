@@ -5602,16 +5602,16 @@
         },
         {
             "name": "pxlrbt/filament-activity-log",
-            "version": "v1.1.3",
+            "version": "v1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pxlrbt/filament-activity-log.git",
-                "reference": "37a083eddee1ee4017d71e9146cf4e7f5a7c8c3b"
+                "reference": "251228aaab59ec10b80286af2fdbc84e435d2155"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pxlrbt/filament-activity-log/zipball/37a083eddee1ee4017d71e9146cf4e7f5a7c8c3b",
-                "reference": "37a083eddee1ee4017d71e9146cf4e7f5a7c8c3b",
+                "url": "https://api.github.com/repos/pxlrbt/filament-activity-log/zipball/251228aaab59ec10b80286af2fdbc84e435d2155",
+                "reference": "251228aaab59ec10b80286af2fdbc84e435d2155",
                 "shasum": ""
             },
             "require": {
@@ -5653,7 +5653,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pxlrbt/filament-activity-log/issues",
-                "source": "https://github.com/pxlrbt/filament-activity-log/tree/v1.1.3"
+                "source": "https://github.com/pxlrbt/filament-activity-log/tree/v1.1.4"
             },
             "funding": [
                 {
@@ -5661,7 +5661,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-07-01T10:18:10+00:00"
+            "time": "2024-07-31T12:48:58+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
