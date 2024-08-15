@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "631f645a241e5f25119d68b8ddc47679",
+    "content-hash": "26e6522c65a92a4d40635a1791b664de",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1848,7 +1848,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v3.2.100",
+            "version": "v3.2.101",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
