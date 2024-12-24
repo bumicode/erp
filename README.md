@@ -1,30 +1,66 @@
-<div align="center">
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bumicode_erp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bumicode_erp) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=bumicode_erp&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=bumicode_erp) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=bumicode_erp&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=bumicode_erp) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=bumicode_erp&metric=bugs)](https://sonarcloud.io/summary/new_code?id=bumicode_erp) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=bumicode_erp&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=bumicode_erp)
-    
-<img src="https://socialify.git.ci/bumicode/erp/image?description=1&descriptionEditable=Enterprise%20Resource%20Planning%20(ERP)&font=Raleway&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fbumicode%2Ferp-docs%2Fmain%2F.gitbook%2Fassets%2FArtboard%25201%2520copy.png&name=1&owner=1&pattern=Solid&pulls=1&stargazers=1&theme=Dark" alt="erp" width="640" height="320" />
-    <h2>BUMICODE ERP</h2>
-    <p align="center">
-        <p>WORK-IN-PROGRESS</p>
-    </p>
-</div>
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## About
-BUMICODE ERP | code with ❤ from sukabumi
+## About Laravel
 
-## Note
-- **[WIP]** Dokumentasi Pengguna bisa dilihat pada [**Link Ini**](https://bumicode.gitbook.io/erp/)
-- **[WIP]** Dokumentasi Developer bisa dilihat pada [**Link Ini**](https://bumicode.gitbook.io/erp-dev/)
-- **[WIP]** Dokumentasi Database bisa dilihat pada [**Link Ini**](https://dbdocs.io/mohamadsyalvasr/bumicode_erp)
-- **[WIP]** UI bisa dilihat pada [**Link Ini**](https://www.figma.com/file/zmsJ1HOdVMCrdp2FvKwlRW/ERP?node-id=0%3A1&t=lp0ek86C1gNfSxFR-1)
-- Gunakan **[Fitur Diskusi](https://github.com/bumicode/erp/discussions)** untuk berbagi ide dan sebagainya
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-## Star History
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-<a href="https://star-history.com/#bumicode/erp&Timeline">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bumicode/erp&type=Timeline&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bumicode/erp&type=Timeline" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=bumicode/erp&type=Timeline" />
- </picture>
-</a>
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
+
+## Learning Laravel
+
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+
+## Laravel Sponsors
+
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+
+### Premium Partners
+
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
+
+## Contributing
+
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
