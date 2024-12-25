@@ -1,0 +1,153 @@
+@import "/vendor/filament/filament/resources/css/index.css";
+@config 'tailwind.config.js';
+
+body {
+    --sidebar-width: 300px;
+}
+
+/* Body */
+.fi-body {
+    @apply bg-white;
+}
+
+/* Sidebar */
+.fi-sidebar {
+    @apply border-r border-gray-100 dark:border-gray-900;
+}
+
+.fi-sidebar-header, .fi-topbar > nav {
+    @apply !shadow-none ring-0 bg-white dark:!bg-gray-950 bg-opacity-80 dark:bg-opacity-80;
+
+    @supports (backdrop-filter: blur(6px)) {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+}
+
+/* Sidebar Icon Button */
+.fi-sidebar-header .fi-icon-btn {
+    @apply border dark:border-gray-900 dark:text-gray-300 w-7 h-7 rounded-full p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800;
+}
+
+/* Sidebar Navigation */
+.fi-sidebar-nav {
+    @apply py-4;
+}
+
+.fi-sidebar-nav-groups {
+    @apply gap-y-2;
+}
+
+.fi-sidebar-group-button,
+.fi-sidebar-item > a {
+    @apply hover:bg-gray-50 dark:hover:bg-gray-900 rounded-lg;
+}
+
+/* Active Sidebar Item */
+.fi-sidebar-item-active > a {
+    @apply bg-primary-500 dark:bg-primary-500 bg-opacity-15 dark:bg-opacity-15 hover:bg-primary-500 hover:bg-opacity-15 dark:hover:bg-primary-500 dark:hover:bg-opacity-15;
+
+    .fi-sidebar-item-grouped-border > .relative {
+        @apply h-2 w-2;
+    }
+}
+
+/* Sidebar Grouped Border */
+.fi-sidebar-item-grouped-border {
+    > .absolute {
+        @apply hidden;
+    }
+    > .relative {
+        @apply h-1 w-1;
+    }
+}
+
+/* Sidebar Group Label */
+.fi-sidebar-group:not(.fi-active) .fi-sidebar-group-label,
+.fi-sidebar-item:not(.fi-active) .fi-sidebar-item-label {
+    @apply text-gray-600 dark:text-gray-400;
+}
+
+/* Simple Layout */
+.fi-simple-layout {
+    @apply bg-gray-50 dark:bg-gray-950;
+}
+
+/* Section and Stats Overview */
+.fi-section:not(.fi-aside),
+.fi-section.fi-aside .fi-section-content-ctn,
+.fi-wi-stats-overview-stat,
+.fi-ta-ctn,
+.fi-simple-main {
+    @apply ring-gray-100 shadow-[0px_0px_2px_0px_rgba(145,158,171,0.2),0px_12px_24px_-4px_rgba(145,158,171,0.12)] dark:ring-gray-900 dark:shadow-[0px_0px_2px_0px_rgba(0,0,0,0.2),0px_12px_24px_-4px_rgba(0,0,0,0.12)];
+}
+
+/* Stats Overview Stat Value */
+.fi-wi-stats-overview-stat-value {
+    @apply font-bold;
+}
+
+/* Badge */
+.fi-badge {
+    @apply ring-0 rounded-full px-2;
+}
+
+/* Table */
+.fi-ta-ctn {
+    @apply divide-dashed;
+}
+
+.fi-ta-content {
+    @apply divide-y-0 !border-t-0;
+
+    tbody {
+        @apply divide-dashed;
+    }
+}
+
+.fi-ta-table {
+    @apply divide-gray-100;
+}
+
+/* Table Header Cell Label */
+.fi-ta-header-cell-label {
+    @apply text-gray-500 dark:text-gray-400;
+}
+
+/* Global Search */
+.fi-global-search {
+    .fi-input-wrp {
+        @apply bg-gray-100 dark:bg-gray-900 focus-within:bg-white dark:focus-within:bg-gray-800 ring-0;
+    }
+
+    .fi-input-wrp-label {
+        @apply bg-white px-1.5 py-0.5 rounded shadow font-bold text-xs text-gray-700;
+    }
+}
+
+/* User Menu */
+.fi-user-menu .fi-avatar {
+    @apply ring-1 ring-gray-400 dark:ring-gray-600 p-0.5 w-9 h-9;
+}
+
+/* Tabs */
+.fi-tabs {
+    @apply bg-transparent dark:bg-transparent w-full p-0 rounded-none ring-0 shadow-none border-b-2 border-gray-100 dark:border-gray-800 mb-4 overflow-visible;
+}
+
+.fi-tabs-item {
+    @apply rounded-none hover:bg-transparent dark:hover:bg-transparent py-3;
+}
+
+.fi-tabs-item-label {
+    @apply font-semibold;
+}
+
+/* Active Tabs Item */
+.fi-tabs-item-active {
+    @apply bg-transparent dark:bg-transparent border-b-2 border-gray-700 dark:border-gray-300 mb-[-2px];
+
+    .fi-tabs-item-label {
+        @apply text-gray-700 dark:text-gray-300;
+    }
+}
