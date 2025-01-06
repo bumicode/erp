@@ -8,7 +8,9 @@
     "require": {
         "php": "^8.3",
         "aymanalhattami/filament-date-scopes-filter": "^1.1",
+        "bezhansalleh/filament-shield": "^3.3",
         "charrafimed/global-search-modal": "^3.4",
+        "devonab/filament-easy-footer": "^1.0",
         "filament/filament": "^3.2",
         "jeffgreco13/filament-breezy": "^2.4",
         "laravel-lang/common": "^6.4",
@@ -18,6 +20,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "predis/predis": "^2.3",
+        "spatie/laravel-permission": "^6.10",
         "vormkracht10/filament-mails": "^1.0"
     },
     "require-dev": {

@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
                 'tenant_organization_id' => $org->id,
                 'is_superuser' => true,
                 'password' => bcrypt('admin'),
+                'email_verified_at' => now(),
             ]
         );
     }

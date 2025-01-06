@@ -13,4 +13,14 @@ class TenantOrganization extends Model
         'name',
         'slug',
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }
 }

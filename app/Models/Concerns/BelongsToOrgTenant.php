@@ -24,7 +24,7 @@ trait BelongsToOrgTenant
         });
     }
 
-    public function orgTenant(): BelongsTo
+    public function tenantOrganization(): BelongsTo
     {
         return $this->belongsTo(TenantOrganization::class, 'tenant_organization_id', 'id');
     }

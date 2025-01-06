@@ -3,7 +3,9 @@
 namespace App\Providers\Filament;
 
 use App\Models\TenantOrganization;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use CharrafiMed\GlobalSearchModal\GlobalSearchModalPlugin;
+use Devonab\FilamentEasyFooter\EasyFooterPlugin;
 use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -75,11 +77,14 @@ class OrganizationPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->tenant(TenantOrganization::class, slugAttribute: 'slug')
-            ->renderHook(
-                PanelsRenderHook::TOPBAR_START,
-                fn () => view('tenant-menu'),
-            )
-            ->tenantMenu(false)
+//            ->renderHook(
+//                PanelsRenderHook::TOPBAR_START,
+//                fn () => view('tenant-menu'),
+//            )
+            ->tenantMenu(true)
+            ->tenantMiddleware([
+                \BezhanSalleh\FilamentShield\Middleware\SyncShieldTenant::class,
+            ], isPersistent: true)
             ->unsavedChangesAlerts()
             ->databaseTransactions()
             ->databaseNotifications()
@@ -108,6 +113,32 @@ class OrganizationPanelProvider extends PanelProvider
                         hasAvatars: true,
                         navigationGroup: 'Settings',
                     ),
+                FilamentShieldPlugin::make()
+                    ->gridColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 2,
+                    ])
+                    ->sectionColumnSpan(1)
+                    ->checkboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                        'lg' => 2,
+                    ])
+                    ->resourceCheckboxListColumns([
+                        'default' => 1,
+                        'sm' => 2,
+                    ]),
+                EasyFooterPlugin::make()
+                    ->withFooterPosition('footer')
+                    ->withSentence('BUM;CODE')
+                    ->withLogo(asset('images/logo-default.svg'), 'https://bumicode.my.id')
+                    ->withLoadTime()
+                    ->withLinks([
+                        ['title' => 'About', 'url' => 'https://example.com/about'],
+                        ['title' => 'CGV', 'url' => 'https://example.com/cgv'],
+                        ['title' => 'Privacy Policy', 'url' => 'https://example.com/privacy-policy'],
+                    ]),
             ]);
     }
 }

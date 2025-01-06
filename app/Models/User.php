@@ -16,6 +16,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Jeffgreco13\FilamentBreezy\Traits\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenants, MustVerifyEmail
 {
@@ -25,6 +26,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
     use HasFactory, Notifiable;
     use TwoFactorAuthenticatable;
     use HasApiTokens;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -90,7 +92,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasTenant
 
     public function getTenants(Panel $panel): array|Collection
     {
-        return collect([$this->orgTenant]);
+        return collect([$this->tenantOrganization]);
     }
 
     public function getFilamentAvatarUrl(): ?string
