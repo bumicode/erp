@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c5d8347b690cbaae4ef25af14d5bac4",
+    "content-hash": "55938c0e42e6db0425308def8cb5e709",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1851,7 +1851,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v3.2.132",
+            "version": "v3.2.133",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
@@ -4288,12 +4288,12 @@
             "version": "2.72.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/briannesbitt/Carbon.git",
+                "url": "https://github.com/CarbonPHP/carbon.git",
                 "reference": "1e9d50601e7035a4c61441a208cb5bed73e108c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/1e9d50601e7035a4c61441a208cb5bed73e108c5",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon/zipball/1e9d50601e7035a4c61441a208cb5bed73e108c5",
                 "reference": "1e9d50601e7035a4c61441a208cb5bed73e108c5",
                 "shasum": ""
             },
@@ -6547,16 +6547,16 @@
         },
         {
             "name": "spatie/laravel-tags",
-            "version": "4.8.0",
+            "version": "4.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-tags.git",
-                "reference": "cea42068fed5d9f4a4df441a1ff8b389d8015d12"
+                "reference": "7e4def3aedf1de40526e19814abf0f0d72018c5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-tags/zipball/cea42068fed5d9f4a4df441a1ff8b389d8015d12",
-                "reference": "cea42068fed5d9f4a4df441a1ff8b389d8015d12",
+                "url": "https://api.github.com/repos/spatie/laravel-tags/zipball/7e4def3aedf1de40526e19814abf0f0d72018c5a",
+                "reference": "7e4def3aedf1de40526e19814abf0f0d72018c5a",
                 "shasum": ""
             },
             "require": {
@@ -6605,7 +6605,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-tags/issues",
-                "source": "https://github.com/spatie/laravel-tags/tree/4.8.0"
+                "source": "https://github.com/spatie/laravel-tags/tree/4.9.0"
             },
             "funding": [
                 {
@@ -6613,7 +6613,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-30T10:04:08+00:00"
+            "time": "2025-01-06T09:32:31+00:00"
         },
         {
             "name": "spatie/laravel-translatable",
@@ -11961,5 +11961,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
