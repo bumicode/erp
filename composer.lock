@@ -2499,16 +2499,16 @@
         },
         {
             "name": "guzzlehttp/uri-template",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/uri-template.git",
-                "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c"
+                "reference": "30e286560c137526eccd4ce21b2de477ab0676d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/ecea8feef63bd4fef1f037ecb288386999ecc11c",
-                "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c",
+                "url": "https://api.github.com/repos/guzzle/uri-template/zipball/30e286560c137526eccd4ce21b2de477ab0676d2",
+                "reference": "30e286560c137526eccd4ce21b2de477ab0676d2",
                 "shasum": ""
             },
             "require": {
@@ -2565,7 +2565,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/uri-template/issues",
-                "source": "https://github.com/guzzle/uri-template/tree/v1.0.3"
+                "source": "https://github.com/guzzle/uri-template/tree/v1.0.4"
             },
             "funding": [
                 {
@@ -2581,7 +2581,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-03T19:50:20+00:00"
+            "time": "2025-02-03T10:55:03+00:00"
         },
         {
             "name": "intervention/gif",
@@ -5666,16 +5666,16 @@
         },
         {
             "name": "pxlrbt/filament-activity-log",
-            "version": "v1.1.8",
+            "version": "v1.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pxlrbt/filament-activity-log.git",
-                "reference": "1433f60137e722c1384b932e56f42e4666105cbe"
+                "reference": "9956fa3ed645c46e94bbaf6bb3faecf34a41d200"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pxlrbt/filament-activity-log/zipball/1433f60137e722c1384b932e56f42e4666105cbe",
-                "reference": "1433f60137e722c1384b932e56f42e4666105cbe",
+                "url": "https://api.github.com/repos/pxlrbt/filament-activity-log/zipball/9956fa3ed645c46e94bbaf6bb3faecf34a41d200",
+                "reference": "9956fa3ed645c46e94bbaf6bb3faecf34a41d200",
                 "shasum": ""
             },
             "require": {
@@ -5717,7 +5717,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pxlrbt/filament-activity-log/issues",
-                "source": "https://github.com/pxlrbt/filament-activity-log/tree/v1.1.8"
+                "source": "https://github.com/pxlrbt/filament-activity-log/tree/v1.1.9"
             },
             "funding": [
                 {
@@ -5725,7 +5725,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-11-18T13:30:46+00:00"
+            "time": "2025-02-02T05:26:01+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
