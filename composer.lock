@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef6c9482a9659cc6b95fa6001df0df60",
+    "content-hash": "afa6631849ebf4ac54c260504f7587db",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -1849,7 +1849,7 @@
         },
         {
             "name": "filament/spatie-laravel-tags-plugin",
-            "version": "v3.2.140",
+            "version": "v3.2.141",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/spatie-laravel-tags-plugin.git",
@@ -6091,28 +6091,28 @@
         },
         {
             "name": "spatie/eloquent-sortable",
-            "version": "4.4.1",
+            "version": "4.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/eloquent-sortable.git",
-                "reference": "2448c25a2c4b588bc0e0b9820f8bbd110a2afd73"
+                "reference": "69e0e258e19513cf261305dd17717ee731aaede3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/eloquent-sortable/zipball/2448c25a2c4b588bc0e0b9820f8bbd110a2afd73",
-                "reference": "2448c25a2c4b588bc0e0b9820f8bbd110a2afd73",
+                "url": "https://api.github.com/repos/spatie/eloquent-sortable/zipball/69e0e258e19513cf261305dd17717ee731aaede3",
+                "reference": "69e0e258e19513cf261305dd17717ee731aaede3",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "^9.31|^10.0|^11.0",
-                "illuminate/support": "^9.31|^10.0|^11.0",
+                "illuminate/database": "^9.31|^10.0|^11.0|^12.0",
+                "illuminate/support": "^9.31|^10.0|^11.0|^12.0",
                 "nesbot/carbon": "^2.63|^3.0",
                 "php": "^8.1",
                 "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
-                "orchestra/testbench": "^7.0|^8.0|^9.0",
-                "phpunit/phpunit": "^9.5|^10.0"
+                "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^9.5|^10.0|^11.5.3"
             },
             "type": "library",
             "extra": {
@@ -6149,7 +6149,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/eloquent-sortable/issues",
-                "source": "https://github.com/spatie/eloquent-sortable/tree/4.4.1"
+                "source": "https://github.com/spatie/eloquent-sortable/tree/4.4.2"
             },
             "funding": [
                 {
@@ -6161,7 +6161,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-23T09:54:53+00:00"
+            "time": "2025-02-19T07:17:00+00:00"
         },
         {
             "name": "spatie/invade",
@@ -6545,28 +6545,28 @@
         },
         {
             "name": "spatie/laravel-tags",
-            "version": "4.9.1",
+            "version": "4.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-tags.git",
-                "reference": "73ef47838818d8bda74297f9df4f5ba475000b6a"
+                "reference": "2ec850224bb612f3de17e422f0d29e3adc37aef1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-tags/zipball/73ef47838818d8bda74297f9df4f5ba475000b6a",
-                "reference": "73ef47838818d8bda74297f9df4f5ba475000b6a",
+                "url": "https://api.github.com/repos/spatie/laravel-tags/zipball/2ec850224bb612f3de17e422f0d29e3adc37aef1",
+                "reference": "2ec850224bb612f3de17e422f0d29e3adc37aef1",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^8.67|^9.0|^10.0|^11.0",
+                "laravel/framework": "^10.0|^11.0|^12.0",
                 "nesbot/carbon": "^2.63|^3.0",
-                "php": "^8.0",
-                "spatie/eloquent-sortable": "^3.10|^4.0",
+                "php": "^8.1",
+                "spatie/eloquent-sortable": "^4.0",
                 "spatie/laravel-package-tools": "^1.4",
-                "spatie/laravel-translatable": "^4.6|^5.0|^6.0"
+                "spatie/laravel-translatable": "^6.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.13|^7.0|^8.0|^9.0",
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
                 "pestphp/pest": "^1.22|^2.0",
                 "phpunit/phpunit": "^9.5.2"
             },
@@ -6603,7 +6603,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-tags/issues",
-                "source": "https://github.com/spatie/laravel-tags/tree/4.9.1"
+                "source": "https://github.com/spatie/laravel-tags/tree/4.9.2"
             },
             "funding": [
                 {
@@ -6611,20 +6611,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-31T14:03:59+00:00"
+            "time": "2025-02-14T13:28:35+00:00"
         },
         {
             "name": "spatie/laravel-translatable",
-            "version": "6.10.2",
+            "version": "6.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-translatable.git",
-                "reference": "6150f6d55f4712279883d56490406f8a92a9c72a"
+                "reference": "2053c0c281b5f2845e704b6278d61f5e6c95d6d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/6150f6d55f4712279883d56490406f8a92a9c72a",
-                "reference": "6150f6d55f4712279883d56490406f8a92a9c72a",
+                "url": "https://api.github.com/repos/spatie/laravel-translatable/zipball/2053c0c281b5f2845e704b6278d61f5e6c95d6d2",
+                "reference": "2053c0c281b5f2845e704b6278d61f5e6c95d6d2",
                 "shasum": ""
             },
             "require": {
@@ -6686,7 +6686,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-translatable/issues",
-                "source": "https://github.com/spatie/laravel-translatable/tree/6.10.2"
+                "source": "https://github.com/spatie/laravel-translatable/tree/6.11.3"
             },
             "funding": [
                 {
@@ -6694,7 +6694,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-03T08:49:09+00:00"
+            "time": "2025-02-14T14:46:34+00:00"
         },
         {
             "name": "spatie/temporary-directory",
