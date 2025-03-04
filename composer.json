@@ -20,7 +20,7 @@
         "mews/captcha": "^3.3",
         "pxlrbt/filament-activity-log": "^1.0",
         "wildside/userstamps": "^2.4",
-        "z3d0x/filament-logger": "^0.7.1",
+        "z3d0x/filament-logger": "^0.8.0",
         "zeeshantariq/filament-attachmate": "^1.1"
     },
     "require-dev": {
