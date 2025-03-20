@@ -19,7 +19,7 @@
         "laravel/tinker": "^2.7",
         "mews/captcha": "^3.3",
         "pxlrbt/filament-activity-log": "^1.0",
-        "wildside/userstamps": "^2.4",
+        "wildside/userstamps": "^3.0",
         "z3d0x/filament-logger": "^0.8.0",
         "zeeshantariq/filament-attachmate": "^1.1"
     },
